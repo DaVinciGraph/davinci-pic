@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link href="/index.css" rel="stylesheet" />
+		<style>
+			iframe {
+				overflow: hidden;
+			}
+
+			iframe html {
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="intro">
+			<h1>davinci-pic Web Component Example Usage</h1>
+			<p>
+				Thank you for visiting the example page for the Davinci-Pic web component! On this page, we provide an extensive showcase of various
+				examples to demonstrate the capabilities, configurations, and customization options available when you utilize the Davinci-Pic
+				component.
+			</p>
+			<h3>About davinci-pic</h3>
+			<p>
+				The Davinci-Pic web component serves as a seamless extension of the DavinciPics API. Its primary function is to streamline the process
+				of fetching and displaying visual identities associated with Hedera entities. Not only does it make it incredibly straightforward to
+				pull this information, but it also offers a plethora of customization options to ensure that the visual elements align with the
+				specific needs of your application.
+			</p>
+			<h3>Supported Entity Types</h3>
+			<p>As you may already know, the DavinciPics API provides support for six distinct types of Hedera entities:</p>
+			<ul>
+				<li><a href="#token">Tokens</a></li>
+				<li><a href="#profile">Profile Pictures</a></li>
+				<li><a href="#banner">Banners</a></li>
+				<li><a href="#node">Nodes</a></li>
+				<li><a href="#network">Networks</a></li>
+				<li><a href="#app">Apps</a></li>
+			</ul>
+			<p>Each of these entity types has unique visual identifiers, and our Davinci-Pic component is designed to handle all of them adeptly.</p>
+			<h3>Examples Ahead</h3>
+			<p>
+				In the sections that follow, you'll find a curated list of examples that demonstrate how to make the most out of the Davinci-Pic
+				component. These examples cover a wide range of use-cases and configurations to give you a comprehensive understanding of what's
+				possible with this versatile component.
+			</p>
+			<h3>Additional Resources</h3>
+			<p>
+				If you're new to Davinci-Pic or encounter any difficulties in setting it up, we highly recommend checking out the detailed
+				documentation available in the README.md file on our GitHub repository. It provides a step-by-step guide on how to get started, along
+				with tips for advanced usage and customization.
+			</p>
+		</section>
+
+		<div style="display: block; width: 100%" id="token"></div>
+
+		<div style="display: block; width: 100%" id="wrapped"></div>
+
+		<div style="display: block; width: 100%" id="lp"></div>
+
+		<div style="display: block; width: 100%" id="profile"></div>
+
+		<div style="display: block; width: 100%" id="banner"></div>
+
+		<div style="display: block; width: 100%" id="node"></div>
+
+		<div style="display: block; width: 100%" id="network"></div>
+
+		<div style="display: block; width: 100%" id="app"></div>
+
+		<script type="module" type="token" src="/standalone/index.js"></script>
+		<script>
+			async function loadHTML(url, elementId) {
+				const response = await fetch(url);
+				const text = await response.text();
+
+				// Assuming you want to insert the fetched HTML into a div with the ID "content"
+				document.getElementById(elementId).innerHTML = text;
+			}
+
+			// Usage
+			loadHTML("/examples/token.html", "token");
+			loadHTML("/examples/wrapped.html", "wrapped");
+			loadHTML("/examples/lp.html", "lp");
+			loadHTML("/examples/profile.html", "profile");
+			loadHTML("/examples/banner.html", "banner");
+			loadHTML("/examples/node.html", "node");
+			loadHTML("/examples/network.html", "network");
+			loadHTML("/examples/app.html", "app");
+		</script>
+	</body>
+</html>

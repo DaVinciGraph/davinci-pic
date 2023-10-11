@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"declaration": false,
+		"outDir": "./dist/es", // Directory where the built files will go
+		"emitDeclarationOnly": false,
+		"strict": true
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules"]
+}

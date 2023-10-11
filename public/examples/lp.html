@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" ></davinci-pic>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" ></davinci-pic>
+		<title>Document</title>
+	</head>
+	<body>
+		<article>
+			<h1>LP Token</h1>
+
+			<main>
+				<section>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" context="none" size="64" ></davinci-pic>
+						<div>No Context</div>
+					</div>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" context="app" size="64" ></davinci-pic>
+						<div>With App Context</div>
+					</div>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" context="network" size="64" ></davinci-pic>
+						<div>With Network Context</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							complex-token-type="lp"
+							address="0.0.116314"
+							size="64"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+							data-title="Alternative Title"
+							data-pic-url="https://pbs.twimg.com/profile_images/914199620556935169/as44o2MI_200x200.jpg|https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
+						></davinci-pic>
+						<div>
+							Alternative Data
+						</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							complex-token-type="lp"
+							address="0.0.116314"
+							size="64"
+							stroke-width="4"
+							stroke-color="red"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+							data-title="Alternative Title"
+							data-pic-url="https://pbs.twimg.com/profile_images/914199620556935169/as44o2MI_200x200.jpg|https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
+							data-context-title="Alternative Title"
+							data-context-pic-url="https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
+						></davinci-pic>
+						<div>Alternative Data With Context</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							context="network"
+							size="64"
+							data-title="Alternative Title for token0|Alternative Title for token 1"
+							data-pic-url="https://pbs.twimg.com/profile_images/914199620556935169/as44o2MI_200x200.jpg|https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
+							data-context-title="Alternative Title"
+							data-context-pic-url="https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
+						></davinci-pic>
+						<div>
+							Offline Mode
+						</div>
+					</div>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" size="64" stroke-width="4" stroke-color="green" ></davinci-pic>
+						<div>Green Stroke 4px</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							size="64"
+							context="app"
+							context-position="topLeft"
+							stroke-width="4"
+							stroke-color="green"
+						></davinci-pic>
+						<div>Different Context position</div>
+					</div>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" size="100" ></davinci-pic>
+						<div>Size 100px</div>
+					</div>
+					<div>
+						<davinci-pic type="token" network="hedera" address="0.0.1090518" size="20" ></davinci-pic>
+						<div>Size 20px</div>
+					</div>
+				</section>
+
+				<h4>
+					Loading effects
+				</h4>
+				<section>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="hide"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Hide</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="transparent"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Transparent</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="#ccc"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Fixed Color</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="randomColor"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Random Color</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							placeholder="questionMarkBright"
+							loading-effect="placeholder"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Default Question Mark Bright</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							placeholder="exclamationMarkDark"
+							loading-effect="placeholder"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Default Exclamation Mark Dark</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="url('https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif')"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Custom Url</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="pulse:randomColor"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Pulse Random Color</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							loading-effect="pulse:url('https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif')"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Pulse Custom Url</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							complex-token-type="lp"
+							context="network"
+							size="64"
+							placeholder="default"
+							loading-effect="pulse:placeholder"
+							delay-response-time="50000"
+						></davinci-pic>
+						<div>Pulse Default No Logo Picture</div>
+					</div>
+				</section>
+
+				<h4>Failure Effects </h4>
+				<section>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							loading-effect="pulse:#ccc"
+							failure-effect="hide"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Hide</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							failure-effect="transparent"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Transparent</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							placeholder="#ccc"
+							failure-effect="placeholder"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Fixed Color</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							placeholder="randomColor"
+							failure-effect="placeholder"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Random Color</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							placeholder="questionMarkBright"
+							failure-effect="placeholder"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Default Question Mark Bright</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							placeholder="exclamationMarkDark"
+							failure-effect="placeholder"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Default Exclamation Mark Dark</div>
+					</div>
+					<div>
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.116314"
+							complex-token-type="lp"
+							size="64"
+							placeholder="url(https://res.cloudinary.com/dq7dgsuu8/image/upload/v1684562031/icons/hedera_token_64_lhaycq.png)"
+							failure-effect="placeholder"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
+						<div>Custom Url</div>
+					</div>
+				</section>
+			</main>
+		</article>
+	</body>
+</html>
