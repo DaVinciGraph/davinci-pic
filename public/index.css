@@ -86,7 +86,8 @@ article main section.banner {
 	padding: 10px 0px;
 }
 
-article main section:not(.banner) > div {
+article main section:not(.banner) > div,
+article main section:not(.banner) > copy-snippet {
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
@@ -95,13 +96,15 @@ article main section:not(.banner) > div {
 	width: 24%;
 }
 
-article main section > div > div {
+article main section > div > div,
+article main section > copy-snippet > div {
 	width: 100%;
 	font-size: 10pt;
 }
 
 @media only screen and (max-width: 800px) {
-	article main section:not(.banner) > div {
+	article main section:not(.banner) > div,
+	article main section:not(.banner) > copy-snippet {
 		display: flex;
 		flex-direction: column;
 		justify-content: end;
@@ -112,7 +115,8 @@ article main section > div > div {
 }
 
 @media only screen and (max-width: 600px) {
-	article main section:not(.banner) > div {
+	article main section:not(.banner) > div,
+	article main section:not(.banner) > copy-snippet {
 		display: flex;
 		flex-direction: column;
 		justify-content: end;
@@ -120,4 +124,26 @@ article main section > div > div {
 		gap: 10px;
 		width: 49%;
 	}
+}
+
+/* copy */
+.copy_button {
+	position: relative;
+	margin: 0px 3px;
+	cursor: pointer;
+	background-color: transparent;
+	border: 0px;
+	padding: 0px;
+	line-height: auto;
+}
+
+.copy_button span {
+	position: absolute;
+	bottom: 110%;
+	left: -50%;
+	background-color: #f9f9f9;
+	color: #999;
+	padding: 2px 5px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 3px #999;
 }
