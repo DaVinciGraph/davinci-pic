@@ -1,3 +1,14 @@
+const showMessage = (parentElement, message, duration) => {
+	const messageElement = document.createElement("div");
+	messageElement.className = "copy-message"; // Add your CSS class here
+	messageElement.innerText = message;
+	parentElement.appendChild(messageElement);
+
+	setTimeout(() => {
+		parentElement.removeChild(messageElement);
+	}, duration);
+};
+
 customElements.define(
 	"copy-snippet",
 	class extends HTMLElement {
@@ -36,6 +47,7 @@ customElements.define(
 			copyButton.addEventListener("click", () => {
 				try {
 					navigator.clipboard.writeText(davinciPicString);
+					showMessage(copyButton, "Copied!", 3000);
 				} catch {}
 			});
 

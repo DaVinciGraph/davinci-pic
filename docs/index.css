@@ -88,6 +88,7 @@ article main section.banner {
 
 article main section:not(.banner) > div,
 article main section:not(.banner) > copy-snippet {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
@@ -137,7 +138,7 @@ article main section > copy-snippet > div {
 	line-height: auto;
 }
 
-.copy_button span {
+.copy-message {
 	position: absolute;
 	bottom: 110%;
 	left: -50%;
