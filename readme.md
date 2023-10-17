@@ -2,6 +2,10 @@
 
 The `davinci-pic` web component is designed to securely and effortlessly interface with the DavinciPic API. It fetches and displays images of Hedera-based entities, such as tokens, accounts, nodes, as well as logos for other networks and decentralized applications (dApps). To make it easier for users, these entities are loaded simply by specifying their network and address as attributes to the component. Additionally, it showcases liquidity pool (LP) and wrapped tokens when relevant references are available. Given that this component could be integrated into security-sensitive applications like digital wallets, it ensures secure data handling within the HTML. The component also offers a range of attributes for extensive customization. To optimize performance, it activates only when it enters the viewport, utilizing an intersection with a vertical margin of 200 pixels.
 
+### Live Examples
+
+Ready to see davinci-pic in action? Check out our [Live Examples](https://davincigraph.github.io/davinci-pic/) to explore various use-cases, complete with intentional delays to showcase loading and failure states.
+
 <div style="background-color:#ffaaaa; color:#333; padding: 10px 15px; border-radius: 15px; box-shadow: 0px 0px 3px 0px red;">
 <h3 style="margin: 10px 0px;">Note:</h3>
 <b>This component is intentionally not published as an npm package.</b> The primary reason for this decision is to provide an additional layer of security for applications that may use this component in sensitive contexts, such as cryptocurrency wallets. By directing users to download the component directly from this repository, we aim to build trust and assure users that the code is secure. All updates to the component will be announced and made available for download through this repository.
