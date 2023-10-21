@@ -1,4 +1,4 @@
-import { PicsContextPositionType, PicsContextType, PicsSensitivityType, PicsShapeType, PicsType } from "./picsCommonTypes";
+import { PicsContextPositionType, PicsContextType, PicsLpTokensPositionType, PicsSensitivityType, PicsShapeType, PicsType } from "./picsCommonTypes";
 
 /**
  * Types of davinci-pic attributes
@@ -76,6 +76,7 @@ export type DavinciPicTokenAttributes = (DavinciPicBaseAttributesOnline | Davinc
 	complexTokenType?: "lp" | "wrapped";
 	context?: PicsContextType;
 	contextPosition?: PicsContextPositionType;
+	lpTokensPosition?: PicsLpTokensPositionType;
 	dataContextTitle?: string;
 	dataContextPicUrl?: string;
 };

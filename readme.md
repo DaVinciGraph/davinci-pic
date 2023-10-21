@@ -129,29 +129,30 @@ Define the type, specify the network and address, you are good to go.
 
 mandatory fields are marked by asterisk symbol:
 
-| Attribute            | Type                                                | Applying to                         |
-| -------------------- | --------------------------------------------------- | ----------------------------------- |
-| type\*               | [PicsType](#picstype)                               | All                                 |
-| network\*            | string                                              | All except type "app"               |
-| address\*            | string                                              | All except type "network" and "app" |
-| name\*               | string                                              | Only applies to type "app"          |
-| data-title           | string                                              | All                                 |
-| data-pic-url         | string                                              | All                                 |
-| context              | [PicsContextType](#picscontexttype)                 | Only applies to type "token"        |
-| context-position     | [PicsContextPositionType](#picscontextpositiontype) | Only applies to type "token"        |
-| data-context-title   | string                                              | only applies to type "token"        |
-| data-context-pic-url | string                                              | only applies to type "token"        |
-| complex-token-type   | "lp" or "wrapped"                                   | only applies to type "token"        |
-| offline-mode         | boolean                                             | All                                 |
-| size                 | number                                              | All except type "banner"            |
-| shape                | [PicsShapeType](#picsshapetype)                     | Has no effect of complex tokens     |
-| stroke-width         | number                                              | All except type "banner"            |
-| stroke-color         | string                                              | All except type "banner"            |
-| placeholder          | string                                              | All                                 |
-| loading-effect       | string                                              | All                                 |
-| failure-effect       | string                                              | All                                 |
-| censor               | [PicsSensitivityType](#picssensitivitytype)         | All                                 |
-| delay-response-time  | number                                              | All                                 |
+| Attribute            | Type                                                  | Applying to                         |
+| -------------------- | ----------------------------------------------------- | ----------------------------------- |
+| type\*               | [PicsType](#picstype)                                 | All                                 |
+| network\*            | string                                                | All except type "app"               |
+| address\*            | string                                                | All except type "network" and "app" |
+| name\*               | string                                                | Only applies to type "app"          |
+| data-title           | string                                                | All                                 |
+| data-pic-url         | string                                                | All                                 |
+| context              | [PicsContextType](#picscontexttype)                   | Only applies to type "token"        |
+| context-position     | [PicsContextPositionType](#picscontextpositiontype)   | Only applies to type "token"        |
+| data-context-title   | string                                                | only applies to type "token"        |
+| data-context-pic-url | string                                                | only applies to type "token"        |
+| complex-token-type   | "lp" or "wrapped"                                     | only applies to type "token"        |
+| lp-tokens-position   | [PicsLpTokensPositionType](#picslptokenspositiontype) | only applies to type "token"        |
+| offline-mode         | boolean                                               | All                                 |
+| size                 | number                                                | All except type "banner"            |
+| shape                | [PicsShapeType](#picsshapetype)                       | Has no effect of complex tokens     |
+| stroke-width         | number                                                | All except type "banner"            |
+| stroke-color         | string                                                | All except type "banner"            |
+| placeholder          | string                                                | All                                 |
+| loading-effect       | string                                                | All                                 |
+| failure-effect       | string                                                | All                                 |
+| censor               | [PicsSensitivityType](#picssensitivitytype)           | All                                 |
+| delay-response-time  | number                                                | All                                 |
 
 ## type
 
@@ -260,6 +261,20 @@ The `data-context-pic-url` attribute serves a similar purpose to the `data-pic-u
 The `complex-token-type` attribute allows you to explicitly specify the type of a complex token, which could either be a Liquidity Pool (LP) token or a Wrapped token. This is particularly useful for customizing the loading and failure templates of the component, as the actual type of complex tokens is generally not known until the API response is received. Acceptable values for this attribute are `lp` for Liquidity Pool tokens and `wrapped` for Wrapped tokens.
 
 By setting this attribute, you can ensure that the loading and failure templates are appropriately tailored even before the API response arrives.
+
+## lp-tokens-position
+
+This attribute controls the positioning of the liquidity pair (LP) tokens' logos in the display. It accepts three values:
+
+**intersected (Default):** This option displays the two token logos beside each other with standard spacing.
+
+**intimate:** This option brings the two token logos closer together. Useful when you want to display LP tokens in a more compact space.
+
+**merged:** This merges both tokens into a single circle, divided down the middle. One side will display the token0 picture, and the other side will display the token1 picture.
+
+### Note on Small Display Sizes:
+
+For smaller display sizes where visibility of individual tokens may become an issue, options like intimate and merged can be especially useful. The closer positioning or merging of the token logos allows for a larger display size for each, thereby improving visibility.
 
 ## offline-mode
 
@@ -404,9 +419,14 @@ type PicsSensitivityType = "safe" | "sensitive" | "inappropriate" | "copyright-v
 
 ### PicsShapeType
 
-```typescript
+````typescript
 type PicsShapeType = "circle" | "square" | "smoothSquare";
-```
+
+### PicsLpTokensPositionType
+
+```typescript
+type PicsLpTokensPositionType = "intersected" | "intimate" | "merged";
+````
 
 ## License
 

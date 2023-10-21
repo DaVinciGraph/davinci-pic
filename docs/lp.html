@@ -57,11 +57,32 @@
 							address="0.0.116314"
 							context="network"
 							size="64"
+							offline-mode
 							data-title="Alternative Title for token0|Alternative Title for token 1"
 							data-pic-url="https://pbs.twimg.com/profile_images/914199620556935169/as44o2MI_200x200.jpg|https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
 							data-context-title="Alternative Title"
 							data-context-pic-url="https://pbs.twimg.com/profile_images/983373022550679553/cSUvZW-e_200x200.jpg"
 						></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="Intimate Position">
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							context="app"
+							lp-tokens-position="intimate"
+							size="64"></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="Merged Position">
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="0.0.1090518"
+							context="app"
+							loading-effect="#ccc"
+							loading-effect="pulse:#ccc"
+							lp-tokens-position="merged"
+							size="64"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Green Stroke 4px">
 						<davinci-pic type="token" network="hedera" address="0.0.1090518" size="64" stroke-width="4" stroke-color="green" ></davinci-pic>
@@ -74,8 +95,7 @@
 							size="64"
 							context="app"
 							context-position="topLeft"
-							stroke-width="4"
-							stroke-color="green"
+							lp-tokens-position="intimate"
 						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Size 100px">
@@ -83,6 +103,32 @@
 					</copy-snippet>
 					<copy-snippet header="Size 20px">
 						<davinci-pic type="token" network="hedera" address="0.0.1090518" size="20" ></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="Size 20px & Merged">
+						<davinci-pic type="token" network="hedera" lp-tokens-position="merged" address="0.0.1090518" size="20" ></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="Censored">
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="TestLiquidity"
+							censor="inappropriate"
+							context-position="topRight"
+							loading-effect="#ccc"
+							lp-tokens-position="intersected"
+							size="64"></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="Censored & Merged">
+						<davinci-pic
+							type="token"
+							network="hedera"
+							address="TestLiquidity"
+							censor="inappropriate"
+							context="app"
+							complex-token-type="lp"
+							loading-effect="pulse:#ccc"
+							lp-tokens-position="merged"
+							size="64"></davinci-pic>
 					</copy-snippet>
 				</section>
 

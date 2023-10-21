@@ -12,7 +12,15 @@ import {
 	isPicsShapeType,
 	isPicsType,
 } from "./types/guards";
-import { PicsContextPositionType, PicsContextType, PicsSensitivityType, PicsShapeType, PicsType } from "./types/picsCommonTypes";
+import {
+	PicsContextPositionType,
+	PicsContextType,
+	PicsLpTokensPositionType,
+	PicsSensitivityType,
+	PicsShapeType,
+	PicsType,
+	picsLpTokensPositionTypes,
+} from "./types/picsCommonTypes";
 import { EntityResponseType } from "./types/entities";
 
 export let davinciPicsConfig = {
@@ -126,6 +134,28 @@ export class DavinciPic extends HTMLElement {
 		}
 
 		return undefined;
+	}
+
+	set lpTokensPosition(value: PicsLpTokensPositionType) {
+		if (this.type === "token") {
+			throw new Error("Lp Tokens Position is specifically for token type.");
+		}
+
+		if (!value || !picsLpTokensPositionTypes.includes(value)) {
+			value = "intersected";
+		}
+
+		this.setAttribute("lp-tokens-position", value);
+	}
+
+	get lpTokensPosition(): PicsLpTokensPositionType {
+		const value = this.getAttribute("lp-tokens-position");
+
+		if (value && picsLpTokensPositionTypes.includes(value)) {
+			return value as PicsLpTokensPositionType;
+		}
+
+		return "intersected";
 	}
 
 	// not applies to banner

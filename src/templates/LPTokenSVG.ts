@@ -155,7 +155,7 @@ export function setLpTokenShapes(
 		token0CircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
 
 		const mainTitle0Elem = token0CircleElem?.firstElementChild;
-		if (mainTitle0Elem) mainTitle0Elem.textContent = data.token0.title || data.token0.address;
+		if (mainTitle0Elem && !mustPicture0BeCensored) mainTitle0Elem.textContent = data.token0.title || data.token0.address;
 	}
 
 	const supportingBg1 = svg.querySelector("#token1-bg-circle");
@@ -186,7 +186,7 @@ export function setLpTokenShapes(
 		token1PathCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
 
 		const mainTitle1Elem = token1PathCircleElem?.firstElementChild;
-		if (mainTitle1Elem) mainTitle1Elem.textContent = data.token1.title || data.token1.address;
+		if (mainTitle1Elem && !mustPicture1BeCensored) mainTitle1Elem.textContent = data.token1.title || data.token1.address;
 	}
 }
 
@@ -230,30 +230,54 @@ export function setLpContextShapes(
 	}
 }
 
-export function getLpToken0CircleData() {
-	return { cx: 32.5, cy: 50, r: 25 };
-}
-
-export function getLpToken1CircleData() {
-	return { cx: 67.5, cy: 50, r: 25 };
-}
-
 export function getLpTokenContextData(
 	options: DavinciPicTokenAttributes,
 	token0CircleData: DavinciPicsSvgCircle,
 	token1CircleData: DavinciPicsSvgCircle,
 	strokeWidth: number
 ) {
-	const contextRadius = 12.5;
+	const contextRadius = token1CircleData.r / 2;
 	return {
 		r: contextRadius,
 		cx:
 			options.contextPosition === "bottomRight" || options.contextPosition === "topRight"
-				? token1CircleData.cx! + token1CircleData.r / 2 + contextRadius / 2 - strokeWidth / 2
-				: token0CircleData.cx! - token0CircleData.r / 2 - contextRadius / 2 + strokeWidth / 2,
+				? token1CircleData.cx + token1CircleData.r - contextRadius / 2 - strokeWidth / 2
+				: token0CircleData.cx - token0CircleData.r + contextRadius / 2 + strokeWidth / 2,
 		cy:
 			options.contextPosition === "bottomRight" || options.contextPosition === "bottomLeft"
-				? token1CircleData.cy! + token1CircleData.r / 2 + contextRadius / 2 - strokeWidth / 2
-				: token0CircleData.cy! - token0CircleData.r / 2 - contextRadius / 2 + strokeWidth / 2,
+				? token1CircleData.cy + token1CircleData.r - contextRadius / 2 - strokeWidth / 2
+				: token0CircleData.cy - token0CircleData.r + contextRadius / 2 + strokeWidth / 2,
 	};
+}
+
+export function calculateCircleData(hasContext: boolean, intimateLp: boolean, strokeWidth: number): [DavinciPicsSvgCircle, DavinciPicsSvgCircle] {
+	const token0CircleData: DavinciPicsSvgCircle = { cx: 30, cy: 50, r: 30 };
+	const token1CircleData: DavinciPicsSvgCircle = { cx: 70, cy: 50, r: 30 };
+
+	if (hasContext) {
+		if (intimateLp) {
+			token0CircleData.cx = 36;
+			token0CircleData.r = 29;
+
+			token1CircleData.cx = 63;
+			token1CircleData.r = 29;
+		} else {
+			token0CircleData.cx = 32;
+			token0CircleData.r = 25;
+
+			token1CircleData.cx = 68;
+			token1CircleData.r = 25;
+		}
+	} else if (intimateLp) {
+		token0CircleData.cx = 35;
+		token0CircleData.r = 35;
+
+		token1CircleData.cx = 65;
+		token1CircleData.r = 35;
+	}
+
+	token0CircleData.r = token0CircleData.r - strokeWidth / 2;
+	token1CircleData.r = token1CircleData.r - strokeWidth / 2;
+
+	return [token0CircleData, token1CircleData];
 }

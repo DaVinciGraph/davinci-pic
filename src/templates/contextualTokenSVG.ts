@@ -1,4 +1,5 @@
 import { DavinciPicTokenAttributes } from "../types/attributes";
+import { PicsContextType } from "../types/picsCommonTypes";
 import { DavinciPicsSvgCircle } from "../types/svg";
 
 const PicsContextualTokenTemplate = document.createElement("template");
@@ -115,7 +116,7 @@ export function setContextualTokenShapes(
 		tokenCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
 
 		const mainTitleElem = tokenCircleElem.firstElementChild;
-		if (mainTitleElem) mainTitleElem.textContent = title || "";
+		if (mainTitleElem && !mustBeCensored) mainTitleElem.textContent = title || "";
 	}
 }
 
@@ -170,12 +171,12 @@ export function setContextualFilter(svg: SVGSVGElement | DocumentFragment, uniqu
 	}
 }
 
-export function getContextualTokenShapeData(): DavinciPicsSvgCircle {
-	return { cx: 50, cy: 50, r: 40 };
+export function getContextualTokenShapeData(contextType?: PicsContextType): DavinciPicsSvgCircle {
+	return { cx: 50, cy: 50, r: contextType && contextType !== "none" ? 40 : 50 };
 }
 
 export function getContextualContextShapeData(options: DavinciPicTokenAttributes, tokenCircleData: DavinciPicsSvgCircle, strokeWidth: number) {
-	const contextCircleRadius = 20;
+	const contextCircleRadius = tokenCircleData.r / 2;
 	return {
 		cx:
 			options.contextPosition === "bottomRight" || options.contextPosition === "topRight"

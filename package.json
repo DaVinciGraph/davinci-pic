@@ -1,4 +1,8 @@
 {
+	"name": "davinci-pic",
+	"version": "1.0.0",
+	"private": true,
+	"homepage": "https://davincigraph.github.io/davinci-pic",
 	"scripts": {
 		"start": "webpack --mode development && webpack serve --mode development",
 		"build": "npx webpack --mode production",

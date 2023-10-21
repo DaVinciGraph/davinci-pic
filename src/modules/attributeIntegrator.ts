@@ -34,6 +34,7 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				complexTokenType: PicElement.complexTokenType,
 				context: PicElement.context,
 				contextPosition: PicElement.contextPosition,
+				lpTokensPosition: PicElement.lpTokensPosition,
 				dataContextTitle: PicElement.dataContextTitle,
 				dataContextPicUrl: PicElement.dataContextPicUrl,
 				dataTitle: PicElement.dataTitle,

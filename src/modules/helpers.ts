@@ -1,6 +1,6 @@
 import { LpTokenEntity, WrappedTokenEntity } from "../types/entities";
 import { DavinciPicTokenAttributes } from "../types/attributes";
-import { PicsShapeType, PicsType } from "../types/picsCommonTypes";
+import { PicsContextType, PicsShapeType, PicsType } from "../types/picsCommonTypes";
 
 const defaultPlaceholderPictures: { [key: string]: { [key: string]: string } } = {
 	token: {
@@ -90,7 +90,15 @@ export function getShapeRadius(shape?: PicsShapeType, size: number = 100) {
 }
 
 // normalize the wrapped or liquidity token's context(app or network) data
-export const getContextData = (options: DavinciPicTokenAttributes, data: LpTokenEntity | WrappedTokenEntity) => {
+export const getContextData = (
+	options: DavinciPicTokenAttributes,
+	data: LpTokenEntity | WrappedTokenEntity
+): {
+	type: PicsContextType;
+	pic: string;
+	title: string;
+	supportingBackgroundColor: string;
+} => {
 	if (options.context === "app" && data?.app) {
 		return {
 			type: "app",
