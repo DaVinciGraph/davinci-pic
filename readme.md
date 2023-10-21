@@ -129,30 +129,30 @@ Define the type, specify the network and address, you are good to go.
 
 mandatory fields are marked by asterisk symbol:
 
-| Attribute            | Type                                                  | Applying to                         |
-| -------------------- | ----------------------------------------------------- | ----------------------------------- |
-| type\*               | [PicsType](#picstype)                                 | All                                 |
-| network\*            | string                                                | All except type "app"               |
-| address\*            | string                                                | All except type "network" and "app" |
-| name\*               | string                                                | Only applies to type "app"          |
-| data-title           | string                                                | All                                 |
-| data-pic-url         | string                                                | All                                 |
-| context              | [PicsContextType](#picscontexttype)                   | Only applies to type "token"        |
-| context-position     | [PicsContextPositionType](#picscontextpositiontype)   | Only applies to type "token"        |
-| data-context-title   | string                                                | only applies to type "token"        |
-| data-context-pic-url | string                                                | only applies to type "token"        |
-| complex-token-type   | "lp" or "wrapped"                                     | only applies to type "token"        |
-| lp-tokens-position   | [PicsLpTokensPositionType](#picslptokenspositiontype) | only applies to type "token"        |
-| offline-mode         | boolean                                               | All                                 |
-| size                 | number                                                | All except type "banner"            |
-| shape                | [PicsShapeType](#picsshapetype)                       | Has no effect of complex tokens     |
-| stroke-width         | number                                                | All except type "banner"            |
-| stroke-color         | string                                                | All except type "banner"            |
-| placeholder          | string                                                | All                                 |
-| loading-effect       | string                                                | All                                 |
-| failure-effect       | string                                                | All                                 |
-| censor               | [PicsSensitivityType](#picssensitivitytype)           | All                                 |
-| delay-response-time  | number                                                | All                                 |
+| Attribute                                     | Type                                                  | Applying to                         |
+| --------------------------------------------- | ----------------------------------------------------- | ----------------------------------- |
+| [type](#type)\*                               | [PicsType](#picstype)                                 | All                                 |
+| [network](#network)\*                         | string                                                | All except type "app"               |
+| [address](#address)\*                         | string                                                | All except type "network" and "app" |
+| [name](#name)\*                               | string                                                | Only applies to type "app"          |
+| [data-title](#data-title)                     | string                                                | All                                 |
+| [data-pic-url](#data-pic-url)                 | string                                                | All                                 |
+| [context](#context)                           | [PicsContextType](#picscontexttype)                   | Only applies to type "token"        |
+| [context-position](#context-position)         | [PicsContextPositionType](#picscontextpositiontype)   | Only applies to type "token"        |
+| [data-context-title](#data-context-title)     | string                                                | only applies to type "token"        |
+| [data-context-pic-url](#data-context-pic-url) | string                                                | only applies to type "token"        |
+| [complex-token-type](#complex-token-type)     | "lp" or "wrapped"                                     | only applies to type "token"        |
+| [lp-tokens-position](#lp-tokens-position)     | [PicsLpTokensPositionType](#picslptokenspositiontype) | only applies to type "token"        |
+| [offline-mode](#offline-mode)                 | boolean                                               | All                                 |
+| [size](#size)                                 | number                                                | All except type "banner"            |
+| [shape](#shape)                               | [PicsShapeType](#picsshapetype)                       | Has no effect of complex tokens     |
+| [stroke-width](#stroke-width)                 | number                                                | All except type "banner"            |
+| [stroke-color](#stroke-color)                 | string                                                | All except type "banner"            |
+| [placeholder](#placeholder)                   | string                                                | All                                 |
+| [loading-effect](#loading-effect)             | string                                                | All                                 |
+| [failure-effect](#failure-effect)             | string                                                | All                                 |
+| [censor](#censor)                             | [PicsSensitivityType](#picssensitivitytype)           | All                                 |
+| [delay-response-time](#delay-response-time)   | number                                                | All                                 |
 
 ## type
 
