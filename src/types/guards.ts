@@ -4,13 +4,11 @@ import {
 	PicsContextType,
 	PicsSensitivityType,
 	PicsShapeType,
-	PicsTokenType,
 	PicsType,
 	picsContextPositionTypes,
 	picsContextTypes,
 	picsSensitivityTypes,
 	picsShapeTypes,
-	picsTokenTypes,
 	picsTypes,
 } from "./picsCommonTypes";
 

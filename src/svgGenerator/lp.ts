@@ -18,7 +18,7 @@ const generateLpTokenSvg = (data: LpTokenEntity, options: DavinciPicTokenAttribu
 	const uniqueID = `${++davinciPicsConfig.counter}`;
 	const contextData = getContextData(options, data);
 
-	// clone the the lp template, either merged or separated
+	// clone the the lp template, either merged or unmerged
 	const clonedSvg = document.importNode(
 		options.lpTokensPosition === "merged" ? PicsMergedLiquidityTokenTemplate.content : PicsLiquidityTokenTemplate.content,
 		true

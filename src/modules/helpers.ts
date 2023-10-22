@@ -64,7 +64,7 @@ export function getMissingURL(type: PicsType, placeholder?: any): string {
 	return defaultPlaceholderPictures[type === "profile" ? "profile" : "token"]["defaultBright"];
 }
 
-// cheks the sensetivity of entity and the expected sensoring type of the element and act upon it
+// cheks the sensetivity of entity and the expected censoring type of the element and act upon it
 export const mustBeCensored = (censoredType: string | undefined, checkingType: string | undefined): boolean => {
 	if (checkingType === undefined || censoredType === undefined) return false;
 

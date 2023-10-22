@@ -86,11 +86,9 @@
 				const response = await fetch(url);
 				const text = await response.text();
 
-				// Assuming you want to insert the fetched HTML into a div with the ID "content"
 				document.getElementById(elementId).innerHTML = text;
 			}
 
-			// Usage
 			loadHTML("token.html", "token");
 			loadHTML("wrapped.html", "wrapped");
 			loadHTML("lp.html", "lp");

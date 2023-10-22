@@ -62,10 +62,12 @@ export class DavinciPic extends HTMLElement {
 		throw new Error("Type is mandatory.");
 	}
 
+	// not applied to app type
 	set network(value: string) {
 		this.setAttribute("network", value);
 	}
 
+	// not applied to app type
 	get network(): string {
 		const value = this.getAttribute("network");
 
@@ -80,7 +82,7 @@ export class DavinciPic extends HTMLElement {
 		this.setAttribute("address", value);
 	}
 
-	// arbitrary on network entities and on offline mode
+	// not applied to network and app entities
 	get address(): string {
 		const value = this.getAttribute("address");
 
@@ -91,11 +93,12 @@ export class DavinciPic extends HTMLElement {
 		return value || "";
 	}
 
+	// only applies to app entities
 	set name(value: string) {
 		this.setAttribute("name", value);
 	}
 
-	// arbitrary on network entities and on offline mode
+	// only applies to app entities
 	get name(): string {
 		const value = this.getAttribute("name");
 
@@ -114,6 +117,7 @@ export class DavinciPic extends HTMLElement {
 		return this.hasAttribute("offline-mode");
 	}
 
+	// only applies to token entities
 	set complexTokenType(value: "lp" | "wrapped" | undefined) {
 		if (this.type === "token") {
 			throw new Error("Complex token type is specifically for token type.");
@@ -126,6 +130,7 @@ export class DavinciPic extends HTMLElement {
 		this.setAttribute("complex-token-type", value);
 	}
 
+	// only applies to token entities
 	get complexTokenType(): "lp" | "wrapped" | undefined {
 		const value = this.getAttribute("complex-token-type");
 
@@ -136,6 +141,7 @@ export class DavinciPic extends HTMLElement {
 		return undefined;
 	}
 
+	// only applies to token entities
 	set lpTokensPosition(value: PicsLpTokensPositionType) {
 		if (this.type === "token") {
 			throw new Error("Lp Tokens Position is specifically for token type.");
@@ -148,6 +154,7 @@ export class DavinciPic extends HTMLElement {
 		this.setAttribute("lp-tokens-position", value);
 	}
 
+	// only applies to token entities
 	get lpTokensPosition(): PicsLpTokensPositionType {
 		const value = this.getAttribute("lp-tokens-position");
 
@@ -169,34 +176,34 @@ export class DavinciPic extends HTMLElement {
 		return value ? parseFloat(value) : 100;
 	}
 
-	// not applies to complex and contextual tokens
+	// not applies to banners & complex and contextual tokens
 	set shape(value: PicsShapeType) {
 		this.setAttribute("shape", value);
 	}
 
-	// not applies to complex and contextual tokens
+	// not applies to banners & complex and contextual tokens
 	get shape(): PicsShapeType {
 		const value = this.getAttribute("shape");
 		return isPicsShapeType(value) ? value : "circle";
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	set context(value: PicsContextType) {
 		this.setAttribute("context", value);
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	get context(): PicsContextType {
 		const value = this.getAttribute("context");
 		return isPicsContextType(value) ? value : "app";
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	set contextPosition(value: PicsContextPositionType) {
 		this.setAttribute("context-position", value);
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	get contextPosition(): PicsContextPositionType {
 		const value = this.getAttribute("context-position");
 		return isPicsContextPositionType(value) ? value : "bottomRight";
@@ -248,22 +255,22 @@ export class DavinciPic extends HTMLElement {
 		return this.getAttribute("data-pic-url") || "";
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	set dataContextTitle(value: string) {
 		this.setAttribute("data-context-title", value);
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	get dataContextTitle(): string {
 		return this.getAttribute("data-context-title") || "";
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	set dataContextPicUrl(value: string) {
 		this.setAttribute("data-context-pic-url", value);
 	}
 
-	// only applies to token, specifically Wrapped and liquidity
+	// only applies to token, specially Wrapped and liquidity
 	get dataContextPicUrl(): string {
 		return this.getAttribute("data-context-pic-url") || "";
 	}
@@ -292,10 +299,12 @@ export class DavinciPic extends HTMLElement {
 		return this.getAttribute("failure-effect") || "placeholder";
 	}
 
+	// for test
 	set delayResponseTime(value: number) {
 		this.setAttribute("delay-response-time", value.toString());
 	}
 
+	// for test
 	get delayResponseTime(): number {
 		const value = this.getAttribute("delay-response-time");
 		return value && !isNaN(Number(value)) ? parseFloat(value) : 0;
@@ -347,7 +356,7 @@ export class DavinciPic extends HTMLElement {
 					// construct initial data
 					const initialData = initializeData(attributes, placeholders);
 
-					// generate the svg file
+					// generate the svg element
 					let svgElement: SVGSVGElement = generateSvg(initialData, attributes);
 
 					// some primary styling
