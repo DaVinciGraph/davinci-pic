@@ -141,7 +141,7 @@ export function setMergedLpTokenShapes(
 		supportingBg0.setAttribute("cy", `${tokenCircleData.cy}`);
 		supportingBg0.setAttribute("r", `${tokenCircleData.r}`);
 		supportingBg0.setAttribute("clipPath", `url(#bg-0-${uniqueID})`);
-		supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor || "transparent");
+		supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor);
 	}
 
 	const image0CircleElem = svg.querySelector("#token0-image");
@@ -166,7 +166,7 @@ export function setMergedLpTokenShapes(
 		supportingBg1.setAttribute("cy", `${tokenCircleData.cy}`);
 		supportingBg1.setAttribute("r", `${tokenCircleData.r}`);
 		supportingBg1.setAttribute("clip-path", `url(#bg-1-${uniqueID})`);
-		supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor || "transparent");
+		supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor);
 	}
 
 	const image1CircleElem = svg.querySelector("#token1-image");

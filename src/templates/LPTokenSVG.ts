@@ -132,7 +132,7 @@ export function setLpTokenShapes(
 		supportingBg0.setAttribute("cx", `${token0CircleData.cx}`);
 		supportingBg0.setAttribute("cy", `${token0CircleData.cy}`);
 		supportingBg0.setAttribute("r", `${token0CircleData.r}`);
-		supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor || "transparent");
+		supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor);
 	}
 
 	const image0Elem = svg.querySelector("#token0-image");
@@ -163,7 +163,7 @@ export function setLpTokenShapes(
 		supportingBg1.setAttribute("cx", `${token1CircleData.cx}`);
 		supportingBg1.setAttribute("cy", `${token1CircleData.cy}`);
 		supportingBg1.setAttribute("r", `${token1CircleData.r}`);
-		supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor || "transparent");
+		supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor);
 	}
 
 	const image1Elem = svg.querySelector("#token1-image");
@@ -208,7 +208,7 @@ export function setLpContextShapes(
 			contextBg.setAttribute("cx", `${contextCircleData.cx}`);
 			contextBg.setAttribute("cy", `${contextCircleData.cy}`);
 			contextBg.setAttribute("r", `${contextCircleData.r}`);
-			contextBg.setAttribute("fill", contextData?.supportingBackgroundColor || "transparent");
+			contextBg.setAttribute("fill", contextData?.supportingBackgroundColor);
 		}
 
 		contextImageElem.setAttribute("href", contextData?.pic || "");

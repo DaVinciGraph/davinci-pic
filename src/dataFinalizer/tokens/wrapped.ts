@@ -1,6 +1,6 @@
 import { WrappedTokenEntity } from "../../types/entities";
 import { DavinciPicTokenAttributes } from "../../types/attributes";
-import { finalFailedPictureUrl, finalSuccessfulBgColor, finalSuccessfulPictureUrl } from "../helpers";
+import { finalFailedBgColor, finalFailedPictureUrl, finalSuccessfulBgColor, finalSuccessfulPictureUrl } from "../helpers";
 
 export const finalizeFailedWrappedData = (
 	options: DavinciPicTokenAttributes,
@@ -9,15 +9,15 @@ export const finalizeFailedWrappedData = (
 	failedPlaceholderPicture: string
 ) => {
 	initialData.originalToken.pic = finalFailedPictureUrl(options.dataPicUrl, failedPlaceholderPicture);
-	initialData.originalToken.supportingBackgroundColor = !initialData.originalToken.pic ? failedPlaceholderColor : "transparent";
+	initialData.originalToken.supportingBackgroundColor = finalFailedBgColor(initialData.originalToken.pic, failedPlaceholderColor);
 
 	if (initialData.app && options.context === "app") {
 		initialData.app.pic = options.dataContextPicUrl || "";
-		initialData.app.supportingBackgroundColor = "";
+		initialData.app.supportingBackgroundColor = "transparent";
 	}
 
 	initialData.network.pic = options.dataContextPicUrl || "";
-	initialData.network.supportingBackgroundColor = "";
+	initialData.network.supportingBackgroundColor = "transparent";
 
 	return initialData;
 };
@@ -32,6 +32,7 @@ export const finalizeSuccessfulWrappedData = (
 	remoteData.originalToken.pic = finalSuccessfulPictureUrl(remoteData.originalToken.pic, options.dataContextPicUrl, failedPlaceholderPicture);
 	remoteData.originalToken.supportingBackgroundColor = finalSuccessfulBgColor(
 		remoteData.originalToken.supportingBackgroundColor,
+		remoteData.originalToken.pic,
 		failedPlaceholderColor
 	);
 

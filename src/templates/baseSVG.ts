@@ -50,7 +50,7 @@ export const setBaseBgRect = (svg: SVGSVGElement | DocumentFragment, bgColor: st
 		bgColorElem.setAttribute("height", `${100 - strokeWidth}`);
 		bgColorElem.setAttribute("rx", getShapeRadius(shape, 100));
 		bgColorElem.setAttribute("ry", getShapeRadius(shape, 100));
-		bgColorElem.setAttribute("fill", bgColor || "transparent");
+		bgColorElem.setAttribute("fill", bgColor);
 	}
 };
 

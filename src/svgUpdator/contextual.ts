@@ -75,7 +75,7 @@ const updateContextualTokenSvg = (
 		return;
 	}
 
-	const tokenCircleData = getContextualTokenShapeData(options.context);
+	const tokenCircleData = getContextualTokenShapeData(options.context, strokeWidth);
 	const contextCircleData = getContextualContextShapeData(options, tokenCircleData, strokeWidth);
 
 	// combine the svg template with the data
