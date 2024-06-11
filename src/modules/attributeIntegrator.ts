@@ -3,6 +3,7 @@ import {
 	DavinciPicAppAttributes,
 	DavinciPicAttributes,
 	DavinciPicBannerAttributes,
+	DavinciPicContractAttributes,
 	DavinciPicNetworkAttributes,
 	DavinciPicNodeAttributes,
 	DavinciPicProfileAttributes,
@@ -37,12 +38,52 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				lpTokensPosition: PicElement.lpTokensPosition,
 				dataContextTitle: PicElement.dataContextTitle,
 				dataContextPicUrl: PicElement.dataContextPicUrl,
+				showPairApps: PicElement.showPairApps,
+				showAppForType: PicElement.showAppForType,
+				topToken: PicElement.topToken,
 				dataTitle: PicElement.dataTitle,
 				dataPicUrl: PicElement.dataPicUrl,
 				placeholder: PicElement.placeholder,
 				loadingEffect: PicElement.loadingEffect,
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				dataContextBgColor: PicElement.dataContextBgColor,
+				theme: PicElement.theme,
+			};
+
+			return tokenAttrs;
+		}
+		case "contract": {
+			const tokenAttrs: DavinciPicContractAttributes = {
+				type: "contract",
+				network: PicElement.network,
+				address: PicElement.address,
+				offlineMode: PicElement.offlineMode,
+				shape: PicElement.shape,
+				size: PicElement.size,
+				strokeWidth: PicElement.strokeWidth,
+				strokeColor: PicElement.strokeColor,
+				censor: PicElement.censor,
+				isPool: Boolean(PicElement.isPool),
+				context: PicElement.context,
+				contextPosition: PicElement.contextPosition,
+				poolPairPosition: PicElement.poolPairPosition,
+				dataContextTitle: PicElement.dataContextTitle,
+				dataContextPicUrl: PicElement.dataContextPicUrl,
+				showPairApps: PicElement.showPairApps,
+				topToken: PicElement.topToken,
+				dataTitle: PicElement.dataTitle,
+				dataPicUrl: PicElement.dataPicUrl,
+				placeholder: PicElement.placeholder,
+				loadingEffect: PicElement.loadingEffect,
+				FailureEffect: PicElement.FailureEffect,
+				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				dataContextBgColor: PicElement.dataContextBgColor,
+				theme: PicElement.theme,
 			};
 
 			return tokenAttrs;
@@ -64,6 +105,9 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
 				shape: PicElement.shape,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				theme: PicElement.theme,
 			};
 			return profileAttrs;
 		}
@@ -80,6 +124,9 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				loadingEffect: PicElement.loadingEffect,
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				theme: PicElement.theme,
 			};
 
 			return bannerAttrs;
@@ -101,6 +148,9 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				loadingEffect: PicElement.loadingEffect,
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				theme: PicElement.theme,
 			};
 			return nodeAttrs;
 		}
@@ -120,6 +170,9 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				loadingEffect: PicElement.loadingEffect,
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				theme: PicElement.theme,
 			};
 			return networksAttrs;
 		}
@@ -139,6 +192,9 @@ const integrateAttributes = (PicElement: DavinciPic): DavinciPicAttributes => {
 				loadingEffect: PicElement.loadingEffect,
 				FailureEffect: PicElement.FailureEffect,
 				delayResponseTime: PicElement.delayResponseTime,
+				noCache: PicElement.noCache,
+				dataBgColor: PicElement.dataBgColor,
+				theme: PicElement.theme,
 			};
 
 			return appAttrs;

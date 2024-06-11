@@ -5,7 +5,8 @@ import { PicsType } from "../types/picsCommonTypes";
 import finalizeTokenData from "./token";
 import finalizeBaseData from "./base";
 import { DavinciPicAttributes, DavinciPicPlaceholder } from "../types/attributes";
-import { DavinciPicEntity, EntityResponseType } from "../types/entities";
+import { BannerEntity, ContractEntity, DavinciPicEntity, EntityResponseType, TokenEntity } from "../types/entities";
+import finalizeContractData from "./contract";
 
 /**
  * This functions will combine the remote data with possible alternative data or placeholders
@@ -16,16 +17,15 @@ import { DavinciPicEntity, EntityResponseType } from "../types/entities";
  * @returns
  */
 
-const finalizeData = <T extends PicsType>(
-	initialData: DavinciPicEntity,
-	remoteData: EntityResponseType<T>,
-	options: DavinciPicAttributes,
-	placeholders: DavinciPicPlaceholder
-): DavinciPicEntity => {
+const finalizeData = <T extends PicsType>(initialData: DavinciPicEntity, remoteData: EntityResponseType<T>, options: DavinciPicAttributes, placeholders: DavinciPicPlaceholder): DavinciPicEntity => {
 	const { color: failedPlaceholderColor, url: failedPlaceholderPicture } = getFailedPlaceholders(options, placeholders);
 
 	if (options.type === "token") {
-		return finalizeTokenData(options, initialData, remoteData, failedPlaceholderPicture, failedPlaceholderColor);
+		return finalizeTokenData(options, initialData, remoteData as TokenEntity, failedPlaceholderPicture, failedPlaceholderColor);
+	}
+
+	if (options.type === "contract") {
+		return finalizeContractData(options, initialData, remoteData as ContractEntity, failedPlaceholderPicture, failedPlaceholderColor);
 	}
 
 	if (options.type === "profile" && isProfileEntity(initialData)) {
@@ -33,7 +33,7 @@ const finalizeData = <T extends PicsType>(
 	}
 
 	if (options.type === "banner" && isBannerEntity(initialData)) {
-		return finalizeBannerData(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);
+		return finalizeBannerData(options, remoteData as BannerEntity, initialData, failedPlaceholderColor, failedPlaceholderPicture);
 	}
 
 	if (options.type === "node" && isNodeEntity(initialData)) {

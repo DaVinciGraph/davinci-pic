@@ -6,7 +6,7 @@ import PicsContextualTokenTemplate, {
 	setContextualPath,
 	setContextualTokenShapes,
 } from "../templates/contextualTokenSVG";
-import { DavinciPicTokenAttributes } from "../types/attributes";
+import { DavinciPicContractAttributes, DavinciPicTokenAttributes } from "../types/attributes";
 
 // reads the contextual template and add the inital data to it
 const generateContextualTokenSvg = (
@@ -14,9 +14,9 @@ const generateContextualTokenSvg = (
 	pictureUrl: string,
 	contextTitle: string,
 	contextPictureUrl: string,
-	supportingBackgroundColor: string,
+	bgColor: string,
 	contextSupportingBackgroundColor: string,
-	options: DavinciPicTokenAttributes
+	options: DavinciPicTokenAttributes | DavinciPicContractAttributes
 ): SVGSVGElement => {
 	const strokeWidth = options.strokeWidth || 0;
 	const uniqueID = `${++davinciPicsConfig.counter}`;
@@ -35,31 +35,10 @@ const generateContextualTokenSvg = (
 
 		setContextualPath(clonedSvg, uniqueID, tokenCircleData, contextCircleData);
 
-		setContextualTokenShapes(
-			clonedSvg,
-			uniqueID,
-			tokenCircleData,
-			false,
-			pictureUrl,
-			title,
-			supportingBackgroundColor,
-			strokeWidth,
-			options.strokeColor || "",
-			false
-		);
+		setContextualTokenShapes(clonedSvg, uniqueID, tokenCircleData, false, pictureUrl, title, bgColor, strokeWidth, options.strokeColor || "", false);
 
 		if (options.context && options.context !== "none") {
-			setContextualContextShape(
-				clonedSvg,
-				uniqueID,
-				contextCircleData,
-				contextPictureUrl,
-				contextTitle,
-				contextSupportingBackgroundColor,
-				strokeWidth,
-				options.strokeColor || "",
-				false
-			);
+			setContextualContextShape(clonedSvg, uniqueID, contextCircleData, contextPictureUrl, contextTitle, contextSupportingBackgroundColor, strokeWidth, options.strokeColor || "", false);
 		}
 	}
 

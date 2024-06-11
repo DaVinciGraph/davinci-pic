@@ -7,7 +7,7 @@ import PicsContextualTokenTemplate, {
 	setContextualPath,
 	setContextualTokenShapes,
 } from "../templates/contextualTokenSVG";
-import { DavinciPicTokenAttributes } from "../types/attributes";
+import { DavinciPicContractAttributes, DavinciPicTokenAttributes } from "../types/attributes";
 import { PicsResponseType, PicsSensitivityType } from "../types/picsCommonTypes";
 
 /**
@@ -22,9 +22,9 @@ const updateContextualTokenSvg = (
 	contextTitle: string,
 	contextPictureUrl: string,
 	sensitivity: PicsSensitivityType,
-	supportingBackgroundColor: string,
+	bgColor: string,
 	contextSupportingBackgroundColor: string,
-	options: DavinciPicTokenAttributes,
+	options: DavinciPicTokenAttributes | DavinciPicContractAttributes,
 	status: PicsResponseType
 ): void => {
 	const uniqueID = initialSvg.getAttribute("data-unique-id")!;
@@ -35,7 +35,7 @@ const updateContextualTokenSvg = (
 		setContextualFilter(initialSvg, uniqueID, mustPictureBeCensored);
 
 		const bgElem = initialSvg.querySelector("#contextual-bg-circle");
-		bgElem?.setAttribute("fill", supportingBackgroundColor || "transparent");
+		bgElem?.setAttribute("fill", bgColor || "none");
 
 		const imageElem = initialSvg.querySelector("#contextual-image");
 		if (imageElem) {
@@ -61,12 +61,12 @@ const updateContextualTokenSvg = (
 
 		if (contextImageElem && contextCircleElem && options.context !== "none") {
 			const contextBgElem = initialSvg.querySelector("#context-bg-circle");
-			contextBgElem?.setAttribute("fill", contextSupportingBackgroundColor || "transparent");
+			contextBgElem?.setAttribute("fill", contextSupportingBackgroundColor || "none");
 
 			contextImageElem.setAttribute("href", contextPictureUrl || "");
 
 			if (contextPictureUrl && status === "success") contextCircleElem.setAttribute("stroke-width", `${strokeWidth}`);
-			contextCircleElem.setAttribute("fill", "transparent");
+			contextCircleElem.setAttribute("fill", "none");
 
 			const contextTitleElem = contextCircleElem.firstElementChild;
 			if (contextTitleElem) contextTitleElem.textContent = contextTitle || "";
@@ -89,31 +89,10 @@ const updateContextualTokenSvg = (
 
 		setContextualFilter(svg, uniqueID, mustPictureBeCensored);
 
-		setContextualTokenShapes(
-			svg,
-			uniqueID,
-			tokenCircleData,
-			mustPictureBeCensored,
-			pictureUrl,
-			title,
-			supportingBackgroundColor,
-			strokeWidth,
-			options.strokeColor || "",
-			true
-		);
+		setContextualTokenShapes(svg, uniqueID, tokenCircleData, mustPictureBeCensored, pictureUrl, title, bgColor, strokeWidth, options.strokeColor || "", true);
 
 		if (options.context && options.context !== "none") {
-			setContextualContextShape(
-				svg,
-				uniqueID,
-				contextCircleData,
-				contextPictureUrl,
-				contextTitle,
-				contextSupportingBackgroundColor,
-				strokeWidth,
-				options.strokeColor || "",
-				true
-			);
+			setContextualContextShape(svg, uniqueID, contextCircleData, contextPictureUrl, contextTitle, contextSupportingBackgroundColor, strokeWidth, options.strokeColor || "", true);
 		}
 	}
 };

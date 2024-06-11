@@ -14,11 +14,9 @@ PicsBaseSvgTemplate.innerHTML = `
 		</filter>
 	</defs>
 
-	<rect id="bg-color" fill="transparent"></rect>
-	<image preserveAspectRatio="xMidYMid slice"></image>
-	<rect fill="transparent" id="mask">
-		<title></title>
-	</rect>
+	<rect id="bg-color" fill="none"></rect>
+	<image preserveAspectRatio="xMidYMid slice"><title></title></image>
+	<rect fill="none" id="mask"></rect>
 </svg>
 `;
 export default PicsBaseSvgTemplate;
@@ -54,7 +52,7 @@ export const setBaseBgRect = (svg: SVGSVGElement | DocumentFragment, bgColor: st
 	}
 };
 
-export const setBaseImage = (svg: SVGSVGElement | DocumentFragment, pictureUrl: string, uniqueID: string, strokeWidth: number) => {
+export const setBaseImage = (svg: SVGSVGElement | DocumentFragment, pictureUrl: string, uniqueID: string, strokeWidth: number, title: string) => {
 	const imageElem = svg.querySelector("image");
 	if (imageElem) {
 		imageElem.setAttribute("x", `${strokeWidth / 2}`);
@@ -63,6 +61,8 @@ export const setBaseImage = (svg: SVGSVGElement | DocumentFragment, pictureUrl: 
 		imageElem.setAttribute("height", `${100 - strokeWidth}`);
 		imageElem.setAttribute("href", pictureUrl);
 		imageElem.setAttribute("clip-path", `url(#rect-${uniqueID})`);
+
+		if (imageElem?.firstElementChild) imageElem.firstElementChild.textContent = title || "";
 	}
 };
 
@@ -83,8 +83,6 @@ export const setBaseRect = (
 		rectElem.setAttribute("ry", getShapeRadius(options.shape, 100));
 		rectElem.setAttribute("stroke", options.strokeColor || "");
 		rectElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
-
-		if (rectElem?.firstElementChild) rectElem.firstElementChild.textContent = title || "";
 	}
 };
 

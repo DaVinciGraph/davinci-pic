@@ -1,4 +1,4 @@
-import { DavinciPicTokenAttributes } from "../types/attributes";
+import { DavinciPicContractAttributes, DavinciPicTokenAttributes } from "../types/attributes";
 import { PicsContextType } from "../types/picsCommonTypes";
 import { DavinciPicsSvgCircle } from "../types/svg";
 
@@ -18,38 +18,33 @@ PicsContextualTokenTemplate.innerHTML = `
 		</filter>
 	</defs>
 
-	<circle id="contextual-bg-circle" fill="transparent"></circle>
+	<circle id="contextual-bg-circle" fill="none"></circle>
 	<image
 		id="contextual-image"
 		preserveAspectRatio="xMidYMid slice">
+		<title></title>
 	</image>
 	<circle
 		id="contextual-circle"
-		fill="transparent">
-		<title></title>
+		fill="none">
 	</circle>
 
-	<circle id="context-bg-circle" fill="transparent"></circle>
+	<circle id="context-bg-circle" fill="none"></circle>
 	<image
 		id="context-image"
 		preserveAspectRatio="xMidYMid slice">
+		<title></title>
 	</image>
 	<circle
 		id="context-circle"
-		fill="transparent">
-		<title></title>
+		fill="none">
 	</circle>
 </svg>
 `;
 
 export default PicsContextualTokenTemplate;
 
-export function setContextualPath(
-	svg: SVGSVGElement | DocumentFragment,
-	uniqueID: string,
-	tokenCircleData: DavinciPicsSvgCircle,
-	contextCircleData: DavinciPicsSvgCircle
-) {
+export function setContextualPath(svg: SVGSVGElement | DocumentFragment, uniqueID: string, tokenCircleData: DavinciPicsSvgCircle, contextCircleData: DavinciPicsSvgCircle) {
 	const tokenPathElem = svg.querySelector("#contextual-path");
 	if (tokenPathElem) {
 		tokenPathElem.id = `contextual-circle-${uniqueID}`;
@@ -83,7 +78,7 @@ export function setContextualTokenShapes(
 	mustBeCensored: boolean = false,
 	pictureUrl: string,
 	title: string,
-	supportingBackgroundColor: string,
+	bgColor: string,
 	strokeWidth: number,
 	strokeColor: string,
 	applyStroke: boolean = false
@@ -93,7 +88,7 @@ export function setContextualTokenShapes(
 		bgElem.setAttribute("cx", `${tokenCircleData.cx}`);
 		bgElem.setAttribute("cy", `${tokenCircleData.cy}`);
 		bgElem.setAttribute("r", `${tokenCircleData.r}`);
-		bgElem.setAttribute("fill", supportingBackgroundColor);
+		bgElem.setAttribute("fill", bgColor);
 	}
 
 	const imageElem = svg.querySelector("#contextual-image");
@@ -105,6 +100,9 @@ export function setContextualTokenShapes(
 		imageElem.setAttribute("href", pictureUrl);
 		imageElem.setAttribute("clip-path", `url(#contextual-circle-${uniqueID})`);
 		if (mustBeCensored) imageElem.setAttribute("filter", `url(#contextual-blur-${uniqueID})`);
+
+		const mainTitleElem = imageElem.firstElementChild;
+		if (mainTitleElem && !mustBeCensored) mainTitleElem.textContent = title || "";
 	}
 
 	const tokenCircleElem = svg.querySelector("#contextual-circle");
@@ -114,9 +112,6 @@ export function setContextualTokenShapes(
 		tokenCircleElem.setAttribute("r", `${tokenCircleData.r}`);
 		tokenCircleElem.setAttribute("stroke", strokeColor);
 		tokenCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
-
-		const mainTitleElem = tokenCircleElem.firstElementChild;
-		if (mainTitleElem && !mustBeCensored) mainTitleElem.textContent = title || "";
 	}
 }
 
@@ -126,7 +121,7 @@ export function setContextualContextShape(
 	contextCircleData: DavinciPicsSvgCircle,
 	pictureUrl: string,
 	title: string,
-	supportingBackgroundColor: string,
+	bgColor: string,
 	strokeWidth: number,
 	strokeColor: string,
 	applyStroke: boolean = false
@@ -140,7 +135,7 @@ export function setContextualContextShape(
 			contextBgElem.setAttribute("cx", String(contextCircleData.cx));
 			contextBgElem.setAttribute("cy", String(contextCircleData.cy));
 			contextBgElem.setAttribute("r", String(contextCircleData.r));
-			contextBgElem.setAttribute("fill", supportingBackgroundColor);
+			contextBgElem.setAttribute("fill", bgColor);
 		}
 
 		contextImageElem.setAttribute("href", pictureUrl || "");
@@ -150,15 +145,15 @@ export function setContextualContextShape(
 		contextImageElem.setAttribute("height", String(2 * contextCircleData.r));
 		contextImageElem.setAttribute("clip-path", `url(#context-circle-${uniqueID})`);
 
+		const contextTitleElem = contextImageElem.firstElementChild;
+		if (contextTitleElem && title) contextTitleElem.textContent = title;
+
 		contextCircleElem.setAttribute("cx", String(contextCircleData.cx));
 		contextCircleElem.setAttribute("cy", String(contextCircleData.cy));
 		contextCircleElem.setAttribute("r", String(contextCircleData.r));
 		contextCircleElem.setAttribute("stroke", strokeColor);
 		contextCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));
-		contextCircleElem.setAttribute("fill", "transparent");
-
-		const contextTitleElem = contextCircleElem.firstElementChild;
-		if (contextTitleElem && title) contextTitleElem.textContent = title;
+		contextCircleElem.setAttribute("fill", "none");
 	}
 }
 
@@ -175,7 +170,7 @@ export function getContextualTokenShapeData(contextType?: PicsContextType, strok
 	return { cx: 50, cy: 50, r: (contextType && contextType !== "none" ? 40 : 50) - strokeWidth / 2 };
 }
 
-export function getContextualContextShapeData(options: DavinciPicTokenAttributes, tokenCircleData: DavinciPicsSvgCircle, strokeWidth: number) {
+export function getContextualContextShapeData(options: DavinciPicTokenAttributes | DavinciPicContractAttributes, tokenCircleData: DavinciPicsSvgCircle, strokeWidth: number) {
 	const contextCircleRadius = tokenCircleData.r / 2;
 	return {
 		cx:

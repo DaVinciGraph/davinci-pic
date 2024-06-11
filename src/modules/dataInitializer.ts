@@ -1,16 +1,18 @@
 import {
 	AppEntity,
 	BannerEntity,
+	ContractEntity,
 	DavinciPicEntity,
 	LpTokenEntity,
 	NetworkEntity,
 	NodeEntity,
+	PoolContractEntity,
 	ProfileEntity,
 	TokenEntity,
 	WrappedTokenEntity,
 } from "../types/entities";
 import { davinciPicsConfig } from "..";
-import { DavinciPicAttributes, DavinciPicPlaceholder, DavinciPicTokenAttributes } from "../types/attributes";
+import { DavinciPicAttributes, DavinciPicContractAttributes, DavinciPicPlaceholder, DavinciPicTokenAttributes } from "../types/attributes";
 import { PicsType } from "../types/picsCommonTypes";
 import { getMissingURL, getRandomColor } from "./helpers";
 
@@ -26,12 +28,12 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 			let initialData = {
 				type: "TOKEN",
 				address: options.address,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 				network: {
 					id: options.network,
 					title: options.context === "network" ? options.dataContextTitle || "" : "",
 					pic: "",
-					supportingBackgroundColor: placeholders.color,
+					bgColor: placeholders.color,
 				},
 			};
 
@@ -61,7 +63,7 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 						address: options.address,
 						sensitivity: "safe",
 						pic: token0Pic,
-						supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+						bgColor: getPlaceholderBgColor(placeholders),
 						title: token0Title,
 					},
 					token1: {
@@ -69,7 +71,7 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 						address: options.address,
 						sensitivity: "safe",
 						pic: token1Pic,
-						supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+						bgColor: getPlaceholderBgColor(placeholders),
 						title: token1Title,
 					},
 					app: getInitialAppData(options, placeholders),
@@ -81,16 +83,11 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 				return {
 					...initialData,
 					type: "WRAPPED",
-					title: "",
+					title: options.dataTitle || "",
 					sensitivity: "safe",
-					originalToken: {
-						network: options.network,
-						address: options.address,
-						sensitivity: "safe",
-						pic: placeholders.url,
-						supportingBackgroundColor: getPlaceholderBgColor(placeholders),
-						title: options.dataTitle || "",
-					},
+					pic: placeholders.url,
+					darkPic: "",
+					bgColor: getPlaceholderBgColor(placeholders),
 					app: getInitialAppData(options, placeholders),
 				} as WrappedTokenEntity;
 			}
@@ -100,8 +97,76 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 				...initialData,
 				title: options.dataTitle || "",
 				pic: placeholders.url,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 			} as TokenEntity;
+		}
+		case "contract": {
+			let initialData = {
+				type: "CONTRACT",
+				isPool: false,
+				address: options.address,
+				bgColor: getPlaceholderBgColor(placeholders),
+				network: {
+					id: options.network,
+					title: options.context === "network" ? options.dataContextTitle || "" : "",
+					pic: "",
+					darkPic: "",
+					bgColor: placeholders.color,
+				},
+				app: getInitialAppData(options, placeholders),
+			};
+
+			const urlContainsLpSign = options.dataPicUrl?.includes("|");
+			const titleContainsLpSign = options.dataTitle?.includes("|");
+
+			// send back an lp token entity
+			if (options.isPool || urlContainsLpSign || titleContainsLpSign) {
+				let token0Pic = placeholders.url,
+					token1Pic = placeholders.url,
+					token0Title = "",
+					token1Title = "";
+
+				if (titleContainsLpSign && options.dataTitle) {
+					const titles = options.dataTitle.split("|");
+					token0Title = titles[0];
+					token1Title = titles[1];
+				}
+
+				return {
+					...initialData,
+					isPool: true,
+					title: "",
+					sensitivity: "safe",
+					token0: {
+						network: options.network,
+						address: options.address,
+						sensitivity: "safe",
+						pic: token0Pic,
+						darkPic: "",
+						bgColor: getPlaceholderBgColor(placeholders),
+						title: token0Title,
+					},
+					token1: {
+						network: options.network,
+						address: options.address,
+						sensitivity: "safe",
+						pic: token1Pic,
+						darkPic: "",
+						bgColor: getPlaceholderBgColor(placeholders),
+						title: token1Title,
+					},
+				} as PoolContractEntity;
+			}
+
+			// send back a normal contract entity
+			return {
+				...initialData,
+				title: options.dataTitle || "",
+				pic: placeholders.url,
+				darkPic: "",
+				sensitivity: "safe",
+				bgColor: getPlaceholderBgColor(placeholders),
+			} as ContractEntity;
 		}
 		case "profile":
 			return {
@@ -110,7 +175,7 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 				title: options.dataTitle || "",
 				sensitivity: "safe",
 				pic: placeholders.url,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 			} as ProfileEntity;
 		case "banner":
 			return {
@@ -119,14 +184,14 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 				title: options.dataTitle || "",
 				sensitivity: "safe",
 				banner: placeholders.url,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 			} as BannerEntity;
 		case "node":
 			return {
 				network: options.network,
 				address: options.address,
 				title: options.dataTitle || "",
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 				pic: placeholders.url,
 			} as NodeEntity;
 		case "network":
@@ -134,14 +199,14 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 				id: options.network,
 				title: options.dataTitle || "",
 				pic: placeholders.url,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 			} as NetworkEntity;
 		case "app":
 			return {
 				name: " ",
 				title: options.dataTitle || "",
 				pic: placeholders.url,
-				supportingBackgroundColor: getPlaceholderBgColor(placeholders),
+				bgColor: getPlaceholderBgColor(placeholders),
 			} as AppEntity;
 	}
 };
@@ -149,7 +214,7 @@ const initializeData = (options: DavinciPicAttributes, placeholders: DavinciPicP
 export default initializeData;
 
 export const getInitialPlaceholders = (text: string, type: PicsType) => {
-	const placeholders = { color: "transparent", url: "" };
+	const placeholders = { color: "none", url: "" };
 	if (text === "transparent") {
 		return placeholders;
 	}
@@ -169,14 +234,14 @@ export const getInitialPlaceholders = (text: string, type: PicsType) => {
 	return placeholders;
 };
 
-const getInitialAppData = (options: DavinciPicTokenAttributes, placeholders: DavinciPicPlaceholder) => {
+const getInitialAppData = (options: DavinciPicTokenAttributes | DavinciPicContractAttributes, placeholders: DavinciPicPlaceholder) => {
 	return {
 		title: options.dataContextTitle || "",
 		pic: "",
-		supportingBackgroundColor: placeholders.color,
+		bgColor: placeholders.color || "none",
 	};
 };
 
 const getPlaceholderBgColor = (placeholders: DavinciPicPlaceholder) => {
-	return !placeholders.url ? placeholders.color : "transparent";
+	return !placeholders.url ? placeholders.color : "none";
 };

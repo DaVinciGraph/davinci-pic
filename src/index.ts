@@ -4,27 +4,26 @@ import integrateAttributes from "./modules/attributeIntegrator";
 import initializeData, { getInitialPlaceholders } from "./modules/dataInitializer";
 import generateSvg from "./svgGenerator";
 import updateSvg from "./svgUpdator";
-import {
-	isEntityResponseEmpty,
-	isPicsContextPositionType,
-	isPicsContextType,
-	isPicsSensitivityType,
-	isPicsShapeType,
-	isPicsType,
-} from "./types/guards";
+import { isEntityResponseEmpty, isPicsContextPositionType, isPicsContextType, isPicsShapeType, isPicsType } from "./types/guards";
 import {
 	PicsContextPositionType,
 	PicsContextType,
 	PicsLpTokensPositionType,
-	PicsSensitivityType,
 	PicsShapeType,
+	PicsShowContextForType,
+	PicsShowPairAppsType,
+	PicsTopTokenType,
 	PicsType,
 	picsLpTokensPositionTypes,
+	picsShowContextForType,
+	picsShowPairAppsTypes,
+	picsTopTokenTypes,
 } from "./types/picsCommonTypes";
 import { EntityResponseType } from "./types/entities";
 
 export let davinciPicsConfig = {
-	apiUrl: "https://davincigraph.art/api/v1",
+	apiUrl: "https://s1.pics.davincigraph.io/api/v2",
+	backupApiUrl: "https://s2.pics.davincigraph.io/api/v2",
 	counter: 0,
 	colorRegex: /#(?:[0-9A-Fa-f]{3}){1,2}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|transparent/,
 };
@@ -117,10 +116,28 @@ export class DavinciPic extends HTMLElement {
 		return this.hasAttribute("offline-mode");
 	}
 
+	set noCache(value: boolean) {
+		value ? this.setAttribute("no-cache", "") : this.removeAttribute("no-cache");
+	}
+
+	get noCahce(): boolean {
+		return this.hasAttribute("no-cache");
+	}
+
+	set theme(value: "dark" | "light") {
+		this.setAttribute("theme", value === "dark" || value === "light" ? value : "light");
+	}
+
+	get theme(): "dark" | "light" {
+		const value = this.getAttribute("theme");
+
+		return value === "dark" || value === "light" ? value : "light";
+	}
+
 	// only applies to token entities
 	set complexTokenType(value: "lp" | "wrapped" | undefined) {
-		if (this.type === "token") {
-			throw new Error("Complex token type is specifically for token type.");
+		if (this.type !== "token" && this.type !== "contract") {
+			throw new Error("Complex token type is specifically for token and contract types.");
 		}
 
 		if (value !== "lp" && value !== "wrapped") {
@@ -143,7 +160,7 @@ export class DavinciPic extends HTMLElement {
 
 	// only applies to token entities
 	set lpTokensPosition(value: PicsLpTokensPositionType) {
-		if (this.type === "token") {
+		if (this.type !== "token") {
 			throw new Error("Lp Tokens Position is specifically for token type.");
 		}
 
@@ -163,6 +180,109 @@ export class DavinciPic extends HTMLElement {
 		}
 
 		return "intersected";
+	}
+	// only applies to contract entities
+	set poolPairPosition(value: PicsLpTokensPositionType) {
+		if (this.type !== "contract") {
+			throw new Error("Pool Contract Position is specifically for contract type.");
+		}
+
+		if (!value || !picsLpTokensPositionTypes.includes(value)) {
+			value = "intersected";
+		}
+
+		this.setAttribute("pool-pair-position", value);
+	}
+
+	// only applies to contract entities
+	get poolPairPosition(): PicsLpTokensPositionType {
+		const value = this.getAttribute("pool-pair-position");
+
+		if (value && picsLpTokensPositionTypes.includes(value)) {
+			return value as PicsLpTokensPositionType;
+		}
+
+		return "intersected";
+	}
+
+	// only applies to contract & token entities
+	set showPairApps(value: PicsShowPairAppsType) {
+		if (this.type !== "contract" && this.type !== "token") {
+			throw new Error("show pair apps flag is specifically for contract and token types.");
+		}
+
+		if (!picsShowPairAppsTypes.includes(value)) {
+			value = "when_identical";
+		}
+
+		this.setAttribute("show-pair-apps", String(value));
+	}
+
+	// only applies to contract and token entities
+	get showPairApps(): PicsShowPairAppsType {
+		const value = this.getAttribute("show-pair-apps");
+
+		if (value && picsShowPairAppsTypes.includes(value)) {
+			return value as PicsShowPairAppsType;
+		}
+
+		return "when_identical";
+	}
+
+	// only applies to token entities
+	set showAppForType(value: PicsShowContextForType) {
+		if (this.type !== "token") {
+			throw new Error("Pool Contract Position is specifically for token types.");
+		}
+
+		if (!picsShowContextForType.includes(value)) {
+			value = "all";
+		}
+
+		this.setAttribute("show-app-for-type", String(value));
+	}
+
+	// only applies to contract entities
+	get showAppForType(): PicsShowContextForType {
+		const value = this.getAttribute("show-app-for-type");
+
+		if (value && picsShowContextForType.includes(value)) {
+			return value as PicsShowContextForType;
+		}
+
+		return "all";
+	}
+
+	// only applies to contract entities
+	set topToken(value: PicsTopTokenType) {
+		if (this.type !== "contract" && this.type !== "token") {
+			throw new Error("Top Token is specifically for contract and token types.");
+		}
+
+		if (!picsTopTokenTypes.includes(value)) {
+			value = "one";
+		}
+
+		this.setAttribute("top-token", value);
+	}
+
+	// only applies to contract entities
+	get topToken(): PicsTopTokenType {
+		const value = this.getAttribute("top-token");
+
+		if (value && picsTopTokenTypes.includes(value)) {
+			return value as PicsTopTokenType;
+		}
+
+		return "one";
+	}
+
+	set isPool(value: boolean) {
+		value ? this.setAttribute("is-pool", "") : this.removeAttribute("is-pool");
+	}
+
+	get isPool(): boolean {
+		return this.hasAttribute("is-pool");
 	}
 
 	// not applies to banner
@@ -195,7 +315,7 @@ export class DavinciPic extends HTMLElement {
 	// only applies to token, specially Wrapped and liquidity
 	get context(): PicsContextType {
 		const value = this.getAttribute("context");
-		return isPicsContextType(value) ? value : "app";
+		return isPicsContextType(value) ? value : "none";
 	}
 
 	// only applies to token, specially Wrapped and liquidity
@@ -230,13 +350,22 @@ export class DavinciPic extends HTMLElement {
 		return this.getAttribute("stroke-color") || "gray";
 	}
 
-	set censor(value: PicsSensitivityType) {
-		this.setAttribute("censor", value);
+	set censor(value: string | string[]) {
+		if (!value) this.removeAttribute("censor");
+
+		this.setAttribute("censor", typeof value === "string" ? value : value?.length ? JSON.stringify(value) : "");
 	}
 
-	get censor(): PicsSensitivityType {
+	get censor(): string | string[] {
 		const value = this.getAttribute("censor");
-		return isPicsSensitivityType(value) ? value : "copyright-violated";
+
+		if (!value) return ["copyright-violated"];
+
+		try {
+			return JSON.parse(value);
+		} catch {
+			return value;
+		}
 	}
 
 	set dataTitle(value: string) {
@@ -253,6 +382,14 @@ export class DavinciPic extends HTMLElement {
 
 	get dataPicUrl() {
 		return this.getAttribute("data-pic-url") || "";
+	}
+
+	set dataBgColor(value: string) {
+		this.setAttribute("data-bg-color", value);
+	}
+
+	get dataBgColor() {
+		return this.getAttribute("data-bg-color") || "";
 	}
 
 	// only applies to token, specially Wrapped and liquidity
@@ -273,6 +410,16 @@ export class DavinciPic extends HTMLElement {
 	// only applies to token, specially Wrapped and liquidity
 	get dataContextPicUrl(): string {
 		return this.getAttribute("data-context-pic-url") || "";
+	}
+
+	// only applies to token, specially Wrapped and liquidity
+	set dataContextBgColor(value: string) {
+		this.setAttribute("data-context-bg-color", value);
+	}
+
+	// only applies to token, specially Wrapped and liquidity
+	get dataContextBgColor(): string {
+		return this.getAttribute("data-context-bg-color") || "";
 	}
 
 	set placeholder(value: string) {
@@ -347,9 +494,7 @@ export class DavinciPic extends HTMLElement {
 
 					// get loading placeholders
 					const placeholders = getInitialPlaceholders(
-						((!attributes.loadingEffect || attributes.loadingEffect.endsWith("placeholder")
-							? attributes.placeholder
-							: attributes.loadingEffect) as string) || "transparent",
+						((!attributes.loadingEffect || attributes.loadingEffect.endsWith("placeholder") ? attributes.placeholder : attributes.loadingEffect) as string) || "transparent",
 						attributes.type
 					);
 
@@ -387,7 +532,7 @@ export class DavinciPic extends HTMLElement {
 					await this.delay();
 
 					// fetch the remote data, or in case of offline mode just an empty object
-					const remoteData: EntityResponseType<PicsType> = attributes.offlineMode === true ? {} : await davinciPicsLoad(attributes);
+					const remoteData: EntityResponseType<PicsType> = attributes.offlineMode === true ? "" : await davinciPicsLoad(attributes);
 
 					// combine remote data with possible local data and placeholders
 					const finalData = finalizeData(initialData, remoteData, attributes, placeholders);

@@ -51,13 +51,16 @@ export type DavinciPicBaseAttributes = {
 	size?: number;
 	strokeWidth?: number;
 	strokeColor?: string;
-	censor?: PicsSensitivityType;
+	censor?: string | string[];
 	dataTitle?: string;
 	dataPicUrl?: string;
+	dataBgColor?: string;
 	placeholder?: DavinciPicsPlaceholderType;
 	loadingEffect?: DavinciPicLoadingEffectType;
 	FailureEffect?: DavinciPicFailureEffectType;
 	delayResponseTime?: number;
+	theme?: "light" | "dark";
+	noCache?: boolean;
 };
 
 type DavinciPicBaseAttributesOnline = DavinciPicBaseAttributes & {
@@ -77,19 +80,30 @@ export type DavinciPicTokenAttributes = (DavinciPicBaseAttributesOnline | Davinc
 	context?: PicsContextType;
 	contextPosition?: PicsContextPositionType;
 	lpTokensPosition?: PicsLpTokensPositionType;
+	showPairApps?: "true" | "false" | "when_identical";
+	topToken?: "zero" | "one";
+	showAppForType?: "all" | "lp" | "wrapped";
 	dataContextTitle?: string;
 	dataContextPicUrl?: string;
+	dataContextBgColor?: string;
+};
+
+export type DavinciPicContractAttributes = (DavinciPicBaseAttributesOnline | DavinciPicBaseAttributessOffline) & {
+	type: "contract";
+	isPool?: boolean;
+	context?: PicsContextType;
+	contextPosition?: PicsContextPositionType;
+	poolPairPosition?: PicsLpTokensPositionType;
+	showPairApps?: "true" | "false" | "when_identical";
+	topToken?: "zero" | "one";
+	dataContextTitle?: string;
+	dataContextPicUrl?: string;
+	dataContextBgColor?: string;
 };
 
 export type DavinciPicProfileAttributes = (DavinciPicBaseAttributesOnline | DavinciPicBaseAttributessOffline) & {
 	type: "profile";
-	placeholder?:
-		| "default"
-		| "transparent"
-		| "defaultBright"
-		| "defaultDark"
-		| "randomColor"
-		| Omit<string, "default" | "transparent" | "defaultBright" | "defaultDark" | "randomColor">;
+	placeholder?: "default" | "transparent" | "defaultBright" | "defaultDark" | "randomColor" | Omit<string, "default" | "transparent" | "defaultBright" | "defaultDark" | "randomColor">;
 };
 
 export type DavinciPicBannerAttributes = (
@@ -108,16 +122,14 @@ export type DavinciPicNetworkAttributes = (Omit<DavinciPicBaseAttributesOnline, 
 	type: "network";
 };
 
-export type DavinciPicAppAttributes = (
-	| Omit<DavinciPicBaseAttributesOnline, "address" | "network">
-	| Omit<DavinciPicBaseAttributessOffline, "address" | "network">
-) & {
+export type DavinciPicAppAttributes = (Omit<DavinciPicBaseAttributesOnline, "address" | "network"> | Omit<DavinciPicBaseAttributessOffline, "address" | "network">) & {
 	type: "app";
 	name: string;
 };
 
 export type DavinciPicAttributes =
 	| DavinciPicTokenAttributes
+	| DavinciPicContractAttributes
 	| DavinciPicProfileAttributes
 	| DavinciPicBannerAttributes
 	| DavinciPicNodeAttributes

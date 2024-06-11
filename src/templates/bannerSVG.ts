@@ -10,7 +10,7 @@ PicsBannerSvgTemplate.innerHTML = `
 		</filter>
 	</defs>
 
-	<rect id="rect-bg" x="0" y="0" width="400" height="100" fill="transparent" ></rect>
+	<rect id="rect-bg" x="0" y="0" width="400" height="100" fill="none" ></rect>
 	<image
 		x="0"
 		y="0"
@@ -19,7 +19,7 @@ PicsBannerSvgTemplate.innerHTML = `
 		filter=""
 		preserveAspectRatio="xMidYMid slice"></image>
 
-	<rect x="0" y="0" width="400" height="100" fill="transparent" ></rect>
+	<rect x="0" y="0" width="400" height="100" fill="none" ></rect>
 </svg>
 `;
 

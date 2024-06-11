@@ -18,7 +18,7 @@ const updateBannerSvg = (svg: SVGSVGElement, data: BannerEntity, options: Davinc
 
 		const BgElem = svg.querySelector("#rect-bg");
 		if (BgElem) {
-			BgElem.setAttribute("fill", data.supportingBackgroundColor || "transparent");
+			BgElem.setAttribute("fill", data.bgColor || "none");
 		}
 
 		const imageElem = svg.querySelector("image");

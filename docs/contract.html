@@ -8,16 +8,22 @@
 	</head>
 	<body>
 		<article>
-			<h1>Token Examples</h1>
+			<h1>Contract Examples</h1>
 
 			<main>
 				<section>
 					<copy-snippet header="default">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="#ccc"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" loading-effect="#ccc"></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="With Network Context">
+						<davinci-pic type="contract" network="hedera" context="network" address="0.0.2997798" size="64" loading-effect="#ccc"></davinci-pic>
+					</copy-snippet>
+					<copy-snippet header="With App Context">
+						<davinci-pic type="contract" network="hedera" context="app" address="0.0.2997798" size="64" loading-effect="#ccc"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Alternative Data">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
@@ -29,7 +35,7 @@
 					</copy-snippet>
 					<copy-snippet header="Offline Mode With Alternative Data">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							offline-mode
@@ -39,87 +45,132 @@
 						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Green Stroke 4px">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" stroke-width="4" stroke-color="green"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" stroke-width="4" stroke-color="green"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Size 100px">
-						<davinci-pic type="token" network="hedera" address="hbar" size="100"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="100"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Size 20px">
-						<davinci-pic type="token" network="hedera" address="hbar" size="20"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="20"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Square Shape">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" shape="square"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" shape="square"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Smooth Square Shape">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" shape="smoothSquare"></davinci-pic>
-					</copy-snippet>
-					<copy-snippet header="Censored Inappropriate">
-						<davinci-pic type="token" network="arbitrum" address="TestCurrency1" censor="inappropriate" size="64"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" shape="smoothSquare"></davinci-pic>
 					</copy-snippet>
 				</section>
 
 				<h4>Loading Effects</h4>
 				<section>
 					<copy-snippet header="Hide">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="hide" delay-response-time="500000"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" loading-effect="hide" delay-response-time="500000"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Transparent">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="transparent" delay-response-time="500000"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" loading-effect="transparent" delay-response-time="500000"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Fixed Color">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="pulse:#ccc" delay-response-time="500000"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" loading-effect="pulse:#ccc" delay-response-time="500000"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Random Color">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="randomColor" delay-response-time="500000"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" context="none" address="0.0.2997798" size="64" loading-effect="randomColor" delay-response-time="500000"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Default Question Mark Bright">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" placeholder="questionMarkBright" loading-effect="placeholder" delay-response-time="500000"></davinci-pic>
+						<davinci-pic
+							type="contract"
+							network="hedera"
+							address="0.0.2997798"
+							size="64"
+							context="none"
+							placeholder="questionMarkBright"
+							loading-effect="placeholder"
+							delay-response-time="500000"
+						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Default Exclamation Mark Dark">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" placeholder="exclamationMarkDark" loading-effect="placeholder" delay-response-time="500000"></davinci-pic>
+						<davinci-pic
+							type="contract"
+							network="hedera"
+							address="0.0.2997798"
+							size="64"
+							context="none"
+							placeholder="exclamationMarkDark"
+							loading-effect="placeholder"
+							delay-response-time="500000"
+						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Custom Url">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
-							address="hbar"
+							address="0.0.2997798"
 							size="64"
+							context="none"
 							loading-effect="url('https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif')"
 							delay-response-time="500000"
 						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Pulse Random Color">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" loading-effect="pulse:randomColor" delay-response-time="500000"></davinci-pic>
+						<davinci-pic type="contract" network="hedera" address="0.0.2997798" size="64" loading-effect="pulse:randomColor" delay-response-time="500000"></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Pulse Custom Url">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
-							address="hbar"
+							address="0.0.2997798"
 							size="64"
+							context="none"
 							loading-effect="pulse:url('https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif')"
 							delay-response-time="500000"
 						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Pulse Default No Logo Picture">
-						<davinci-pic type="token" network="hedera" address="hbar" size="64" placeholder="default" loading-effect="pulse:placeholder" delay-response-time="500000"></davinci-pic>
+						<davinci-pic
+							type="contract"
+							network="hedera"
+							address="0.0.2997798"
+							size="64"
+							context="none"
+							placeholder="default"
+							loading-effect="pulse:placeholder"
+							delay-response-time="500000"
+						></davinci-pic>
 					</copy-snippet>
 				</section>
 
 				<h4>Failure Effects</h4>
 				<section>
 					<copy-snippet header="Hide">
-						<davinci-pic type="token" network="hedera" address="0.0.64216" size="64" loading-effect="pulse:#ccc" failure-effect="hide" delay-response-time="3000"></davinci-pic>
+						<davinci-pic
+							type="contract"
+							network="hedera"
+							context="none"
+							address="0.0.64216"
+							size="64"
+							loading-effect="pulse:#ccc"
+							failure-effect="hide"
+							delay-response-time="3000"
+						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Transparent">
-						<davinci-pic type="token" network="hedera" address="0.0.64216" size="64" failure-effect="transparent" loading-effect="pulse:#ccc" delay-response-time="3000"></davinci-pic>
+						<davinci-pic
+							type="contract"
+							network="hedera"
+							context="none"
+							address="0.0.64216"
+							size="64"
+							failure-effect="transparent"
+							loading-effect="pulse:#ccc"
+							delay-response-time="3000"
+						></davinci-pic>
 					</copy-snippet>
 					<copy-snippet header="Fixed Color">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
+							context="none"
 							placeholder="#ccc"
 							failure-effect="placeholder"
 							loading-effect="pulse:#ccc"
@@ -128,10 +179,11 @@
 					</copy-snippet>
 					<copy-snippet header="Random Color">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
+							context="none"
 							placeholder="randomColor"
 							failure-effect="placeholder"
 							loading-effect="pulse:#ccc"
@@ -140,10 +192,11 @@
 					</copy-snippet>
 					<copy-snippet header="Default Question Mark Bright">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
+							context="none"
 							placeholder="questionMarkBright"
 							failure-effect="placeholder"
 							loading-effect="pulse:#ccc"
@@ -152,10 +205,11 @@
 					</copy-snippet>
 					<copy-snippet header="Default Exclamation Mark Dark">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
+							context="none"
 							placeholder="exclamationMarkDark"
 							failure-effect="placeholder"
 							loading-effect="pulse:#ccc"
@@ -164,10 +218,11 @@
 					</copy-snippet>
 					<copy-snippet header="Custom Url">
 						<davinci-pic
-							type="token"
+							type="contract"
 							network="hedera"
 							address="0.0.64216"
 							size="64"
+							context="none"
 							placeholder="url(https://res.cloudinary.com/dq7dgsuu8/image/upload/v1684562031/icons/hedera_token_64_lhaycq.png)"
 							stroke-width="4"
 							failure-effect="placeholder"

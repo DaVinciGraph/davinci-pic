@@ -1,6 +1,7 @@
-import { LpTokenEntity, WrappedTokenEntity } from "../types/entities";
-import { DavinciPicTokenAttributes } from "../types/attributes";
+import { DavinciPicEntity, LpTokenEntity, PoolContractEntity, WrappedTokenEntity } from "../types/entities";
+import { DavinciPicContractAttributes, DavinciPicTokenAttributes } from "../types/attributes";
 import { PicsContextType, PicsShapeType, PicsType } from "../types/picsCommonTypes";
+import { isLpTokenEntity, isPoolContractEntity } from "../types/guards";
 
 const defaultPlaceholderPictures: { [key: string]: { [key: string]: string } } = {
 	token: {
@@ -65,16 +66,16 @@ export function getMissingURL(type: PicsType, placeholder?: any): string {
 }
 
 // cheks the sensetivity of entity and the expected censoring type of the element and act upon it
-export const mustBeCensored = (censoredType: string | undefined, checkingType: string | undefined): boolean => {
+export const mustBeCensored = (censoredType: string[] | string | undefined, checkingType: string | undefined): boolean => {
 	if (checkingType === undefined || censoredType === undefined) return false;
 
-	censoredType = censoredType?.toUpperCase();
-	checkingType = checkingType?.toUpperCase();
+	if (typeof censoredType === "string") {
+		censoredType = censoredType.split(",");
+	}
 
-	if (checkingType === "SAFE") return false;
+	const censoredTypesArray = censoredType.map((x) => x.trim().toUpperCase());
 
-	if (checkingType === "SENSITIVE" && (censoredType === "INAPPROPRIATE" || censoredType === "COPYRIGHT-VIOLATED")) return false;
-	if (checkingType === "INAPPROPRIATE" && censoredType === "COPYRIGHT-VIOLATED") return false;
+	if (!censoredTypesArray.includes(checkingType)) return false;
 
 	return true;
 };
@@ -91,31 +92,58 @@ export function getShapeRadius(shape?: PicsShapeType, size: number = 100) {
 
 // normalize the wrapped or liquidity token's context(app or network) data
 export const getContextData = (
-	options: DavinciPicTokenAttributes,
-	data: LpTokenEntity | WrappedTokenEntity
+	options: DavinciPicTokenAttributes | DavinciPicContractAttributes,
+	data: LpTokenEntity | WrappedTokenEntity | PoolContractEntity
 ): {
 	type: PicsContextType;
 	pic: string;
 	title: string;
-	supportingBackgroundColor: string;
+	bgColor: string;
 } => {
 	if (options.context === "app" && data?.app) {
+		const type = isLpTokenEntity(data) ? "LP Token, Originated" : isPoolContractEntity(data) ? "Pool Contract, Deployed" : "Wrapped Token, Originated";
 		return {
 			type: "app",
-			pic: data.app.pic || "",
-			title: data.app.title ? `Originated by ${data.app.title}` : "",
-			supportingBackgroundColor: data.app.supportingBackgroundColor || "transparent",
+			pic: getThemedPictureUrl(data?.app, options.theme) || "",
+			title: data.app.title ? `${type} by ${data.app.title}` : "",
+			bgColor: data.app.bgColor || "none",
 		};
 	}
 
 	if (options.context === "network" && data?.network) {
 		return {
 			type: "network",
-			pic: data.network.pic || "",
+			pic: getThemedPictureUrl(data?.network, options.theme) || "",
 			title: data.network.title ? `Originated on ${data.network.title}` : "",
-			supportingBackgroundColor: data.network.supportingBackgroundColor || "transparent",
+			bgColor: data.network.bgColor || "none",
 		};
 	}
 
-	return { type: "none", pic: "", title: "", supportingBackgroundColor: "transparent" };
+	return { type: "none", pic: "", title: "", bgColor: "none" };
+};
+
+export const isTokenAllowedToHaveContext = (typeofToken: "lp" | "wrapped", options: DavinciPicTokenAttributes | DavinciPicContractAttributes) => {
+	if (options.type === "contract") return true;
+
+	if (options.showAppForType === "all" || options.showAppForType === typeofToken) return true;
+
+	return false;
+};
+
+export const getThemedPictureUrl = (data: DavinciPicEntity | {}, theme?: "dark" | "light") => {
+	if (theme === "dark") {
+		return (data as any)?.darkPic || (data as any)?.pic || "";
+	}
+
+	return (data as any)?.pic || (data as any)?.darkPic || "";
+};
+
+export const getThemedBgColor = (data: any, theme: "dark" | "light") => {
+	if (theme === "dark" && data?.darkPic) {
+		return (data as any)?.darkBgColor;
+	}
+
+	if (data?.pic) return (data as any)?.bgColor;
+
+	return "";
 };

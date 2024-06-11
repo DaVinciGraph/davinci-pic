@@ -13,16 +13,12 @@ const finalizeBannerData = (
 	if (isBannerEntity(remoteData)) {
 		remoteData.title = remoteData.title || initialData.title;
 		remoteData.banner = finalSuccessfulPictureUrl(remoteData.banner, options.dataPicUrl, failedPlaceholderPicture);
-		remoteData.supportingBackgroundColor = finalSuccessfulBgColor(
-			remoteData.supportingBackgroundColor,
-			remoteData.banner,
-			failedPlaceholderColor
-		);
+		remoteData.bgColor = finalSuccessfulBgColor(remoteData.bgColor, remoteData.banner, failedPlaceholderColor, options.dataBgColor || "");
 		return remoteData;
 	}
 
 	initialData.banner = finalFailedPictureUrl(options.dataPicUrl, failedPlaceholderPicture);
-	initialData.supportingBackgroundColor = finalFailedBgColor(initialData.banner, failedPlaceholderColor);
+	initialData.bgColor = finalFailedBgColor(initialData.banner, failedPlaceholderColor, options.dataBgColor || "");
 
 	return initialData;
 };

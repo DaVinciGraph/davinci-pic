@@ -1,4 +1,4 @@
-import { LpTokenEntity } from "../types/entities";
+import { LpTokenEntity, PoolContractEntity } from "../types/entities";
 import { DavinciPicsSvgCircle } from "../types/svg";
 import { PicsContextType } from "../types/picsCommonTypes";
 
@@ -36,14 +36,14 @@ PicsMergedLiquidityTokenTemplate.innerHTML = `
 	</defs>
 
 	<circle id="token0-bg-circle"></circle>
-	<circle fill="transparent" id="token0-image"><title></title></circle>
+	<circle fill="none" id="token0-image"><title></title></circle>
 
 	<circle id="token1-bg-circle"></circle>
-	<circle fill="transparent" id="token1-image"><title></title></circle>
+	<circle fill="none" id="token1-image"><title></title></circle>
 
 	<circle id="context-bg-circle"></circle>
-	<image preserveAspectRatio="xMidYMid slice" id="context-image"></image>
-	<circle fill="transparent" id="context-circle"><title></title></circle>
+	<image preserveAspectRatio="xMidYMid slice" id="context-image"><title></title></image>
+	<circle fill="none" id="context-circle"></circle>
 </svg>
 `;
 
@@ -130,7 +130,7 @@ export function setMergedLpTokenShapes(
 	tokenCircleData: DavinciPicsSvgCircle,
 	mustPicture0BeCensored: boolean,
 	mustPicture1BeCensored: boolean,
-	data: LpTokenEntity,
+	data: LpTokenEntity | PoolContractEntity,
 	strokeColor: string,
 	strokeWidth: number,
 	applyStroke: boolean
@@ -141,7 +141,7 @@ export function setMergedLpTokenShapes(
 		supportingBg0.setAttribute("cy", `${tokenCircleData.cy}`);
 		supportingBg0.setAttribute("r", `${tokenCircleData.r}`);
 		supportingBg0.setAttribute("clipPath", `url(#bg-0-${uniqueID})`);
-		supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor);
+		supportingBg0.setAttribute("fill", data.token0.bgColor);
 	}
 
 	const image0CircleElem = svg.querySelector("#token0-image");
@@ -166,7 +166,7 @@ export function setMergedLpTokenShapes(
 		supportingBg1.setAttribute("cy", `${tokenCircleData.cy}`);
 		supportingBg1.setAttribute("r", `${tokenCircleData.r}`);
 		supportingBg1.setAttribute("clip-path", `url(#bg-1-${uniqueID})`);
-		supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor);
+		supportingBg1.setAttribute("fill", data.token1.bgColor);
 	}
 
 	const image1CircleElem = svg.querySelector("#token1-image");

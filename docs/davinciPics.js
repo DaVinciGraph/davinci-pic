@@ -1,176 +1,1511 @@
 (() => {
 	"use strict";
-	var __webpack_modules__ = {
-			"./src/dataFinalizer/banner.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "./src/dataFinalizer/helpers.ts");\n\r\n\r\nconst finalizeBannerData = (options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isBannerEntity)(remoteData)) {\r\n        remoteData.title = remoteData.title || initialData.title;\r\n        remoteData.banner = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalSuccessfulPictureUrl)(remoteData.banner, options.dataPicUrl, failedPlaceholderPicture);\r\n        remoteData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalSuccessfulBgColor)(remoteData.supportingBackgroundColor, remoteData.banner, failedPlaceholderColor);\r\n        return remoteData;\r\n    }\r\n    initialData.banner = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalFailedPictureUrl)(options.dataPicUrl, failedPlaceholderPicture);\r\n    initialData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalFailedBgColor)(initialData.banner, failedPlaceholderColor);\r\n    return initialData;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (finalizeBannerData);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/banner.ts?'
-				);
+	var t = {
+		d: (e, r) => {
+			for (var i in r) t.o(r, i) && !t.o(e, i) && Object.defineProperty(e, i, { enumerable: !0, get: r[i] });
+		},
+		o: (t, e) => Object.prototype.hasOwnProperty.call(t, e),
+	};
+	t.d({}, { I: () => Dt });
+	const e = async (t) => {
+			if (!0 !== t.offlineMode) {
+				const e = !(("token" !== t.type && "contract" !== t.type) || ("none" === t.context && "false" === t.showPairApps)),
+					r = t.noCache ? `&t=${Date.now()}` : "",
+					i = (i) => {
+						const o = `?scope=supplementary&noMissingError=true&includeBgColor=true${r}`;
+						return "network" === t.type
+							? `${i}/networks/${t.network}${o}`
+							: "app" === t.type
+							? `${i}/apps/${t.name}${o}`
+							: `${i}/${"banner" === t.type || "profile" === t.type ? "account" : t.type}s/${t.network}/${t.address}${o}&context=${e}`;
+					};
+				let o = !1;
+				const n = async (t) => {
+					try {
+						const e = await fetch(t);
+						if (!e.ok) {
+							if (404 !== e.status && !o) {
+								const t = i(Dt.backupApiUrl);
+								return (o = !0), n(t);
+							}
+							throw new Error(`HTTP error! status: ${e.status}`);
+						}
+						const r = e.headers.get("content-type");
+						return r && r.includes("application/json") ? await e.json() : await e.text();
+					} catch (t) {
+						throw (console.error(`DavinciPic Fetch Error: ${t.message}`), t);
+					}
+				};
+				return n(i(Dt.apiUrl));
+			}
+			return "";
+		},
+		r = ["token", "contract", "profile", "banner", "node", "network", "app"],
+		i = ["none", "app", "network"],
+		o = ["topRight", "topLeft", "bottomRight", "bottomLeft"],
+		n = ["intersected", "intimate", "merged"],
+		c = ["circle", "square", "smoothSquare"],
+		s = ["true", "false", "when_identical"],
+		l = ["all", "lp", "wrapped"],
+		a = ["zero", "one"];
+	function p(t) {
+		return t && ("TOKEN" === t?.type || "CURRENCY" === t?.type);
+	}
+	function u(t) {
+		return t && "LP" === t?.type && t?.token0 && t?.token1;
+	}
+	function d(t) {
+		return t && "WRAPPED" === t?.type;
+	}
+	function h(t) {
+		return t && t?.address;
+	}
+	function b(t) {
+		return t && t?.isPool && t?.token0 && t?.token1;
+	}
+	function f(t) {
+		return t && t?.address;
+	}
+	function g(t) {
+		return t && t?.address;
+	}
+	function k(t) {
+		return t && t?.address;
+	}
+	function y(t) {
+		return t && t?.id;
+	}
+	function x(t) {
+		return t && t?.name;
+	}
+	const A = (t, e = "", r) => t || e || r,
+		C = (t = "", e) => t || e || "",
+		w = (t, e, r, i) => t || i || (e ? "none" : r),
+		m = (t, e, r) => r || (t ? "none" : e),
+		P = (t, e, r, i, o) =>
+			g(e)
+				? ((e.title = e.title || r.title), (e.banner = A(e.banner, t.dataPicUrl, o)), (e.bgColor = w(e.bgColor, e.banner, i, t.dataBgColor || "")), e)
+				: ((r.banner = C(t.dataPicUrl, o)), (r.bgColor = m(r.banner, i, t.dataBgColor || "")), r),
+		$ = {
+			token: {
+				defaultBright: "https://arweave.net/ZAMK4tuU1MZ9TkNl2ARV2QDRumGT5Yxw13uCpW3kX6w",
+				default: "https://arweave.net/wW4bp6129XobnasaZbDB4RxdnpipGR8XyK0tUXGiVL0",
+				defaultDark: "https://arweave.net/j5B7_CYAOdrk6YJNVeJMeOHn4HbySsgkObUSfpvUuDA",
+				questionMarkBright: "https://arweave.net/z-5G9bNj_gisiQhVECwaUdSzuXMxl9Gi9UxYqrwUrq4",
+				questionMark: "https://arweave.net/u9t3--97iFNeFB4XaX7auIdcJWjNWF090BFcJdnBmiQ",
+				questionMarkDark: "https://arweave.net/HDVERv0ghkA91qhI2ud7qVUU_FFtAIyYELHHxQ9t2BQ",
+				exclamationMarkBight: "https://arweave.net/HS0RGj5YSKgcNch2US1E8saZKdM8RGlQWpxwhk5eKrk",
+				exclamationMark: "https://arweave.net/KwbKX4FOOM59KmFrAvtRhr5U-8MqWsSzU0rSA3Z7Z4A",
+				exclamationMarkDark: "https://arweave.net/A3Ja0tV3kU6EhVvN1EQejG-kmtY_yEcbgQ6pShYRXHo",
 			},
-			"./src/dataFinalizer/base.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "./src/dataFinalizer/helpers.ts");\n\r\n\r\nconst finalizeProfileData = (options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isProfileEntity)(remoteData) || (0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isNetworkEntity)(remoteData) || (0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isNodeEntity)(remoteData) || (0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isAppEntity)(remoteData)) {\r\n        remoteData.title = remoteData.title || initialData.title;\r\n        remoteData.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalSuccessfulPictureUrl)(remoteData.pic, options.dataPicUrl, failedPlaceholderPicture);\r\n        remoteData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalSuccessfulBgColor)(remoteData.supportingBackgroundColor, remoteData.pic, failedPlaceholderColor);\r\n        return remoteData;\r\n    }\r\n    initialData.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalFailedPictureUrl)(options.dataPicUrl, failedPlaceholderPicture);\r\n    initialData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.finalFailedBgColor)(initialData.pic, failedPlaceholderColor);\r\n    return initialData;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (finalizeProfileData);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/base.ts?'
-				);
-			},
-			"./src/dataFinalizer/failedPlaceholders.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n\r\n\r\n// this function return an object of placeholder containing a color and a url, for the case of full failure or missing pictures to show on failure effect\r\nconst getFailedPlaceholders = (options, initialPlaceholder) => {\r\n    const placeholders = { color: "transparent", url: "" };\r\n    if (options.FailureEffect === "transparent") {\r\n        return placeholders;\r\n    }\r\n    if (options.placeholder === "randomColor") {\r\n        if (initialPlaceholder.color && options.loadingEffect === "randomColor") {\r\n            placeholders.color = initialPlaceholder.color;\r\n            return placeholders;\r\n        }\r\n        placeholders.color = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_1__.getRandomColor)();\r\n        return placeholders;\r\n    }\r\n    let possbileBgColor = options.placeholder?.match(___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.colorRegex);\r\n    if (possbileBgColor) {\r\n        placeholders.color = possbileBgColor[0];\r\n        return placeholders;\r\n    }\r\n    placeholders.url = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_1__.getMissingURL)(options.type, options.placeholder);\r\n    return placeholders;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getFailedPlaceholders);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/failedPlaceholders.ts?'
-				);
-			},
-			"./src/dataFinalizer/helpers.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   finalFailedBgColor: () => (/* binding */ finalFailedBgColor),\n/* harmony export */   finalFailedPictureUrl: () => (/* binding */ finalFailedPictureUrl),\n/* harmony export */   finalSuccessfulBgColor: () => (/* binding */ finalSuccessfulBgColor),\n/* harmony export */   finalSuccessfulPictureUrl: () => (/* binding */ finalSuccessfulPictureUrl)\n/* harmony export */ });\nconst finalSuccessfulPictureUrl = (remotePictureUrl, localPictureUrl = "", failedPlaceholderPicture) => {\r\n    return remotePictureUrl || localPictureUrl || failedPlaceholderPicture;\r\n};\r\nconst finalFailedPictureUrl = (localPictureUrl = "", failedPlaceholderPicture) => {\r\n    return localPictureUrl || failedPlaceholderPicture || "";\r\n};\r\nconst finalSuccessfulBgColor = (remoteColor, remotePictureUrl, placeholderColor) => {\r\n    return remoteColor ? remoteColor : !remotePictureUrl ? placeholderColor : "transparent";\r\n};\r\nconst finalFailedBgColor = (finalPictureUrl, placeholderColor) => {\r\n    return !finalPictureUrl ? placeholderColor : "transparent";\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/helpers.ts?'
-				);
-			},
-			"./src/dataFinalizer/index.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _banner__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./banner */ "./src/dataFinalizer/banner.ts");\n/* harmony import */ var _failedPlaceholders__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./failedPlaceholders */ "./src/dataFinalizer/failedPlaceholders.ts");\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _token__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./token */ "./src/dataFinalizer/token.ts");\n/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./base */ "./src/dataFinalizer/base.ts");\n\r\n\r\n\r\n\r\n\r\n/**\r\n * This functions will combine the remote data with possible alternative data or placeholders\r\n * @param initialData The data which was initally was constructed for the element\r\n * @param remoteData The data which was retrieved from the API\r\n * @param options The attributes\r\n * @param placeholders The placeholders, which was initially generated for the loading purposes\r\n * @returns\r\n */\r\nconst finalizeData = (initialData, remoteData, options, placeholders) => {\r\n    const { color: failedPlaceholderColor, url: failedPlaceholderPicture } = (0,_failedPlaceholders__WEBPACK_IMPORTED_MODULE_1__["default"])(options, placeholders);\r\n    if (options.type === "token") {\r\n        return (0,_token__WEBPACK_IMPORTED_MODULE_3__["default"])(options, initialData, remoteData, failedPlaceholderPicture, failedPlaceholderColor);\r\n    }\r\n    if (options.type === "profile" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_2__.isProfileEntity)(initialData)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_4__["default"])(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if (options.type === "banner" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_2__.isBannerEntity)(initialData)) {\r\n        return (0,_banner__WEBPACK_IMPORTED_MODULE_0__["default"])(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if (options.type === "node" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_2__.isNodeEntity)(initialData)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_4__["default"])(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if (options.type === "network" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_2__.isNetworkEntity)(initialData)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_4__["default"])(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if (options.type === "app" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_2__.isAppEntity)(initialData)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_4__["default"])(options, remoteData, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    throw new Error(`Data couldn\'t be finalized, missing type. ${options?.type}`);\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (finalizeData);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/index.ts?'
-				);
-			},
-			"./src/dataFinalizer/token.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _tokens_lp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tokens/lp */ "./src/dataFinalizer/tokens/lp.ts");\n/* harmony import */ var _tokens_wrapped__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tokens/wrapped */ "./src/dataFinalizer/tokens/wrapped.ts");\n/* harmony import */ var _tokens_simple__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tokens/simple */ "./src/dataFinalizer/tokens/simple.ts");\n\r\n\r\n\r\n\r\nconst finalizeTokenData = (options, initialData, remoteData, failedPlaceholderPicture, failedPlaceholderColor) => {\r\n    if (!remoteData?.type) {\r\n        // no remote data\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isLpTokenEntity)(initialData)) {\r\n            return (0,_tokens_lp__WEBPACK_IMPORTED_MODULE_1__.finalizeFailedLpData)(options, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isWrappedTokenEntity)(initialData)) {\r\n            return (0,_tokens_wrapped__WEBPACK_IMPORTED_MODULE_2__.finalizeFailedWrappedData)(options, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isTokenEntity)(initialData)) {\r\n            return (0,_tokens_simple__WEBPACK_IMPORTED_MODULE_3__.finalizeFailedSimpleTokenData)(options, initialData, failedPlaceholderColor, failedPlaceholderPicture);\r\n        }\r\n    }\r\n    if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isLpTokenEntity)(remoteData)) {\r\n        return (0,_tokens_lp__WEBPACK_IMPORTED_MODULE_1__.finalizeSuccessfulLpData)(options, remoteData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isWrappedTokenEntity)(remoteData)) {\r\n        return (0,_tokens_wrapped__WEBPACK_IMPORTED_MODULE_2__.finalizeSuccessfulWrappedData)(options, remoteData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_0__.isTokenEntity)(remoteData)) {\r\n        return (0,_tokens_simple__WEBPACK_IMPORTED_MODULE_3__.finalizeSuccessfulSimpleTokenData)(options, remoteData, failedPlaceholderColor, failedPlaceholderPicture);\r\n    }\r\n    throw new Error(`Data couldn\'t be finalized for the token, failed to combine data.`);\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (finalizeTokenData);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/token.ts?'
-				);
-			},
-			"./src/dataFinalizer/tokens/lp.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   finalizeFailedLpData: () => (/* binding */ finalizeFailedLpData),\n/* harmony export */   finalizeSuccessfulLpData: () => (/* binding */ finalizeSuccessfulLpData)\n/* harmony export */ });\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers */ "./src/dataFinalizer/helpers.ts");\n\r\nconst finalizeFailedLpData = (options, initialData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    const { token0Pic, token1Pic } = getLocalLpData(options);\r\n    initialData.token0.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedPictureUrl)(token0Pic, failedPlaceholderPicture);\r\n    initialData.token0.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedBgColor)(initialData.token0.pic, failedPlaceholderColor);\r\n    initialData.token1.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedPictureUrl)(token1Pic, failedPlaceholderPicture);\r\n    initialData.token1.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedBgColor)(initialData.token1.pic, failedPlaceholderColor);\r\n    if (initialData.app && options.context === "app") {\r\n        initialData.app.pic = options.dataContextPicUrl || "";\r\n        initialData.app.supportingBackgroundColor = "transparent";\r\n    }\r\n    initialData.network.pic = options.dataContextPicUrl || "";\r\n    initialData.network.supportingBackgroundColor = "transparent";\r\n    return initialData;\r\n};\r\nconst finalizeSuccessfulLpData = (options, remoteData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    const { token0Title, token1Title, token0Pic, token1Pic } = getLocalLpData(options);\r\n    remoteData.token0.title = remoteData.token0.title || token0Title;\r\n    remoteData.token0.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulPictureUrl)(remoteData.token0.pic, token0Pic, failedPlaceholderPicture);\r\n    remoteData.token0.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulBgColor)(remoteData.token0.supportingBackgroundColor, remoteData.token0.pic, failedPlaceholderColor);\r\n    remoteData.token1.title = remoteData.token1.title || token1Title;\r\n    remoteData.token1.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulPictureUrl)(remoteData.token1.pic, token1Pic, failedPlaceholderPicture);\r\n    remoteData.token1.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulBgColor)(remoteData.token1.supportingBackgroundColor, remoteData.token1.pic, failedPlaceholderColor);\r\n    if (remoteData.app) {\r\n        remoteData.app.title = remoteData.app?.title || options.dataContextTitle || "";\r\n        remoteData.app.pic = remoteData.app?.pic || options.dataContextPicUrl || "";\r\n        remoteData.app.supportingBackgroundColor = remoteData.app?.supportingBackgroundColor || "transparent";\r\n    }\r\n    remoteData.network.title = remoteData.network.title || options.dataContextTitle || "";\r\n    remoteData.network.pic = remoteData.network.pic || options.dataContextPicUrl || failedPlaceholderPicture;\r\n    remoteData.network.supportingBackgroundColor = remoteData.network.supportingBackgroundColor || "transparent";\r\n    return remoteData;\r\n};\r\nconst getLocalLpData = (options) => {\r\n    let token0Pic = "", token1Pic = "", token0Title = "", token1Title = "";\r\n    if (options.dataPicUrl?.includes("|")) {\r\n        const lpUrls = options.dataPicUrl.split("|");\r\n        token0Pic = lpUrls[0];\r\n        token1Pic = lpUrls[1];\r\n    }\r\n    if (options.dataTitle?.includes("|")) {\r\n        const lpTitles = options.dataTitle.split("|");\r\n        token0Title = lpTitles[0];\r\n        token1Title = lpTitles[1];\r\n    }\r\n    return { token0Pic, token1Pic, token0Title, token1Title };\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/tokens/lp.ts?'
-				);
-			},
-			"./src/dataFinalizer/tokens/simple.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   finalizeFailedSimpleTokenData: () => (/* binding */ finalizeFailedSimpleTokenData),\n/* harmony export */   finalizeSuccessfulSimpleTokenData: () => (/* binding */ finalizeSuccessfulSimpleTokenData)\n/* harmony export */ });\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers */ "./src/dataFinalizer/helpers.ts");\n\r\nconst finalizeFailedSimpleTokenData = (options, initialData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    initialData.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedPictureUrl)(options.dataPicUrl, failedPlaceholderPicture);\r\n    initialData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedBgColor)(initialData.pic, failedPlaceholderColor);\r\n    initialData.network.pic = options.dataContextPicUrl || "";\r\n    initialData.network.supportingBackgroundColor = "transparent";\r\n    return initialData;\r\n};\r\nconst finalizeSuccessfulSimpleTokenData = (options, remoteData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    remoteData.title = remoteData.title || options.dataTitle || "";\r\n    remoteData.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulPictureUrl)(remoteData.pic, options.dataPicUrl, failedPlaceholderPicture);\r\n    remoteData.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulBgColor)(remoteData.supportingBackgroundColor, remoteData.pic, failedPlaceholderColor);\r\n    remoteData.network.title = remoteData.network.title || options.dataContextTitle || "";\r\n    remoteData.network.pic = remoteData.network.pic || failedPlaceholderPicture;\r\n    remoteData.network.supportingBackgroundColor = remoteData.network.supportingBackgroundColor || "transparent";\r\n    return remoteData;\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/tokens/simple.ts?'
-				);
-			},
-			"./src/dataFinalizer/tokens/wrapped.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   finalizeFailedWrappedData: () => (/* binding */ finalizeFailedWrappedData),\n/* harmony export */   finalizeSuccessfulWrappedData: () => (/* binding */ finalizeSuccessfulWrappedData)\n/* harmony export */ });\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers */ "./src/dataFinalizer/helpers.ts");\n\r\nconst finalizeFailedWrappedData = (options, initialData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    initialData.originalToken.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedPictureUrl)(options.dataPicUrl, failedPlaceholderPicture);\r\n    initialData.originalToken.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalFailedBgColor)(initialData.originalToken.pic, failedPlaceholderColor);\r\n    if (initialData.app && options.context === "app") {\r\n        initialData.app.pic = options.dataContextPicUrl || "";\r\n        initialData.app.supportingBackgroundColor = "transparent";\r\n    }\r\n    initialData.network.pic = options.dataContextPicUrl || "";\r\n    initialData.network.supportingBackgroundColor = "transparent";\r\n    return initialData;\r\n};\r\nconst finalizeSuccessfulWrappedData = (options, remoteData, failedPlaceholderColor, failedPlaceholderPicture) => {\r\n    remoteData.originalToken.title = remoteData.originalToken.title || options.dataTitle || "";\r\n    remoteData.originalToken.pic = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulPictureUrl)(remoteData.originalToken.pic, options.dataContextPicUrl, failedPlaceholderPicture);\r\n    remoteData.originalToken.supportingBackgroundColor = (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.finalSuccessfulBgColor)(remoteData.originalToken.supportingBackgroundColor, remoteData.originalToken.pic, failedPlaceholderColor);\r\n    if (remoteData.app) {\r\n        remoteData.app.title = remoteData?.app?.title || options.dataContextTitle || "";\r\n        remoteData.app.pic = remoteData?.app?.pic || options.dataContextPicUrl || "";\r\n        remoteData.app.supportingBackgroundColor = remoteData?.app?.supportingBackgroundColor || "transparent";\r\n    }\r\n    remoteData.network.title = remoteData.network.title || options.dataContextTitle || "";\r\n    remoteData.network.pic = remoteData.network.pic || options.dataContextTitle || failedPlaceholderPicture;\r\n    remoteData.network.supportingBackgroundColor = remoteData.network?.supportingBackgroundColor || "transparent";\r\n    return remoteData;\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/dataFinalizer/tokens/wrapped.ts?'
-				);
-			},
-			"./src/index.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   DavinciPic: () => (/* binding */ DavinciPic),\n/* harmony export */   davinciPicsConfig: () => (/* binding */ davinciPicsConfig)\n/* harmony export */ });\n/* harmony import */ var _modules_dataLoader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/dataLoader */ "./src/modules/dataLoader.ts");\n/* harmony import */ var _dataFinalizer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dataFinalizer */ "./src/dataFinalizer/index.ts");\n/* harmony import */ var _modules_attributeIntegrator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/attributeIntegrator */ "./src/modules/attributeIntegrator.ts");\n/* harmony import */ var _modules_dataInitializer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/dataInitializer */ "./src/modules/dataInitializer.ts");\n/* harmony import */ var _svgGenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./svgGenerator */ "./src/svgGenerator/index.ts");\n/* harmony import */ var _svgUpdator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./svgUpdator */ "./src/svgUpdator/index.ts");\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _types_picsCommonTypes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./types/picsCommonTypes */ "./src/types/picsCommonTypes.ts");\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nlet davinciPicsConfig = {\r\n    apiUrl: "https://davincigraph.art/api/v1",\r\n    counter: 0,\r\n    colorRegex: /#(?:[0-9A-Fa-f]{3}){1,2}|rgb\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*\\)|transparent/,\r\n};\r\n/**\r\n * The DavinciPic class is a custom HTML element that encapsulates the logic for\r\n * fetching and displaying various types of images based on the PicsType.\r\n *\r\n * This element provides several customizable attributes like `type`, `address`, `network`, etc.\r\n * to configure its behavior. It supports both online and offline modes, fetching data\r\n * via the DataLoader class or using provided attributes in the offline mode.\r\n *\r\n * The class utilizes IntersectionObserver to fetch data when the element scrolls into view.\r\n * It uses the SvgGenerator for rendering SVG based on the fetched or provided data.\r\n *\r\n * Author: Davincigraph Team\r\n *\r\n * Usage:\r\n * <davinci-pic type="token" address="someAddress" network="hedera"></davinci-pic>\r\n *\r\n * The class also handles various edge cases like missing data and allows fallback mechanisms.\r\n */\r\nclass DavinciPic extends HTMLElement {\r\n    set type(value) {\r\n        this.setAttribute("type", value);\r\n    }\r\n    get type() {\r\n        const value = this.getAttribute("type");\r\n        if (value && (0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isPicsType)(value)) {\r\n            return value;\r\n        }\r\n        throw new Error("Type is mandatory.");\r\n    }\r\n    // not applied to app type\r\n    set network(value) {\r\n        this.setAttribute("network", value);\r\n    }\r\n    // not applied to app type\r\n    get network() {\r\n        const value = this.getAttribute("network");\r\n        if (this.type !== "app" && !value) {\r\n            throw new Error("Network is not defined on the element.");\r\n        }\r\n        return value || "";\r\n    }\r\n    set address(value) {\r\n        this.setAttribute("address", value);\r\n    }\r\n    // not applied to network and app entities\r\n    get address() {\r\n        const value = this.getAttribute("address");\r\n        if (this.type !== "app" && this.type !== "network" && !value) {\r\n            throw new Error("Network is not defined on the element.");\r\n        }\r\n        return value || "";\r\n    }\r\n    // only applies to app entities\r\n    set name(value) {\r\n        this.setAttribute("name", value);\r\n    }\r\n    // only applies to app entities\r\n    get name() {\r\n        const value = this.getAttribute("name");\r\n        if (this.type === "app" && value) {\r\n            return value;\r\n        }\r\n        throw new Error("Name is necessary for an app.");\r\n    }\r\n    set offlineMode(value) {\r\n        value ? this.setAttribute("offline-mode", "") : this.removeAttribute("offline-mode");\r\n    }\r\n    get offlineMode() {\r\n        return this.hasAttribute("offline-mode");\r\n    }\r\n    // only applies to token entities\r\n    set complexTokenType(value) {\r\n        if (this.type === "token") {\r\n            throw new Error("Complex token type is specifically for token type.");\r\n        }\r\n        if (value !== "lp" && value !== "wrapped") {\r\n            throw new Error("The value given for complex token type is invalid.");\r\n        }\r\n        this.setAttribute("complex-token-type", value);\r\n    }\r\n    // only applies to token entities\r\n    get complexTokenType() {\r\n        const value = this.getAttribute("complex-token-type");\r\n        if (value === "lp" || value === "wrapped") {\r\n            return value;\r\n        }\r\n        return undefined;\r\n    }\r\n    // only applies to token entities\r\n    set lpTokensPosition(value) {\r\n        if (this.type === "token") {\r\n            throw new Error("Lp Tokens Position is specifically for token type.");\r\n        }\r\n        if (!value || !_types_picsCommonTypes__WEBPACK_IMPORTED_MODULE_7__.picsLpTokensPositionTypes.includes(value)) {\r\n            value = "intersected";\r\n        }\r\n        this.setAttribute("lp-tokens-position", value);\r\n    }\r\n    // only applies to token entities\r\n    get lpTokensPosition() {\r\n        const value = this.getAttribute("lp-tokens-position");\r\n        if (value && _types_picsCommonTypes__WEBPACK_IMPORTED_MODULE_7__.picsLpTokensPositionTypes.includes(value)) {\r\n            return value;\r\n        }\r\n        return "intersected";\r\n    }\r\n    // not applies to banner\r\n    set size(value) {\r\n        this.setAttribute("size", value.toString());\r\n    }\r\n    // not applies to banner\r\n    get size() {\r\n        const value = this.getAttribute("size");\r\n        return value ? parseFloat(value) : 100;\r\n    }\r\n    // not applies to banners & complex and contextual tokens\r\n    set shape(value) {\r\n        this.setAttribute("shape", value);\r\n    }\r\n    // not applies to banners & complex and contextual tokens\r\n    get shape() {\r\n        const value = this.getAttribute("shape");\r\n        return (0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isPicsShapeType)(value) ? value : "circle";\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    set context(value) {\r\n        this.setAttribute("context", value);\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    get context() {\r\n        const value = this.getAttribute("context");\r\n        return (0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isPicsContextType)(value) ? value : "app";\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    set contextPosition(value) {\r\n        this.setAttribute("context-position", value);\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    get contextPosition() {\r\n        const value = this.getAttribute("context-position");\r\n        return (0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isPicsContextPositionType)(value) ? value : "bottomRight";\r\n    }\r\n    // not applies to banner\r\n    set strokeWidth(value) {\r\n        this.setAttribute("stroke-width", value.toString());\r\n    }\r\n    // not applies to banner\r\n    get strokeWidth() {\r\n        const value = this.getAttribute("stroke-width");\r\n        return value && !isNaN(Number(value)) ? parseFloat(value) : 0;\r\n    }\r\n    // not applies to banner\r\n    set strokeColor(value) {\r\n        this.setAttribute("stroke-color", value);\r\n    }\r\n    // not applies to banner\r\n    get strokeColor() {\r\n        return this.getAttribute("stroke-color") || "gray";\r\n    }\r\n    set censor(value) {\r\n        this.setAttribute("censor", value);\r\n    }\r\n    get censor() {\r\n        const value = this.getAttribute("censor");\r\n        return (0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isPicsSensitivityType)(value) ? value : "copyright-violated";\r\n    }\r\n    set dataTitle(value) {\r\n        this.setAttribute("data-type", value);\r\n    }\r\n    get dataTitle() {\r\n        return this.getAttribute("data-title") || "";\r\n    }\r\n    set dataPicUrl(value) {\r\n        this.setAttribute("data-pic-url", value);\r\n    }\r\n    get dataPicUrl() {\r\n        return this.getAttribute("data-pic-url") || "";\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    set dataContextTitle(value) {\r\n        this.setAttribute("data-context-title", value);\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    get dataContextTitle() {\r\n        return this.getAttribute("data-context-title") || "";\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    set dataContextPicUrl(value) {\r\n        this.setAttribute("data-context-pic-url", value);\r\n    }\r\n    // only applies to token, specially Wrapped and liquidity\r\n    get dataContextPicUrl() {\r\n        return this.getAttribute("data-context-pic-url") || "";\r\n    }\r\n    set placeholder(value) {\r\n        this.setAttribute("placeholder", value);\r\n    }\r\n    get placeholder() {\r\n        return this.getAttribute("placeholder") || "default";\r\n    }\r\n    set loadingEffect(value) {\r\n        this.setAttribute("loading-effect", value);\r\n    }\r\n    get loadingEffect() {\r\n        return this.getAttribute("loading-effect") || "transparent";\r\n    }\r\n    set FailureEffect(value) {\r\n        this.setAttribute("failure-effect", value);\r\n    }\r\n    get FailureEffect() {\r\n        return this.getAttribute("failure-effect") || "placeholder";\r\n    }\r\n    // for test\r\n    set delayResponseTime(value) {\r\n        this.setAttribute("delay-response-time", value.toString());\r\n    }\r\n    // for test\r\n    get delayResponseTime() {\r\n        const value = this.getAttribute("delay-response-time");\r\n        return value && !isNaN(Number(value)) ? parseFloat(value) : 0;\r\n    }\r\n    observer;\r\n    interval;\r\n    constructor() {\r\n        super();\r\n        this.observer = new IntersectionObserver(this.handleIntersection.bind(this), { root: null, rootMargin: "200px 0px", threshold: 0 });\r\n    }\r\n    connectedCallback() {\r\n        this.style.display = "inline-block";\r\n        this.style.verticalAlign = "top";\r\n        this.style.transition = "opacity 1s";\r\n        this.style.opacity = "1";\r\n        this.observer.observe(this);\r\n    }\r\n    disconnectedCallback() {\r\n        this.observer.unobserve(this);\r\n        this.clearInterval();\r\n    }\r\n    /**\r\n     * when the component reached viewport, get the data and generate the appropriate picture\r\n     * @param entries\r\n     * @param observer\r\n     */\r\n    async handleIntersection(entries, observer) {\r\n        for (const entry of entries) {\r\n            if (entry.isIntersecting) {\r\n                observer.unobserve(entry.target);\r\n                try {\r\n                    // integrate attributes to an object\r\n                    const attributes = (0,_modules_attributeIntegrator__WEBPACK_IMPORTED_MODULE_2__["default"])(this);\r\n                    // get loading placeholders\r\n                    const placeholders = (0,_modules_dataInitializer__WEBPACK_IMPORTED_MODULE_3__.getInitialPlaceholders)((!attributes.loadingEffect || attributes.loadingEffect.endsWith("placeholder")\r\n                        ? attributes.placeholder\r\n                        : attributes.loadingEffect) || "transparent", attributes.type);\r\n                    // construct initial data\r\n                    const initialData = (0,_modules_dataInitializer__WEBPACK_IMPORTED_MODULE_3__["default"])(attributes, placeholders);\r\n                    // generate the svg element\r\n                    let svgElement = (0,_svgGenerator__WEBPACK_IMPORTED_MODULE_4__["default"])(initialData, attributes);\r\n                    // some primary styling\r\n                    if (svgElement) {\r\n                        // during loading stage hide the element is needed\r\n                        svgElement.style.display = attributes.loadingEffect === "hide" ? "none" : "inline";\r\n                        // add the generated svg to the custom element\r\n                        this.appendChild(svgElement);\r\n                        // apply sizes\r\n                        if (attributes.type === "banner") {\r\n                            this.style.width = "100%";\r\n                        }\r\n                        else {\r\n                            this.style.width = `${this.size}px`;\r\n                            this.style.height = `${this.size}px`;\r\n                        }\r\n                        // pulse\r\n                        if (attributes.loadingEffect?.startsWith("pulse") || attributes.loadingEffect?.startsWith("\'pulse")) {\r\n                            this.interval = setInterval(() => {\r\n                                this.style.opacity = this.style.opacity === "1" ? "0.5" : "1";\r\n                            }, 1000);\r\n                        }\r\n                    }\r\n                    // for test purposes\r\n                    await this.delay();\r\n                    // fetch the remote data, or in case of offline mode just an empty object\r\n                    const remoteData = attributes.offlineMode === true ? {} : await (0,_modules_dataLoader__WEBPACK_IMPORTED_MODULE_0__["default"])(attributes);\r\n                    // combine remote data with possible local data and placeholders\r\n                    const finalData = (0,_dataFinalizer__WEBPACK_IMPORTED_MODULE_1__["default"])(initialData, remoteData, attributes, placeholders);\r\n                    // if pulse was activated during loading, remove it\r\n                    this.clearInterval();\r\n                    // a shallow status determining the data presence or not\r\n                    const status = !(0,_types_guards__WEBPACK_IMPORTED_MODULE_6__.isEntityResponseEmpty)(remoteData) || attributes.dataPicUrl ? "success" : "failed";\r\n                    //finalizing\r\n                    if (status === "failed" && attributes.FailureEffect === "hide") {\r\n                        //remove the element if the request failed and failure effect is set to hide\r\n                        this.remove();\r\n                    }\r\n                    else {\r\n                        // make changes to the svg\r\n                        (0,_svgUpdator__WEBPACK_IMPORTED_MODULE_5__["default"])(svgElement, finalData, attributes, status);\r\n                    }\r\n                }\r\n                catch (error) {\r\n                    console.error(`DavinciPics: ${error.message}`);\r\n                }\r\n            }\r\n        }\r\n    }\r\n    delay = () => {\r\n        return new Promise((resolve) => {\r\n            setTimeout(() => {\r\n                resolve(true);\r\n            }, this.delayResponseTime);\r\n        });\r\n    };\r\n    clearInterval = () => {\r\n        clearInterval(this.interval);\r\n        this.style.opacity = "1";\r\n    };\r\n}\r\ncustomElements.define("davinci-pic", DavinciPic);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/index.ts?'
-				);
-			},
-			"./src/modules/attributeIntegrator.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/**\r\n * out of all the possible attributes of the element, it construct an object appropriate to the type of the entity\r\n * @param PicElement\r\n * @returns DavinciPicAttributes\r\n */\r\nconst integrateAttributes = (PicElement) => {\r\n    if (PicElement.offlineMode && !PicElement.dataPicUrl) {\r\n        throw new Error("Defining alternative picture url is necessary when using offline mode.");\r\n    }\r\n    switch (PicElement.type) {\r\n        case "token": {\r\n            const tokenAttrs = {\r\n                type: "token",\r\n                network: PicElement.network,\r\n                address: PicElement.address,\r\n                offlineMode: PicElement.offlineMode,\r\n                shape: PicElement.shape,\r\n                size: PicElement.size,\r\n                strokeWidth: PicElement.strokeWidth,\r\n                strokeColor: PicElement.strokeColor,\r\n                censor: PicElement.censor,\r\n                complexTokenType: PicElement.complexTokenType,\r\n                context: PicElement.context,\r\n                contextPosition: PicElement.contextPosition,\r\n                lpTokensPosition: PicElement.lpTokensPosition,\r\n                dataContextTitle: PicElement.dataContextTitle,\r\n                dataContextPicUrl: PicElement.dataContextPicUrl,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n            };\r\n            return tokenAttrs;\r\n        }\r\n        case "profile": {\r\n            const profileAttrs = {\r\n                type: "profile",\r\n                network: PicElement.network,\r\n                address: PicElement.address,\r\n                offlineMode: PicElement.offlineMode,\r\n                size: PicElement.size,\r\n                strokeWidth: PicElement.strokeWidth,\r\n                strokeColor: PicElement.strokeColor,\r\n                censor: PicElement.censor,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n                shape: PicElement.shape,\r\n            };\r\n            return profileAttrs;\r\n        }\r\n        case "banner": {\r\n            const bannerAttrs = {\r\n                type: "banner",\r\n                network: PicElement.network,\r\n                address: PicElement.address,\r\n                offlineMode: PicElement.offlineMode,\r\n                censor: PicElement.censor,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n            };\r\n            return bannerAttrs;\r\n        }\r\n        case "node": {\r\n            const nodeAttrs = {\r\n                type: "node",\r\n                network: PicElement.network,\r\n                address: PicElement.address,\r\n                offlineMode: PicElement.offlineMode,\r\n                size: PicElement.size,\r\n                shape: PicElement.shape,\r\n                strokeWidth: PicElement.strokeWidth,\r\n                strokeColor: PicElement.strokeColor,\r\n                censor: PicElement.censor,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n            };\r\n            return nodeAttrs;\r\n        }\r\n        case "network": {\r\n            const networksAttrs = {\r\n                type: "network",\r\n                network: PicElement.network,\r\n                offlineMode: PicElement.offlineMode,\r\n                size: PicElement.size,\r\n                shape: PicElement.shape,\r\n                strokeWidth: PicElement.strokeWidth,\r\n                strokeColor: PicElement.strokeColor,\r\n                censor: PicElement.censor,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n            };\r\n            return networksAttrs;\r\n        }\r\n        case "app": {\r\n            const appAttrs = {\r\n                type: "app",\r\n                name: PicElement.name,\r\n                offlineMode: PicElement.offlineMode,\r\n                size: PicElement.size,\r\n                shape: PicElement.shape,\r\n                strokeWidth: PicElement.strokeWidth,\r\n                strokeColor: PicElement.strokeColor,\r\n                censor: PicElement.censor,\r\n                dataTitle: PicElement.dataTitle,\r\n                dataPicUrl: PicElement.dataPicUrl,\r\n                placeholder: PicElement.placeholder,\r\n                loadingEffect: PicElement.loadingEffect,\r\n                FailureEffect: PicElement.FailureEffect,\r\n                delayResponseTime: PicElement.delayResponseTime,\r\n            };\r\n            return appAttrs;\r\n        }\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (integrateAttributes);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/modules/attributeIntegrator.ts?'
-				);
-			},
-			"./src/modules/dataInitializer.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   getInitialPlaceholders: () => (/* binding */ getInitialPlaceholders)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "./src/modules/helpers.ts");\n\r\n\r\n/**\r\n * construct an object appropriate to the entity type in the form of expecting entity object from the API.\r\n * @param options attributes of the element\r\n * @param placeholders initial placeholder object\r\n * @returns\r\n */\r\nconst initializeData = (options, placeholders) => {\r\n    switch (options.type) {\r\n        case "token": {\r\n            let initialData = {\r\n                type: "TOKEN",\r\n                address: options.address,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n                network: {\r\n                    id: options.network,\r\n                    title: options.context === "network" ? options.dataContextTitle || "" : "",\r\n                    pic: "",\r\n                    supportingBackgroundColor: placeholders.color,\r\n                },\r\n            };\r\n            const urlContainsLpSign = options.dataPicUrl?.includes("|");\r\n            const titleContainsLpSign = options.dataTitle?.includes("|");\r\n            // send back an lp token entity\r\n            if (options.complexTokenType === "lp" || urlContainsLpSign || titleContainsLpSign) {\r\n                let token0Pic = placeholders.url, token1Pic = placeholders.url, token0Title = "", token1Title = "";\r\n                if (titleContainsLpSign && options.dataTitle) {\r\n                    const titles = options.dataTitle.split("|");\r\n                    token0Title = titles[0];\r\n                    token1Title = titles[1];\r\n                }\r\n                return {\r\n                    ...initialData,\r\n                    type: "LP",\r\n                    title: "",\r\n                    sensitivity: "safe",\r\n                    token0: {\r\n                        network: options.network,\r\n                        address: options.address,\r\n                        sensitivity: "safe",\r\n                        pic: token0Pic,\r\n                        supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n                        title: token0Title,\r\n                    },\r\n                    token1: {\r\n                        network: options.network,\r\n                        address: options.address,\r\n                        sensitivity: "safe",\r\n                        pic: token1Pic,\r\n                        supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n                        title: token1Title,\r\n                    },\r\n                    app: getInitialAppData(options, placeholders),\r\n                };\r\n            }\r\n            // send back a wrapped token entity\r\n            if (options.complexTokenType === "wrapped") {\r\n                return {\r\n                    ...initialData,\r\n                    type: "WRAPPED",\r\n                    title: "",\r\n                    sensitivity: "safe",\r\n                    originalToken: {\r\n                        network: options.network,\r\n                        address: options.address,\r\n                        sensitivity: "safe",\r\n                        pic: placeholders.url,\r\n                        supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n                        title: options.dataTitle || "",\r\n                    },\r\n                    app: getInitialAppData(options, placeholders),\r\n                };\r\n            }\r\n            // send back a normal token entity\r\n            return {\r\n                ...initialData,\r\n                title: options.dataTitle || "",\r\n                pic: placeholders.url,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n            };\r\n        }\r\n        case "profile":\r\n            return {\r\n                network: options.network,\r\n                address: options.address,\r\n                title: options.dataTitle || "",\r\n                sensitivity: "safe",\r\n                pic: placeholders.url,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n            };\r\n        case "banner":\r\n            return {\r\n                network: options.network,\r\n                address: options.address,\r\n                title: options.dataTitle || "",\r\n                sensitivity: "safe",\r\n                banner: placeholders.url,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n            };\r\n        case "node":\r\n            return {\r\n                network: options.network,\r\n                address: options.address,\r\n                title: options.dataTitle || "",\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n                pic: placeholders.url,\r\n            };\r\n        case "network":\r\n            return {\r\n                id: options.network,\r\n                title: options.dataTitle || "",\r\n                pic: placeholders.url,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n            };\r\n        case "app":\r\n            return {\r\n                name: " ",\r\n                title: options.dataTitle || "",\r\n                pic: placeholders.url,\r\n                supportingBackgroundColor: getPlaceholderBgColor(placeholders),\r\n            };\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (initializeData);\r\nconst getInitialPlaceholders = (text, type) => {\r\n    const placeholders = { color: "transparent", url: "" };\r\n    if (text === "transparent") {\r\n        return placeholders;\r\n    }\r\n    if (text.endsWith("randomColor") || text.endsWith("randomColor\'")) {\r\n        placeholders.color = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.getRandomColor)();\r\n        return placeholders;\r\n    }\r\n    let possbileBgColor = text.match(___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.colorRegex);\r\n    if (possbileBgColor) {\r\n        placeholders.color = possbileBgColor[0];\r\n        return placeholders;\r\n    }\r\n    placeholders.url = (0,_helpers__WEBPACK_IMPORTED_MODULE_1__.getMissingURL)(type, text);\r\n    return placeholders;\r\n};\r\nconst getInitialAppData = (options, placeholders) => {\r\n    return {\r\n        title: options.dataContextTitle || "",\r\n        pic: "",\r\n        supportingBackgroundColor: placeholders.color,\r\n    };\r\n};\r\nconst getPlaceholderBgColor = (placeholders) => {\r\n    return !placeholders.url ? placeholders.color : "transparent";\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/modules/dataInitializer.ts?'
-				);
-			},
-			"./src/modules/dataLoader.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n\r\n/**\r\n * sends the get request to the API and return the approprite entity data.\r\n * in case of not found an the API it returns an empty object with status of 200, which is expected\r\n * @param attributes\r\n * @returns\r\n */\r\nconst davinciPicsLoad = async (attributes) => {\r\n    if (attributes.offlineMode !== true) {\r\n        let url = attributes.type === "network"\r\n            ? `${___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.apiUrl}/networks/${attributes.network}`\r\n            : attributes.type === "app"\r\n                ? `${___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.apiUrl}/apps/${attributes.name}`\r\n                : `${___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.apiUrl}/${attributes.type === "banner" || attributes.type === "profile" ? "account" : attributes.type}s/${attributes.network}/${attributes.address}`;\r\n        try {\r\n            const response = await fetch(url);\r\n            // Check for HTTP errors\r\n            if (!response.ok) {\r\n                throw new Error(`HTTP error! status: ${response.status}`);\r\n            }\r\n            // Parse JSON response\r\n            const data = (await response.json());\r\n            return data;\r\n        }\r\n        catch (error) {\r\n            console.error(`DavinciPic Fetch Error: ${error.message}`);\r\n        }\r\n    }\r\n    return {};\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (davinciPicsLoad);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/modules/dataLoader.ts?'
-				);
-			},
-			"./src/modules/helpers.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   getContextData: () => (/* binding */ getContextData),\n/* harmony export */   getMissingURL: () => (/* binding */ getMissingURL),\n/* harmony export */   getRandomColor: () => (/* binding */ getRandomColor),\n/* harmony export */   getShapeRadius: () => (/* binding */ getShapeRadius),\n/* harmony export */   mustBeCensored: () => (/* binding */ mustBeCensored)\n/* harmony export */ });\nconst defaultPlaceholderPictures = {\r\n    token: {\r\n        defaultBright: "https://arweave.net/ZAMK4tuU1MZ9TkNl2ARV2QDRumGT5Yxw13uCpW3kX6w",\r\n        default: "https://arweave.net/wW4bp6129XobnasaZbDB4RxdnpipGR8XyK0tUXGiVL0",\r\n        defaultDark: "https://arweave.net/j5B7_CYAOdrk6YJNVeJMeOHn4HbySsgkObUSfpvUuDA",\r\n        questionMarkBright: "https://arweave.net/z-5G9bNj_gisiQhVECwaUdSzuXMxl9Gi9UxYqrwUrq4",\r\n        questionMark: "https://arweave.net/u9t3--97iFNeFB4XaX7auIdcJWjNWF090BFcJdnBmiQ",\r\n        questionMarkDark: "https://arweave.net/HDVERv0ghkA91qhI2ud7qVUU_FFtAIyYELHHxQ9t2BQ",\r\n        exclamationMarkBight: "https://arweave.net/HS0RGj5YSKgcNch2US1E8saZKdM8RGlQWpxwhk5eKrk",\r\n        exclamationMark: "https://arweave.net/KwbKX4FOOM59KmFrAvtRhr5U-8MqWsSzU0rSA3Z7Z4A",\r\n        exclamationMarkDark: "https://arweave.net/A3Ja0tV3kU6EhVvN1EQejG-kmtY_yEcbgQ6pShYRXHo",\r\n    },\r\n    profile: {\r\n        defaultBright: "https://arweave.net/WxLlax6NBCapLUuKcuy-wvLlKLBTqxTV40yJt7Yc26Q",\r\n        default: "https://arweave.net/qsn_zIlG_7_Ob4_qS6Bpc8vLEc5bPScw6JMly_shxlk",\r\n        defaultDark: "https://arweave.net/ZHWeQz5R6VHBHOg6eOGekMsudTyy7uNBdnrul5gIIu0",\r\n    },\r\n};\r\nconst colors = [\r\n    "#ef4444",\r\n    "#f97316",\r\n    "#f59e0b",\r\n    "#eab308",\r\n    "#84cc16",\r\n    "#22c55e",\r\n    "#10b981",\r\n    "#14b8a6",\r\n    "#06b6d4",\r\n    "#0ea5e9",\r\n    "#3b82f6",\r\n    "#6366f1",\r\n    "#8b5cf6",\r\n    "#a855f7",\r\n    "#d946ef",\r\n    "#ec4899",\r\n    "#f43f5e",\r\n];\r\n// extracts the url from a string which contains one in the format of url(...) or url(\'\')\r\nfunction getMissingURL(type, placeholder) {\r\n    placeholder = placeholder || "defaultBright";\r\n    // Check if it\'s a URL in the format url() or url(\'\')\r\n    const urlMatch = placeholder.match(/url\\([\'"]?(.*?)[\'"]?\\)/);\r\n    if (urlMatch) {\r\n        return urlMatch[1]; // Return the extracted URL\r\n    }\r\n    // banners has no default pictures\r\n    if (type === "banner")\r\n        return "";\r\n    // Check if it\'s one of the known classes\r\n    const knownURL = defaultPlaceholderPictures[type === "profile" ? "profile" : "token"][placeholder];\r\n    if (knownURL) {\r\n        return knownURL; // Return the known URL\r\n    }\r\n    // Default to \'defaultBright\'\r\n    return defaultPlaceholderPictures[type === "profile" ? "profile" : "token"]["defaultBright"];\r\n}\r\n// cheks the sensetivity of entity and the expected censoring type of the element and act upon it\r\nconst mustBeCensored = (censoredType, checkingType) => {\r\n    if (checkingType === undefined || censoredType === undefined)\r\n        return false;\r\n    censoredType = censoredType?.toUpperCase();\r\n    checkingType = checkingType?.toUpperCase();\r\n    if (checkingType === "SAFE")\r\n        return false;\r\n    if (checkingType === "SENSITIVE" && (censoredType === "INAPPROPRIATE" || censoredType === "COPYRIGHT-VIOLATED"))\r\n        return false;\r\n    if (checkingType === "INAPPROPRIATE" && censoredType === "COPYRIGHT-VIOLATED")\r\n        return false;\r\n    return true;\r\n};\r\nfunction getRandomColor() {\r\n    const randomIndex = Math.floor(Math.random() * colors.length);\r\n    return colors[randomIndex];\r\n}\r\nfunction getShapeRadius(shape, size = 100) {\r\n    if (!shape)\r\n        shape = "circle";\r\n    return String(shape === "circle" ? size / 2 : shape === "smoothSquare" ? size * (15 / 100) : 0);\r\n}\r\n// normalize the wrapped or liquidity token\'s context(app or network) data\r\nconst getContextData = (options, data) => {\r\n    if (options.context === "app" && data?.app) {\r\n        return {\r\n            type: "app",\r\n            pic: data.app.pic || "",\r\n            title: data.app.title ? `Originated by ${data.app.title}` : "",\r\n            supportingBackgroundColor: data.app.supportingBackgroundColor || "transparent",\r\n        };\r\n    }\r\n    if (options.context === "network" && data?.network) {\r\n        return {\r\n            type: "network",\r\n            pic: data.network.pic || "",\r\n            title: data.network.title ? `Originated on ${data.network.title}` : "",\r\n            supportingBackgroundColor: data.network.supportingBackgroundColor || "transparent",\r\n        };\r\n    }\r\n    return { type: "none", pic: "", title: "", supportingBackgroundColor: "transparent" };\r\n};\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/modules/helpers.ts?'
-				);
-			},
-			"./src/svgGenerator/banner.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _templates_bannerSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/bannerSVG */ "./src/templates/bannerSVG.ts");\n\r\n\r\n// reads the banner template and add the inital data to it\r\nconst generateBannerSvg = (data) => {\r\n    const uniqueID = `banner-${++___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.counter}`;\r\n    // combine the svg template with the data\r\n    const clonedSvg = document.importNode(_templates_bannerSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    if (svg) {\r\n        svg.setAttribute("data-unique-id", uniqueID);\r\n        const rectPathElem = clonedSvg.querySelector("clipPath");\r\n        if (rectPathElem)\r\n            rectPathElem.id = `shape-${uniqueID}`;\r\n        const BgElem = clonedSvg.querySelector("#rect-bg");\r\n        if (BgElem) {\r\n            BgElem.setAttribute("fill", data.supportingBackgroundColor);\r\n        }\r\n        const imageElem = clonedSvg.querySelector("image");\r\n        if (imageElem) {\r\n            imageElem.setAttribute("href", data.banner || "");\r\n            imageElem.setAttribute("clip-path", `url(#shape-${uniqueID})`);\r\n        }\r\n    }\r\n    return svg;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateBannerSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgGenerator/banner.ts?'
-				);
-			},
-			"./src/svgGenerator/base.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/baseSVG */ "./src/templates/baseSVG.ts");\n\r\n\r\n// reads the base template and add the inital data to it\r\nconst generateBaseSvg = (title, pictureUrl, supportingBackgroundColor, options) => {\r\n    const uniqueID = `${++___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.counter}`;\r\n    const strokeWidth = options.strokeWidth || 0;\r\n    // cloning the svg template\r\n    const clonedSvg = document.importNode(_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    if (svg) {\r\n        svg.setAttribute("width", `${options.size}`);\r\n        svg.setAttribute("height", `${options.size}`);\r\n        svg.setAttribute("data-unique-id", uniqueID);\r\n        svg.setAttribute("data-template-type", "base");\r\n        (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBasePathRect)(clonedSvg, uniqueID, strokeWidth, options.shape);\r\n        (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseBgRect)(clonedSvg, supportingBackgroundColor, strokeWidth, options.shape);\r\n        (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseImage)(clonedSvg, pictureUrl, uniqueID, strokeWidth);\r\n        (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseRect)(clonedSvg, title, strokeWidth, options, false);\r\n    }\r\n    return svg;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateBaseSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgGenerator/base.ts?'
-				);
-			},
-			"./src/svgGenerator/contextual.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/contextualTokenSVG */ "./src/templates/contextualTokenSVG.ts");\n\r\n\r\n// reads the contextual template and add the inital data to it\r\nconst generateContextualTokenSvg = (title, pictureUrl, contextTitle, contextPictureUrl, supportingBackgroundColor, contextSupportingBackgroundColor, options) => {\r\n    const strokeWidth = options.strokeWidth || 0;\r\n    const uniqueID = `${++___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.counter}`;\r\n    const tokenCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.getContextualTokenShapeData)(options.context, strokeWidth);\r\n    const contextCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.getContextualContextShapeData)(options, tokenCircleData, strokeWidth);\r\n    // combine the svg template with the data\r\n    const clonedSvg = document.importNode(_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    if (svg) {\r\n        svg.setAttribute("width", `${options.size}`);\r\n        svg.setAttribute("height", `${options.size}`);\r\n        svg.setAttribute("data-unique-id", uniqueID);\r\n        svg.setAttribute("data-template-type", "contextual");\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualPath)(clonedSvg, uniqueID, tokenCircleData, contextCircleData);\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualTokenShapes)(clonedSvg, uniqueID, tokenCircleData, false, pictureUrl, title, supportingBackgroundColor, strokeWidth, options.strokeColor || "", false);\r\n        if (options.context && options.context !== "none") {\r\n            (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualContextShape)(clonedSvg, uniqueID, contextCircleData, contextPictureUrl, contextTitle, contextSupportingBackgroundColor, strokeWidth, options.strokeColor || "", false);\r\n        }\r\n    }\r\n    return svg;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateContextualTokenSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgGenerator/contextual.ts?'
-				);
-			},
-			"./src/svgGenerator/index.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _banner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./banner */ "./src/svgGenerator/banner.ts");\n/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./base */ "./src/svgGenerator/base.ts");\n/* harmony import */ var _contextual__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./contextual */ "./src/svgGenerator/contextual.ts");\n/* harmony import */ var _lp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lp */ "./src/svgGenerator/lp.ts");\n\r\n\r\n\r\n\r\n\r\n\r\nconst generateSvg = (data, options) => {\r\n    if (options.type === "token") {\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isLpTokenEntity)(data)) {\r\n            return (0,_lp__WEBPACK_IMPORTED_MODULE_5__["default"])(data, options);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isWrappedTokenEntity)(data)) {\r\n            const contextData = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getContextData)(options, data);\r\n            return (0,_contextual__WEBPACK_IMPORTED_MODULE_4__["default"])(data.title, data.originalToken.pic, contextData.title, contextData.pic, data.originalToken.supportingBackgroundColor, contextData.supportingBackgroundColor, options);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isTokenEntity)(data)) {\r\n            if (options.context === "network") {\r\n                return (0,_contextual__WEBPACK_IMPORTED_MODULE_4__["default"])(data.title, data.pic, data.network.title, data.network.pic, data.supportingBackgroundColor, data.network.supportingBackgroundColor, options);\r\n            }\r\n            return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(data.title, data.pic, data.supportingBackgroundColor, options);\r\n        }\r\n    }\r\n    if (options.type === "profile" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isProfileEntity)(data)) {\r\n        // return generateProfileSvg(data, options);\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(data.title, data.pic, data.supportingBackgroundColor, options);\r\n    }\r\n    if (options.type === "banner" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isBannerEntity)(data)) {\r\n        return (0,_banner__WEBPACK_IMPORTED_MODULE_2__["default"])(data);\r\n    }\r\n    if (options.type === "node" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isNodeEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(data.title, data.pic, data.supportingBackgroundColor, options);\r\n    }\r\n    if (options.type === "network" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isNetworkEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(data.title, data.pic, data.supportingBackgroundColor, options);\r\n    }\r\n    if (options.type === "app" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isAppEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(data.title, data.pic, data.supportingBackgroundColor, options);\r\n    }\r\n    throw new Error("svg couldn\'t be generated.");\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgGenerator/index.ts?'
-				);
-			},
-			"./src/svgGenerator/lp.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .. */ "./src/index.ts");\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../templates/LPTokenSVG */ "./src/templates/LPTokenSVG.ts");\n/* harmony import */ var _templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../templates/LPMergedTokenSVG */ "./src/templates/LPMergedTokenSVG.ts");\n/* harmony import */ var _templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../templates/contextualTokenSVG */ "./src/templates/contextualTokenSVG.ts");\n\r\n\r\n\r\n\r\n\r\n// reads the lp template and add the inital data to it\r\nconst generateLpTokenSvg = (data, options) => {\r\n    const strokeWidth = options.strokeWidth || 0;\r\n    const uniqueID = `${++___WEBPACK_IMPORTED_MODULE_0__.davinciPicsConfig.counter}`;\r\n    const contextData = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_1__.getContextData)(options, data);\r\n    // clone the the lp template, either merged or unmerged\r\n    const clonedSvg = document.importNode(options.lpTokensPosition === "merged" ? _templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_3__["default"].content : _templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    if (svg) {\r\n        svg.setAttribute("width", `${options.size}`);\r\n        svg.setAttribute("height", `${options.size}`);\r\n        svg.setAttribute("data-unique-id", uniqueID);\r\n        svg.setAttribute("data-template-type", "lp");\r\n        // ====== case 1: Unmerged lp templated\r\n        if (options.lpTokensPosition !== "merged") {\r\n            const [token0CircleData, token1CircleData] = (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__.calculateCircleData)(contextData.type !== "none", options.lpTokensPosition === "intimate", strokeWidth);\r\n            const contextCircleData = (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__.getLpTokenContextData)(options, token0CircleData, token1CircleData, strokeWidth);\r\n            (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__.setLpPath)(clonedSvg, uniqueID, token0CircleData, token1CircleData, contextCircleData);\r\n            (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__.setLpTokenShapes)(clonedSvg, uniqueID, token0CircleData, token1CircleData, false, false, data, options.strokeColor || "", strokeWidth, false);\r\n            // context\r\n            if (contextData.type !== "none") {\r\n                (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_2__.setLpContextShapes)(clonedSvg, uniqueID, contextCircleData, contextData, options.strokeColor || "", strokeWidth, false);\r\n            }\r\n        }\r\n        else {\r\n            // ====== case 1: Merged lp templated\r\n            const tokenCircleData = (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_3__.getMergedLpCircleData)(contextData.type, strokeWidth);\r\n            const contextCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_4__.getContextualContextShapeData)(options, tokenCircleData, strokeWidth);\r\n            (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_3__.setMergedLpPath)(clonedSvg, data.token0.pic, data.token1.pic, false, false, uniqueID, tokenCircleData, contextCircleData);\r\n            (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_3__.setMergedLpTokenShapes)(clonedSvg, uniqueID, tokenCircleData, false, false, data, options.strokeColor || "", strokeWidth, false);\r\n            // context\r\n            if (contextData.type !== "none") {\r\n                (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_4__.setContextualContextShape)(clonedSvg, uniqueID, contextCircleData, contextData.pic, contextData.title, contextData.supportingBackgroundColor, strokeWidth, options.strokeColor || "", false);\r\n            }\r\n        }\r\n    }\r\n    return svg;\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateLpTokenSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgGenerator/lp.ts?'
-				);
-			},
-			"./src/svgUpdator/banner.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n\r\n// update the banner elements with final data\r\nconst updateBannerSvg = (svg, data, options) => {\r\n    const mustPictureBeCensored = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.mustBeCensored)(options.censor, data?.sensitivity);\r\n    if (svg) {\r\n        const uniqueID = svg.getAttribute("data-unique-id");\r\n        const filterElem = svg.querySelector("filter");\r\n        if (filterElem && mustPictureBeCensored) {\r\n            filterElem.id = `blur-${uniqueID}`;\r\n        }\r\n        else {\r\n            filterElem?.remove();\r\n        }\r\n        const BgElem = svg.querySelector("#rect-bg");\r\n        if (BgElem) {\r\n            BgElem.setAttribute("fill", data.supportingBackgroundColor || "transparent");\r\n        }\r\n        const imageElem = svg.querySelector("image");\r\n        if (imageElem) {\r\n            imageElem.setAttribute("href", data.banner || "");\r\n            if (mustPictureBeCensored)\r\n                imageElem.setAttribute("filter", `url(#blur-${uniqueID})`);\r\n        }\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (updateBannerSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgUpdator/banner.ts?'
-				);
-			},
-			"./src/svgUpdator/base.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/baseSVG */ "./src/templates/baseSVG.ts");\n\r\n\r\n// update the base elements with final data\r\nconst updateBaseSvg = (initialSvg, title, pictureUrl, supportingBackgroundColor, sensitivity, options, status) => {\r\n    const uniqueID = initialSvg.getAttribute("data-unique-id");\r\n    const strokeWidth = options.strokeWidth || 0;\r\n    const mustPictureBeCensored = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.mustBeCensored)(options.censor, sensitivity);\r\n    // when the wrong template is generated for loading phase, generate the svg again with the right template\r\n    if (initialSvg?.getAttribute("data-template-type") !== "base") {\r\n        // cloning the svg template\r\n        const clonedSvg = document.importNode(_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n        const svg = clonedSvg.querySelector("svg");\r\n        if (svg) {\r\n            initialSvg.replaceWith(svg);\r\n            (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBasePathRect)(svg, uniqueID, strokeWidth, options.shape);\r\n            (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseFilter)(svg, mustPictureBeCensored, uniqueID);\r\n            (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseBgRect)(svg, supportingBackgroundColor, strokeWidth, options.shape);\r\n            (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseImage)(svg, pictureUrl, uniqueID, strokeWidth);\r\n            (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseRect)(svg, title, strokeWidth, options, true);\r\n        }\r\n        return;\r\n    }\r\n    // since right template is generated during the loading phase, continue with updating the elements\r\n    if (initialSvg) {\r\n        (0,_templates_baseSVG__WEBPACK_IMPORTED_MODULE_1__.setBaseFilter)(initialSvg, mustPictureBeCensored, uniqueID);\r\n        const bgColorElem = initialSvg.querySelector(`#bg-color`);\r\n        if (bgColorElem) {\r\n            bgColorElem.setAttribute("fill", supportingBackgroundColor || "transparent");\r\n        }\r\n        const imageElem = initialSvg.querySelector("image");\r\n        if (imageElem) {\r\n            imageElem.setAttribute("href", pictureUrl);\r\n            if (mustPictureBeCensored)\r\n                imageElem.setAttribute("filter", `url(#blur-${uniqueID})`);\r\n        }\r\n        const rectElem = imageElem?.nextElementSibling;\r\n        if (rectElem) {\r\n            if (status === "success")\r\n                rectElem.setAttribute("stroke-width", String(strokeWidth));\r\n            if (!mustPictureBeCensored) {\r\n                const mainTitleElem = rectElem.firstElementChild;\r\n                if (mainTitleElem)\r\n                    mainTitleElem.textContent = title;\r\n            }\r\n        }\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (updateBaseSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgUpdator/base.ts?'
-				);
-			},
-			"./src/svgUpdator/contextual.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/contextualTokenSVG */ "./src/templates/contextualTokenSVG.ts");\n\r\n\r\n/**\r\n * update the wrapped or contextual token elements with final data, there is two case in wrapped tokens because the element\'s inital template is the base template\r\n * but when the API specifies that it must be wrapped, we must reconstruct it\r\n * in the case when the element has a complex-token-type of wrapped, the template is correct and it will be updated\r\n */\r\nconst updateContextualTokenSvg = (initialSvg, title, pictureUrl, contextTitle, contextPictureUrl, sensitivity, supportingBackgroundColor, contextSupportingBackgroundColor, options, status) => {\r\n    const uniqueID = initialSvg.getAttribute("data-unique-id");\r\n    const strokeWidth = options.strokeWidth || 0;\r\n    const mustPictureBeCensored = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.mustBeCensored)(options.censor, sensitivity);\r\n    if (initialSvg && initialSvg?.getAttribute("data-template-type") === "contextual") {\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualFilter)(initialSvg, uniqueID, mustPictureBeCensored);\r\n        const bgElem = initialSvg.querySelector("#contextual-bg-circle");\r\n        bgElem?.setAttribute("fill", supportingBackgroundColor || "transparent");\r\n        const imageElem = initialSvg.querySelector("#contextual-image");\r\n        if (imageElem) {\r\n            imageElem.setAttribute("href", pictureUrl);\r\n            if (mustPictureBeCensored) {\r\n                imageElem.setAttribute("filter", `url(#contextual-blur-${uniqueID})`);\r\n            }\r\n        }\r\n        const tokenCircleElem = initialSvg.querySelector("#contextual-circle");\r\n        if (tokenCircleElem) {\r\n            if (status === "success")\r\n                tokenCircleElem.setAttribute("stroke-width", `${strokeWidth}`);\r\n            if (!mustPictureBeCensored) {\r\n                const mainTitleElem = tokenCircleElem.firstElementChild;\r\n                if (mainTitleElem)\r\n                    mainTitleElem.textContent = title || "";\r\n            }\r\n        }\r\n        const contextImageElem = initialSvg.querySelector("#context-image");\r\n        const contextCircleElem = initialSvg.querySelector("#context-circle");\r\n        if (contextImageElem && contextCircleElem && options.context !== "none") {\r\n            const contextBgElem = initialSvg.querySelector("#context-bg-circle");\r\n            contextBgElem?.setAttribute("fill", contextSupportingBackgroundColor || "transparent");\r\n            contextImageElem.setAttribute("href", contextPictureUrl || "");\r\n            if (contextPictureUrl && status === "success")\r\n                contextCircleElem.setAttribute("stroke-width", `${strokeWidth}`);\r\n            contextCircleElem.setAttribute("fill", "transparent");\r\n            const contextTitleElem = contextCircleElem.firstElementChild;\r\n            if (contextTitleElem)\r\n                contextTitleElem.textContent = contextTitle || "";\r\n        }\r\n        return;\r\n    }\r\n    const tokenCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.getContextualTokenShapeData)(options.context, strokeWidth);\r\n    const contextCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.getContextualContextShapeData)(options, tokenCircleData, strokeWidth);\r\n    // combine the svg template with the data\r\n    const clonedSvg = document.importNode(_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    if (initialSvg && svg) {\r\n        initialSvg.replaceWith(svg);\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualPath)(svg, uniqueID, tokenCircleData, contextCircleData);\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualFilter)(svg, uniqueID, mustPictureBeCensored);\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualTokenShapes)(svg, uniqueID, tokenCircleData, mustPictureBeCensored, pictureUrl, title, supportingBackgroundColor, strokeWidth, options.strokeColor || "", true);\r\n        if (options.context && options.context !== "none") {\r\n            (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setContextualContextShape)(svg, uniqueID, contextCircleData, contextPictureUrl, contextTitle, contextSupportingBackgroundColor, strokeWidth, options.strokeColor || "", true);\r\n        }\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (updateContextualTokenSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgUpdator/contextual.ts?'
-				);
-			},
-			"./src/svgUpdator/index.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _types_guards__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types/guards */ "./src/types/guards.ts");\n/* harmony import */ var _banner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./banner */ "./src/svgUpdator/banner.ts");\n/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./base */ "./src/svgUpdator/base.ts");\n/* harmony import */ var _contextual__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./contextual */ "./src/svgUpdator/contextual.ts");\n/* harmony import */ var _lp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lp */ "./src/svgUpdator/lp.ts");\n\r\n\r\n\r\n\r\n\r\n\r\n/**\r\n * updates or might regenerate the svg element with the final data\r\n * @param svg the inital generated svg element\r\n * @param data the final data\r\n * @param options attributes object\r\n * @param status was the finalizing data was successful or failed\r\n * @returns\r\n */\r\nconst updateSvg = (svg, data, options, status) => {\r\n    svg.style.display = "inline";\r\n    if (options.type === "token") {\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isLpTokenEntity)(data)) {\r\n            return (0,_lp__WEBPACK_IMPORTED_MODULE_5__["default"])(svg, data, options, status);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isWrappedTokenEntity)(data)) {\r\n            const contextData = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getContextData)(options, data);\r\n            return (0,_contextual__WEBPACK_IMPORTED_MODULE_4__["default"])(svg, data.title, data.originalToken.pic, contextData.title, contextData.pic, data.originalToken.sensitivity, data.originalToken.supportingBackgroundColor, contextData.supportingBackgroundColor, options, status);\r\n        }\r\n        if ((0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isTokenEntity)(data)) {\r\n            if (options.context === "network") {\r\n                return (0,_contextual__WEBPACK_IMPORTED_MODULE_4__["default"])(svg, data.title, data.pic, data.network.title, data.network.pic, data.sensitivity, data.supportingBackgroundColor, data.network.supportingBackgroundColor, options, status);\r\n            }\r\n            return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(svg, data.title, data.pic, data.supportingBackgroundColor, data.sensitivity, options, status);\r\n        }\r\n    }\r\n    if (options.type === "profile" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isProfileEntity)(data)) {\r\n        // return updateProfileSvg(svg, data, options, status);\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(svg, data.title, data.pic, data.supportingBackgroundColor, data.sensitivity, options, status);\r\n    }\r\n    if (options.type === "banner" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isBannerEntity)(data)) {\r\n        return (0,_banner__WEBPACK_IMPORTED_MODULE_2__["default"])(svg, data, options);\r\n    }\r\n    if (options.type === "node" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isNodeEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);\r\n    }\r\n    if (options.type === "network" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isNetworkEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);\r\n    }\r\n    if (options.type === "app" && (0,_types_guards__WEBPACK_IMPORTED_MODULE_1__.isAppEntity)(data)) {\r\n        return (0,_base__WEBPACK_IMPORTED_MODULE_3__["default"])(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);\r\n    }\r\n    throw new Error("svg couldn\'t be generated.");\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (updateSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgUpdator/index.ts?'
-				);
-			},
-			"./src/svgUpdator/lp.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n/* harmony import */ var _templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../templates/LPTokenSVG */ "./src/templates/LPTokenSVG.ts");\n/* harmony import */ var _templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../templates/LPMergedTokenSVG */ "./src/templates/LPMergedTokenSVG.ts");\n/* harmony import */ var _templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../templates/contextualTokenSVG */ "./src/templates/contextualTokenSVG.ts");\n\r\n\r\n\r\n\r\n/**\r\n * since there is too many case of lp templates and intial templates,\r\n * it\'s not worth to update the elements but it\'s better to reconstruct them\r\n */\r\nconst updateLpTokenSvg = (initialSvg, data, options, status) => {\r\n    const uniqueID = initialSvg.getAttribute("data-unique-id");\r\n    const strokeWidth = status === "success" ? options.strokeWidth || 0 : 0;\r\n    const mustPicture0BeCensored = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.mustBeCensored)(options.censor, data.token0.sensitivity);\r\n    const mustPicture1BeCensored = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.mustBeCensored)(options.censor, data.token1.sensitivity);\r\n    const contextData = (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getContextData)(options, data);\r\n    // clone the template\r\n    const clonedSvg = document.importNode(options.lpTokensPosition === "merged" ? _templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_2__["default"].content : _templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__["default"].content, true);\r\n    const svg = clonedSvg.querySelector("svg");\r\n    // the svg must exits\r\n    if (!initialSvg || !svg)\r\n        return;\r\n    // replace the inital svg generated for loading stage with a new one\r\n    // this removes the case of mismatched templates\r\n    initialSvg.replaceWith(svg);\r\n    // get filters appropriate unique ids or remove them\r\n    (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setLpTokenFilters)(svg, uniqueID, mustPicture0BeCensored, mustPicture1BeCensored);\r\n    // ===== Case 1. update unmerged positioned svg\r\n    if (options.lpTokensPosition !== "merged") {\r\n        // get each token\'s positions\r\n        const [token0CircleData, token1CircleData] = (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.calculateCircleData)(contextData.type !== "none", options.lpTokensPosition === "intimate", strokeWidth);\r\n        // get the position of context circle\r\n        const contextCircleData = (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.getLpTokenContextData)(options, token0CircleData, token1CircleData, strokeWidth);\r\n        // set up the svg paths\r\n        (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setLpPath)(svg, uniqueID, token0CircleData, token1CircleData, contextCircleData);\r\n        // set up the tokens shapes\r\n        (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setLpTokenShapes)(svg, uniqueID, token0CircleData, token1CircleData, mustPicture0BeCensored, mustPicture1BeCensored, data, options.strokeColor || "", strokeWidth, true);\r\n        // setup the context\r\n        if (contextData.type !== "none") {\r\n            (0,_templates_LPTokenSVG__WEBPACK_IMPORTED_MODULE_1__.setLpContextShapes)(svg, uniqueID, contextCircleData, contextData, options.strokeColor || "", strokeWidth, true);\r\n        }\r\n        return;\r\n    }\r\n    // ====== Case 2. update merged positioned lp template\r\n    // get token circle position\r\n    const tokenCircleData = (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_2__.getMergedLpCircleData)(contextData.type, strokeWidth);\r\n    // get context circle position\r\n    const contextCircleData = (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_3__.getContextualContextShapeData)(options, tokenCircleData, strokeWidth);\r\n    // setup the paths\r\n    (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_2__.setMergedLpPath)(svg, data.token0.pic, data.token1.pic, mustPicture0BeCensored, mustPicture1BeCensored, uniqueID, tokenCircleData, contextCircleData);\r\n    // setup tokens shapes\r\n    (0,_templates_LPMergedTokenSVG__WEBPACK_IMPORTED_MODULE_2__.setMergedLpTokenShapes)(svg, uniqueID, tokenCircleData, mustPicture0BeCensored, mustPicture1BeCensored, data, options.strokeColor || "", strokeWidth, true);\r\n    // setup context\r\n    if (contextData.type !== "none") {\r\n        (0,_templates_contextualTokenSVG__WEBPACK_IMPORTED_MODULE_3__.setContextualContextShape)(svg, uniqueID, contextCircleData, contextData.pic, contextData.title, contextData.supportingBackgroundColor, strokeWidth, options.strokeColor || "", true);\r\n    }\r\n};\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (updateLpTokenSvg);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/svgUpdator/lp.ts?'
-				);
-			},
-			"./src/templates/LPMergedTokenSVG.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   getMergedLpCircleData: () => (/* binding */ getMergedLpCircleData),\n/* harmony export */   setMergedLpPath: () => (/* binding */ setMergedLpPath),\n/* harmony export */   setMergedLpTokenShapes: () => (/* binding */ setMergedLpTokenShapes)\n/* harmony export */ });\nconst PicsMergedLiquidityTokenTemplate = document.createElement("template");\r\nPicsMergedLiquidityTokenTemplate.innerHTML = `\r\n<svg\r\n\txmlns="http://www.w3.org/2000/svg"\r\n\txmlnsXlink="http://www.w3.org/1999/xlink"\r\n\tversion="1.1"\r\n\tviewBox="0 0 100 100">\r\n\t<defs>\r\n\t\t<clipPath id="token0-path">\r\n\t\t\t<rect x="0" y="0"></rect>\r\n\t\t</clipPath>\r\n\t\t<clipPath id="token1-path">\r\n\t\t\t<rect x="50" y="0"></rect>\r\n\t\t</clipPath>\r\n\t\t<clipPath id="context-path">\r\n\t\t\t<circle></circle>\r\n\t\t</clipPath>\r\n\r\n\t\t<filter id="blur0">\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t\t<filter id="blur1">\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\r\n\t\t<pattern id="token0-pattern" patternUnits="objectBoundingBox" width="1" height="1">\r\n\t\t\t<image href="" x="0" y="0" width="0" height="0" />\r\n\t\t</pattern>\r\n\t\t<pattern id="token1-pattern" patternUnits="objectBoundingBox" width="1" height="1">\r\n\t\t\t<image href="" x="0" y="0" width="0" height="0" />\r\n\t\t</pattern>\r\n\t</defs>\r\n\r\n\t<circle id="token0-bg-circle"></circle>\r\n\t<circle fill="transparent" id="token0-image"><title></title></circle>\r\n\r\n\t<circle id="token1-bg-circle"></circle>\r\n\t<circle fill="transparent" id="token1-image"><title></title></circle>\r\n\r\n\t<circle id="context-bg-circle"></circle>\r\n\t<image preserveAspectRatio="xMidYMid slice" id="context-image"></image>\r\n\t<circle fill="transparent" id="context-circle"><title></title></circle>\r\n</svg>\r\n`;\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PicsMergedLiquidityTokenTemplate);\r\nfunction setMergedLpPath(svg, token0PicUrl = "", token1PicUrl = "", mustPicture0BeCensored = false, mustPicture1BeCensored = false, uniqueID, tokenCircleData, contextCircleData) {\r\n    const token0PathElem = svg.querySelector("#token0-path");\r\n    if (token0PathElem) {\r\n        token0PathElem.id = `bg-0-${uniqueID}`;\r\n        const token0pathRectElem = token0PathElem.firstElementChild;\r\n        if (token0pathRectElem) {\r\n            token0pathRectElem.setAttribute("width", `${tokenCircleData.cx}`);\r\n            token0pathRectElem.setAttribute("height", `${tokenCircleData.cy * 2}`);\r\n        }\r\n    }\r\n    const token1PathElem = svg.querySelector("#token1-path");\r\n    if (token1PathElem) {\r\n        token1PathElem.id = `bg-1-${uniqueID}`;\r\n        const token1PathRectElem = token1PathElem.firstElementChild;\r\n        if (token1PathRectElem) {\r\n            token1PathRectElem.setAttribute("width", `${tokenCircleData.cx}`);\r\n            token1PathRectElem.setAttribute("height", `${tokenCircleData.cy * 2}`);\r\n        }\r\n    }\r\n    const ContextPathElem = svg.querySelector("#context-path");\r\n    if (ContextPathElem) {\r\n        ContextPathElem.id = `context-circle-${uniqueID}`;\r\n        const ContextPathCircleElem = ContextPathElem.firstElementChild;\r\n        if (ContextPathCircleElem) {\r\n            ContextPathCircleElem.setAttribute("cx", `${contextCircleData.cx}`);\r\n            ContextPathCircleElem.setAttribute("cy", `${contextCircleData.cy}`);\r\n            ContextPathCircleElem.setAttribute("r", `${contextCircleData.r}`);\r\n        }\r\n    }\r\n    const token0PatternElem = svg.querySelector("#token0-pattern");\r\n    if (token0PatternElem) {\r\n        token0PatternElem.id = `image0-${uniqueID}`;\r\n        const token0Image = token0PatternElem.firstElementChild;\r\n        if (token0Image) {\r\n            token0Image.setAttribute("href", `${token0PicUrl}`);\r\n            token0Image.setAttribute("width", `${tokenCircleData.r * 2}`);\r\n            token0Image.setAttribute("height", `${tokenCircleData.r * 2}`);\r\n            if (mustPicture0BeCensored)\r\n                token0Image.setAttribute("filter", `url(#blur0-${uniqueID})`);\r\n        }\r\n    }\r\n    const token1PatternElem = svg.querySelector("#token1-pattern");\r\n    if (token1PatternElem) {\r\n        token1PatternElem.id = `image1-${uniqueID}`;\r\n        const token1Image = token1PatternElem.firstElementChild;\r\n        if (token1Image) {\r\n            token1Image.setAttribute("href", `${token1PicUrl}`);\r\n            token1Image.setAttribute("width", `${tokenCircleData.r * 2}`);\r\n            token1Image.setAttribute("height", `${tokenCircleData.r * 2}`);\r\n            if (mustPicture1BeCensored)\r\n                token1Image.setAttribute("filter", `url(#blur1-${uniqueID})`);\r\n        }\r\n    }\r\n}\r\nfunction setMergedLpTokenShapes(svg, uniqueID, tokenCircleData, mustPicture0BeCensored, mustPicture1BeCensored, data, strokeColor, strokeWidth, applyStroke) {\r\n    const supportingBg0 = svg.querySelector("#token0-bg-circle");\r\n    if (supportingBg0) {\r\n        supportingBg0.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        supportingBg0.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        supportingBg0.setAttribute("r", `${tokenCircleData.r}`);\r\n        supportingBg0.setAttribute("clipPath", `url(#bg-0-${uniqueID})`);\r\n        supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor);\r\n    }\r\n    const image0CircleElem = svg.querySelector("#token0-image");\r\n    if (image0CircleElem) {\r\n        image0CircleElem.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        image0CircleElem.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        image0CircleElem.setAttribute("r", `${tokenCircleData.r}`);\r\n        image0CircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        image0CircleElem.setAttribute("stroke", strokeColor);\r\n        image0CircleElem.setAttribute("fill", `url(#image0-${uniqueID})`);\r\n        image0CircleElem.setAttribute("clip-path", `url(#bg-0-${uniqueID})`);\r\n        const mainTitle0Elem = image0CircleElem?.firstElementChild;\r\n        if (mainTitle0Elem && !mustPicture0BeCensored) {\r\n            mainTitle0Elem.textContent = data.token0.title || data.token0.address;\r\n        }\r\n    }\r\n    const supportingBg1 = svg.querySelector("#token1-bg-circle");\r\n    if (supportingBg1) {\r\n        supportingBg1.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        supportingBg1.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        supportingBg1.setAttribute("r", `${tokenCircleData.r}`);\r\n        supportingBg1.setAttribute("clip-path", `url(#bg-1-${uniqueID})`);\r\n        supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor);\r\n    }\r\n    const image1CircleElem = svg.querySelector("#token1-image");\r\n    if (image1CircleElem) {\r\n        image1CircleElem.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        image1CircleElem.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        image1CircleElem.setAttribute("r", `${tokenCircleData.r}`);\r\n        image1CircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        image1CircleElem.setAttribute("stroke", strokeColor);\r\n        image1CircleElem.setAttribute("fill", `url(#image1-${uniqueID})`);\r\n        image1CircleElem.setAttribute("clip-path", `url(#bg-1-${uniqueID})`);\r\n        const mainTitle1Elem = image1CircleElem?.firstElementChild;\r\n        if (mainTitle1Elem && !mustPicture1BeCensored) {\r\n            mainTitle1Elem.textContent = data.token1.title || data.token1.address;\r\n        }\r\n    }\r\n}\r\nfunction getMergedLpCircleData(contextType, strokeWidth) {\r\n    return {\r\n        cx: 50,\r\n        cy: 50,\r\n        r: (contextType === "none" ? 50 : 40) - strokeWidth / 2,\r\n    };\r\n}\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/templates/LPMergedTokenSVG.ts?'
-				);
-			},
-			"./src/templates/LPTokenSVG.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   calculateCircleData: () => (/* binding */ calculateCircleData),\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   getLpTokenContextData: () => (/* binding */ getLpTokenContextData),\n/* harmony export */   setLpContextShapes: () => (/* binding */ setLpContextShapes),\n/* harmony export */   setLpPath: () => (/* binding */ setLpPath),\n/* harmony export */   setLpTokenFilters: () => (/* binding */ setLpTokenFilters),\n/* harmony export */   setLpTokenShapes: () => (/* binding */ setLpTokenShapes)\n/* harmony export */ });\nconst PicsLiquidityTokenTemplate = document.createElement("template");\r\nPicsLiquidityTokenTemplate.innerHTML = `\r\n<svg\r\n\txmlns="http://www.w3.org/2000/svg"\r\n\txmlnsXlink="http://www.w3.org/1999/xlink"\r\n\tversion="1.1"\r\n\tviewBox="0 0 100 100">\r\n\t<defs>\r\n\t\t<clipPath id="token0-path">\r\n\t\t\t<circle></circle>\r\n\t\t</clipPath>\r\n\t\t<clipPath id="token1-path">\r\n\t\t\t<circle></circle>\r\n\t\t</clipPath>\r\n\t\t<clipPath id="context-path">\r\n\t\t\t<circle></circle>\r\n\t\t</clipPath>\r\n\r\n\t\t<filter id="blur0">\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t\t<filter id="blur1">\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t</defs>\r\n\r\n\t<circle id="token0-bg-circle"></circle>\r\n\t<image preserveAspectRatio="xMidYMid slice" id="token0-image"></image>\r\n\t<circle fill="transparent" id="token0-circle"> <title></title></circle>\r\n\r\n\t<circle id="token1-bg-circle"></circle>\r\n\t<image preserveAspectRatio="xMidYMid slice" id="token1-image"></image>\r\n\t<circle fill="transparent" id="token1-circle">\r\n\t\t<title></title>\r\n\t</circle>\r\n\r\n\t<circle id="context-bg-circle"></circle>\r\n\t<image preserveAspectRatio="xMidYMid slice" id="context-image"></image>\r\n\t<circle fill="transparent" id="context-circle">\r\n\t\t<title></title>\r\n\t</circle>\r\n</svg>\r\n`;\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PicsLiquidityTokenTemplate);\r\nfunction setLpPath(svg, uniqueID, token0CircleData, token1CircleData, contextCircleData) {\r\n    const token0PathElem = svg.querySelector("#token0-path");\r\n    if (token0PathElem) {\r\n        token0PathElem.id = `token0-circle-${uniqueID}`;\r\n        const token0pathCircleElem = token0PathElem.firstElementChild;\r\n        if (token0pathCircleElem) {\r\n            token0pathCircleElem.setAttribute("cx", `${token0CircleData.cx}`);\r\n            token0pathCircleElem.setAttribute("cy", `${token0CircleData.cy}`);\r\n            token0pathCircleElem.setAttribute("r", `${token0CircleData.r}`);\r\n        }\r\n    }\r\n    const token1PathElem = svg.querySelector("#token1-path");\r\n    if (token1PathElem) {\r\n        token1PathElem.id = `token1-circle-${uniqueID}`;\r\n        const token1PathCircleElem = token1PathElem.firstElementChild;\r\n        if (token1PathCircleElem) {\r\n            token1PathCircleElem.setAttribute("cx", `${token1CircleData.cx}`);\r\n            token1PathCircleElem.setAttribute("cy", `${token1CircleData.cy}`);\r\n            token1PathCircleElem.setAttribute("r", `${token1CircleData.r}`);\r\n        }\r\n    }\r\n    const ContextPathElem = svg.querySelector("#context-path");\r\n    if (ContextPathElem) {\r\n        ContextPathElem.id = `context-circle-${uniqueID}`;\r\n        const ContextPathCircleElem = ContextPathElem.firstElementChild;\r\n        if (ContextPathCircleElem) {\r\n            ContextPathCircleElem.setAttribute("cx", `${contextCircleData.cx}`);\r\n            ContextPathCircleElem.setAttribute("cy", `${contextCircleData.cy}`);\r\n            ContextPathCircleElem.setAttribute("r", `${contextCircleData.r}`);\r\n        }\r\n    }\r\n}\r\nfunction setLpTokenFilters(svg, uniqueID, mustPicture0BeCensored, mustPicture1BeCensored) {\r\n    const filter0Elem = svg.querySelector("#blur0");\r\n    if (filter0Elem && mustPicture0BeCensored) {\r\n        filter0Elem.id = `blur0-${uniqueID}`;\r\n    }\r\n    else {\r\n        filter0Elem?.remove();\r\n    }\r\n    const filter1Elem = svg.querySelector("#blur1");\r\n    if (filter1Elem && mustPicture1BeCensored) {\r\n        filter1Elem.id = `blur1-${uniqueID}`;\r\n    }\r\n    else {\r\n        filter1Elem?.remove();\r\n    }\r\n}\r\nfunction setLpTokenShapes(svg, uniqueID, token0CircleData, token1CircleData, mustPicture0BeCensored = false, mustPicture1BeCensored = false, data, strokeColor, strokeWidth, applyStroke) {\r\n    const supportingBg0 = svg.querySelector("#token0-bg-circle");\r\n    if (supportingBg0) {\r\n        supportingBg0.setAttribute("cx", `${token0CircleData.cx}`);\r\n        supportingBg0.setAttribute("cy", `${token0CircleData.cy}`);\r\n        supportingBg0.setAttribute("r", `${token0CircleData.r}`);\r\n        supportingBg0.setAttribute("fill", data.token0.supportingBackgroundColor);\r\n    }\r\n    const image0Elem = svg.querySelector("#token0-image");\r\n    if (image0Elem) {\r\n        image0Elem.setAttribute("x", `${token0CircleData.cx - token0CircleData.r}`);\r\n        image0Elem.setAttribute("y", `${token0CircleData.cy - token0CircleData.r}`);\r\n        image0Elem.setAttribute("width", `${2 * token0CircleData.r}`);\r\n        image0Elem.setAttribute("height", `${2 * token0CircleData.r}`);\r\n        image0Elem.setAttribute("href", data.token0.pic);\r\n        image0Elem.setAttribute("clip-path", `url(#token0-circle-${uniqueID})`);\r\n        if (mustPicture0BeCensored)\r\n            image0Elem.setAttribute("filter", `url(#blur0-${uniqueID})`);\r\n    }\r\n    const token0CircleElem = svg.querySelector("#token0-circle");\r\n    if (token0CircleElem) {\r\n        token0CircleElem.setAttribute("cx", `${token0CircleData.cx}`);\r\n        token0CircleElem.setAttribute("cy", `${token0CircleData.cy}`);\r\n        token0CircleElem.setAttribute("r", `${token0CircleData.r}`);\r\n        token0CircleElem.setAttribute("stroke", strokeColor);\r\n        token0CircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        const mainTitle0Elem = token0CircleElem?.firstElementChild;\r\n        if (mainTitle0Elem && !mustPicture0BeCensored)\r\n            mainTitle0Elem.textContent = data.token0.title || data.token0.address;\r\n    }\r\n    const supportingBg1 = svg.querySelector("#token1-bg-circle");\r\n    if (supportingBg1) {\r\n        supportingBg1.setAttribute("cx", `${token1CircleData.cx}`);\r\n        supportingBg1.setAttribute("cy", `${token1CircleData.cy}`);\r\n        supportingBg1.setAttribute("r", `${token1CircleData.r}`);\r\n        supportingBg1.setAttribute("fill", data.token1.supportingBackgroundColor);\r\n    }\r\n    const image1Elem = svg.querySelector("#token1-image");\r\n    if (image1Elem) {\r\n        image1Elem.setAttribute("x", `${token1CircleData.cx - token1CircleData.r}`);\r\n        image1Elem.setAttribute("y", `${token1CircleData.cy - token1CircleData.r}`);\r\n        image1Elem.setAttribute("width", `${2 * token1CircleData.r}`);\r\n        image1Elem.setAttribute("height", `${2 * token1CircleData.r}`);\r\n        image1Elem.setAttribute("href", data.token1.pic);\r\n        image1Elem.setAttribute("clip-path", `url(#token1-circle-${uniqueID})`);\r\n        if (mustPicture1BeCensored)\r\n            image1Elem.setAttribute("filter", `url(#blur1-${uniqueID})`);\r\n    }\r\n    const token1PathCircleElem = svg.querySelector("#token1-circle");\r\n    if (token1PathCircleElem) {\r\n        token1PathCircleElem.setAttribute("cx", `${token1CircleData.cx}`);\r\n        token1PathCircleElem.setAttribute("cy", `${token1CircleData.cy}`);\r\n        token1PathCircleElem.setAttribute("r", `${token1CircleData.r}`);\r\n        token1PathCircleElem.setAttribute("stroke", strokeColor);\r\n        token1PathCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        const mainTitle1Elem = token1PathCircleElem?.firstElementChild;\r\n        if (mainTitle1Elem && !mustPicture1BeCensored)\r\n            mainTitle1Elem.textContent = data.token1.title || data.token1.address;\r\n    }\r\n}\r\nfunction setLpContextShapes(svg, uniqueID, contextCircleData, contextData, strokeColor, strokeWidth, applyStroke) {\r\n    const contextImageElem = svg.querySelector("#context-image");\r\n    const contextCircleElem = svg.querySelector("#context-circle");\r\n    if (contextImageElem && contextCircleElem) {\r\n        const contextBg = svg.querySelector("#context-bg-circle");\r\n        if (contextBg) {\r\n            contextBg.setAttribute("cx", `${contextCircleData.cx}`);\r\n            contextBg.setAttribute("cy", `${contextCircleData.cy}`);\r\n            contextBg.setAttribute("r", `${contextCircleData.r}`);\r\n            contextBg.setAttribute("fill", contextData?.supportingBackgroundColor);\r\n        }\r\n        contextImageElem.setAttribute("href", contextData?.pic || "");\r\n        contextImageElem.setAttribute("x", String(contextCircleData.cx - contextCircleData.r));\r\n        contextImageElem.setAttribute("y", String(contextCircleData.cy - contextCircleData.r));\r\n        contextImageElem.setAttribute("width", String(2 * contextCircleData.r));\r\n        contextImageElem.setAttribute("height", String(2 * contextCircleData.r));\r\n        contextImageElem.setAttribute("clip-path", `url(#context-circle-${uniqueID})`);\r\n        contextCircleElem.setAttribute("cx", String(contextCircleData.cx));\r\n        contextCircleElem.setAttribute("cy", String(contextCircleData.cy));\r\n        contextCircleElem.setAttribute("r", String(contextCircleData.r));\r\n        contextCircleElem.setAttribute("stroke", strokeColor || "");\r\n        contextCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        contextCircleElem.setAttribute("fill", "transparent");\r\n        const contextTitle = contextCircleElem.firstElementChild;\r\n        if (contextTitle && contextData?.title)\r\n            contextTitle.textContent = contextData.title;\r\n    }\r\n}\r\nfunction getLpTokenContextData(options, token0CircleData, token1CircleData, strokeWidth) {\r\n    const contextRadius = token1CircleData.r / 2;\r\n    return {\r\n        r: contextRadius,\r\n        cx: options.contextPosition === "bottomRight" || options.contextPosition === "topRight"\r\n            ? token1CircleData.cx + token1CircleData.r - contextRadius / 2 - strokeWidth / 2\r\n            : token0CircleData.cx - token0CircleData.r + contextRadius / 2 + strokeWidth / 2,\r\n        cy: options.contextPosition === "bottomRight" || options.contextPosition === "bottomLeft"\r\n            ? token1CircleData.cy + token1CircleData.r - contextRadius / 2 - strokeWidth / 2\r\n            : token0CircleData.cy - token0CircleData.r + contextRadius / 2 + strokeWidth / 2,\r\n    };\r\n}\r\nfunction calculateCircleData(hasContext, intimateLp, strokeWidth) {\r\n    const token0CircleData = { cx: 30, cy: 50, r: 30 };\r\n    const token1CircleData = { cx: 70, cy: 50, r: 30 };\r\n    if (hasContext) {\r\n        if (intimateLp) {\r\n            token0CircleData.cx = 36;\r\n            token0CircleData.r = 29;\r\n            token1CircleData.cx = 63;\r\n            token1CircleData.r = 29;\r\n        }\r\n        else {\r\n            token0CircleData.cx = 32;\r\n            token0CircleData.r = 25;\r\n            token1CircleData.cx = 68;\r\n            token1CircleData.r = 25;\r\n        }\r\n    }\r\n    else if (intimateLp) {\r\n        token0CircleData.cx = 35;\r\n        token0CircleData.r = 35;\r\n        token1CircleData.cx = 65;\r\n        token1CircleData.r = 35;\r\n    }\r\n    token0CircleData.r = token0CircleData.r - strokeWidth / 2;\r\n    token1CircleData.r = token1CircleData.r - strokeWidth / 2;\r\n    return [token0CircleData, token1CircleData];\r\n}\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/templates/LPTokenSVG.ts?'
-				);
-			},
-			"./src/templates/bannerSVG.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst PicsBannerSvgTemplate = document.createElement("template");\r\nPicsBannerSvgTemplate.innerHTML = `\r\n<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 100">\r\n\t<defs>\r\n\t\t<clipPath>\r\n\t\t\t<rect x="0" y="0" width="400" height="100" />\r\n\t\t</clipPath>\r\n\t\t<filter>\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t</defs>\r\n\r\n\t<rect id="rect-bg" x="0" y="0" width="400" height="100" fill="transparent" ></rect>\r\n\t<image\r\n\t\tx="0"\r\n\t\ty="0"\r\n\t\twidth="400"\r\n\t\theight="100"\r\n\t\tfilter=""\r\n\t\tpreserveAspectRatio="xMidYMid slice"></image>\r\n\r\n\t<rect x="0" y="0" width="400" height="100" fill="transparent" ></rect>\r\n</svg>\r\n`;\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PicsBannerSvgTemplate);\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/templates/bannerSVG.ts?'
-				);
-			},
-			"./src/templates/baseSVG.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   setBaseBgRect: () => (/* binding */ setBaseBgRect),\n/* harmony export */   setBaseFilter: () => (/* binding */ setBaseFilter),\n/* harmony export */   setBaseImage: () => (/* binding */ setBaseImage),\n/* harmony export */   setBasePathRect: () => (/* binding */ setBasePathRect),\n/* harmony export */   setBaseRect: () => (/* binding */ setBaseRect)\n/* harmony export */ });\n/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/helpers */ "./src/modules/helpers.ts");\n\r\nconst PicsBaseSvgTemplate = document.createElement("template");\r\nPicsBaseSvgTemplate.innerHTML = `\r\n<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">\r\n\t<defs>\r\n\t\t<clipPath>\r\n\t\t\t<rect></rect>\r\n\t\t</clipPath>\r\n\t\t<filter>\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t</defs>\r\n\r\n\t<rect id="bg-color" fill="transparent"></rect>\r\n\t<image preserveAspectRatio="xMidYMid slice"></image>\r\n\t<rect fill="transparent" id="mask">\r\n\t\t<title></title>\r\n\t</rect>\r\n</svg>\r\n`;\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PicsBaseSvgTemplate);\r\n/** setup the rect shape of the base svg */\r\nconst setBasePathRect = (svg, uniqueID, strokeWidth, shape) => {\r\n    const pathElem = svg.querySelector("clipPath");\r\n    if (pathElem) {\r\n        pathElem.id = `rect-${uniqueID}`;\r\n        const pathRectElem = pathElem.firstElementChild;\r\n        if (pathRectElem) {\r\n            pathRectElem.setAttribute("x", `${strokeWidth / 2}`);\r\n            pathRectElem.setAttribute("y", `${strokeWidth / 2}`);\r\n            pathRectElem.setAttribute("width", `${100 - strokeWidth}`);\r\n            pathRectElem.setAttribute("height", `${100 - strokeWidth}`);\r\n            pathRectElem.setAttribute("rx", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(shape, 100));\r\n            pathRectElem.setAttribute("ry", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(shape, 100));\r\n        }\r\n    }\r\n};\r\nconst setBaseBgRect = (svg, bgColor, strokeWidth, shape) => {\r\n    const bgColorElem = svg.querySelector(`#bg-color`);\r\n    if (bgColorElem) {\r\n        bgColorElem.setAttribute("x", `${strokeWidth / 2}`);\r\n        bgColorElem.setAttribute("y", `${strokeWidth / 2}`);\r\n        bgColorElem.setAttribute("width", `${100 - strokeWidth}`);\r\n        bgColorElem.setAttribute("height", `${100 - strokeWidth}`);\r\n        bgColorElem.setAttribute("rx", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(shape, 100));\r\n        bgColorElem.setAttribute("ry", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(shape, 100));\r\n        bgColorElem.setAttribute("fill", bgColor);\r\n    }\r\n};\r\nconst setBaseImage = (svg, pictureUrl, uniqueID, strokeWidth) => {\r\n    const imageElem = svg.querySelector("image");\r\n    if (imageElem) {\r\n        imageElem.setAttribute("x", `${strokeWidth / 2}`);\r\n        imageElem.setAttribute("y", `${strokeWidth / 2}`);\r\n        imageElem.setAttribute("width", `${100 - strokeWidth}`);\r\n        imageElem.setAttribute("height", `${100 - strokeWidth}`);\r\n        imageElem.setAttribute("href", pictureUrl);\r\n        imageElem.setAttribute("clip-path", `url(#rect-${uniqueID})`);\r\n    }\r\n};\r\nconst setBaseRect = (svg, title, strokeWidth, options, applyStroke = false) => {\r\n    const rectElem = svg.querySelector("#mask");\r\n    if (rectElem) {\r\n        rectElem.setAttribute("x", `${strokeWidth / 2}`);\r\n        rectElem.setAttribute("y", `${strokeWidth / 2}`);\r\n        rectElem.setAttribute("width", `${100 - strokeWidth}`);\r\n        rectElem.setAttribute("height", `${100 - strokeWidth}`);\r\n        rectElem.setAttribute("rx", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(options.shape, 100));\r\n        rectElem.setAttribute("ry", (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_0__.getShapeRadius)(options.shape, 100));\r\n        rectElem.setAttribute("stroke", options.strokeColor || "");\r\n        rectElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        if (rectElem?.firstElementChild)\r\n            rectElem.firstElementChild.textContent = title || "";\r\n    }\r\n};\r\nfunction setBaseFilter(svg, mustPictureBeCensored, uniqueID) {\r\n    const filterElem = svg.querySelector("filter");\r\n    if (filterElem && mustPictureBeCensored) {\r\n        filterElem.id = `blur-${uniqueID}`;\r\n        return;\r\n    }\r\n    filterElem?.remove();\r\n}\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/templates/baseSVG.ts?'
-				);
-			},
-			"./src/templates/contextualTokenSVG.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   getContextualContextShapeData: () => (/* binding */ getContextualContextShapeData),\n/* harmony export */   getContextualTokenShapeData: () => (/* binding */ getContextualTokenShapeData),\n/* harmony export */   setContextualContextShape: () => (/* binding */ setContextualContextShape),\n/* harmony export */   setContextualFilter: () => (/* binding */ setContextualFilter),\n/* harmony export */   setContextualPath: () => (/* binding */ setContextualPath),\n/* harmony export */   setContextualTokenShapes: () => (/* binding */ setContextualTokenShapes)\n/* harmony export */ });\nconst PicsContextualTokenTemplate = document.createElement("template");\r\nPicsContextualTokenTemplate.innerHTML = `\r\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">\r\n\t<defs>\r\n\t\t<clipPath id="contextual-path">\r\n\t\t\t<circle cx="0" cy="0" r="0"></circle>\r\n\t\t</clipPath>\r\n\t\t<clipPath id="context-path">\r\n\t\t\t<circle cx="0" cy="0" r="0"></circle>\r\n\t\t</clipPath>\r\n\r\n\t\t<filter id="contextual-blur">\r\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\r\n\t\t</filter>\r\n\t</defs>\r\n\r\n\t<circle id="contextual-bg-circle" fill="transparent"></circle>\r\n\t<image\r\n\t\tid="contextual-image"\r\n\t\tpreserveAspectRatio="xMidYMid slice">\r\n\t</image>\r\n\t<circle\r\n\t\tid="contextual-circle"\r\n\t\tfill="transparent">\r\n\t\t<title></title>\r\n\t</circle>\r\n\r\n\t<circle id="context-bg-circle" fill="transparent"></circle>\r\n\t<image\r\n\t\tid="context-image"\r\n\t\tpreserveAspectRatio="xMidYMid slice">\r\n\t</image>\r\n\t<circle\r\n\t\tid="context-circle"\r\n\t\tfill="transparent">\r\n\t\t<title></title>\r\n\t</circle>\r\n</svg>\r\n`;\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PicsContextualTokenTemplate);\r\nfunction setContextualPath(svg, uniqueID, tokenCircleData, contextCircleData) {\r\n    const tokenPathElem = svg.querySelector("#contextual-path");\r\n    if (tokenPathElem) {\r\n        tokenPathElem.id = `contextual-circle-${uniqueID}`;\r\n        const tokenPathCircleElem = tokenPathElem.firstElementChild;\r\n        if (tokenPathCircleElem) {\r\n            tokenPathCircleElem.setAttribute("cx", `${tokenCircleData.cx}`);\r\n            tokenPathCircleElem.setAttribute("cy", `${tokenCircleData.cy}`);\r\n            tokenPathCircleElem.setAttribute("r", `${tokenCircleData.r}`);\r\n        }\r\n    }\r\n    const contextPathElem = svg.querySelector("#context-path");\r\n    if (contextPathElem) {\r\n        contextPathElem.id = `context-circle-${uniqueID}`;\r\n        const contextPathCircleElem = contextPathElem.firstElementChild;\r\n        if (contextPathCircleElem) {\r\n            contextPathCircleElem.setAttribute("cx", `${contextCircleData.cx}`);\r\n            contextPathCircleElem.setAttribute("cy", `${contextCircleData.cy}`);\r\n            contextPathCircleElem.setAttribute("r", `${contextCircleData.r}`);\r\n        }\r\n    }\r\n}\r\nfunction setContextualTokenShapes(svg, uniqueID, tokenCircleData, mustBeCensored = false, pictureUrl, title, supportingBackgroundColor, strokeWidth, strokeColor, applyStroke = false) {\r\n    const bgElem = svg.querySelector("#contextual-bg-circle");\r\n    if (bgElem) {\r\n        bgElem.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        bgElem.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        bgElem.setAttribute("r", `${tokenCircleData.r}`);\r\n        bgElem.setAttribute("fill", supportingBackgroundColor);\r\n    }\r\n    const imageElem = svg.querySelector("#contextual-image");\r\n    if (imageElem) {\r\n        imageElem.setAttribute("x", `${tokenCircleData.cx - tokenCircleData.r}`);\r\n        imageElem.setAttribute("y", `${tokenCircleData.cy - tokenCircleData.r}`);\r\n        imageElem.setAttribute("width", `${2 * tokenCircleData.r}`);\r\n        imageElem.setAttribute("height", `${2 * tokenCircleData.r}`);\r\n        imageElem.setAttribute("href", pictureUrl);\r\n        imageElem.setAttribute("clip-path", `url(#contextual-circle-${uniqueID})`);\r\n        if (mustBeCensored)\r\n            imageElem.setAttribute("filter", `url(#contextual-blur-${uniqueID})`);\r\n    }\r\n    const tokenCircleElem = svg.querySelector("#contextual-circle");\r\n    if (tokenCircleElem) {\r\n        tokenCircleElem.setAttribute("cx", `${tokenCircleData.cx}`);\r\n        tokenCircleElem.setAttribute("cy", `${tokenCircleData.cy}`);\r\n        tokenCircleElem.setAttribute("r", `${tokenCircleData.r}`);\r\n        tokenCircleElem.setAttribute("stroke", strokeColor);\r\n        tokenCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        const mainTitleElem = tokenCircleElem.firstElementChild;\r\n        if (mainTitleElem && !mustBeCensored)\r\n            mainTitleElem.textContent = title || "";\r\n    }\r\n}\r\nfunction setContextualContextShape(svg, uniqueID, contextCircleData, pictureUrl, title, supportingBackgroundColor, strokeWidth, strokeColor, applyStroke = false) {\r\n    const contextImageElem = svg.querySelector("#context-image");\r\n    const contextCircleElem = svg.querySelector("#context-circle");\r\n    if (contextImageElem && contextCircleElem) {\r\n        const contextBgElem = svg.querySelector("#context-bg-circle");\r\n        if (contextBgElem) {\r\n            contextBgElem.setAttribute("cx", String(contextCircleData.cx));\r\n            contextBgElem.setAttribute("cy", String(contextCircleData.cy));\r\n            contextBgElem.setAttribute("r", String(contextCircleData.r));\r\n            contextBgElem.setAttribute("fill", supportingBackgroundColor);\r\n        }\r\n        contextImageElem.setAttribute("href", pictureUrl || "");\r\n        contextImageElem.setAttribute("x", String(contextCircleData.cx - contextCircleData.r));\r\n        contextImageElem.setAttribute("y", String(contextCircleData.cy - contextCircleData.r));\r\n        contextImageElem.setAttribute("width", String(2 * contextCircleData.r));\r\n        contextImageElem.setAttribute("height", String(2 * contextCircleData.r));\r\n        contextImageElem.setAttribute("clip-path", `url(#context-circle-${uniqueID})`);\r\n        contextCircleElem.setAttribute("cx", String(contextCircleData.cx));\r\n        contextCircleElem.setAttribute("cy", String(contextCircleData.cy));\r\n        contextCircleElem.setAttribute("r", String(contextCircleData.r));\r\n        contextCircleElem.setAttribute("stroke", strokeColor);\r\n        contextCircleElem.setAttribute("stroke-width", String(applyStroke ? strokeWidth : 0));\r\n        contextCircleElem.setAttribute("fill", "transparent");\r\n        const contextTitleElem = contextCircleElem.firstElementChild;\r\n        if (contextTitleElem && title)\r\n            contextTitleElem.textContent = title;\r\n    }\r\n}\r\nfunction setContextualFilter(svg, uniqueID, mustPictureBeCensored) {\r\n    const filterElem = svg.querySelector("#contextual-blur");\r\n    if (filterElem && mustPictureBeCensored) {\r\n        filterElem.id = `contextual-blur-${uniqueID}`;\r\n    }\r\n    else {\r\n        filterElem?.remove();\r\n    }\r\n}\r\nfunction getContextualTokenShapeData(contextType, strokeWidth = 0) {\r\n    return { cx: 50, cy: 50, r: (contextType && contextType !== "none" ? 40 : 50) - strokeWidth / 2 };\r\n}\r\nfunction getContextualContextShapeData(options, tokenCircleData, strokeWidth) {\r\n    const contextCircleRadius = tokenCircleData.r / 2;\r\n    return {\r\n        cx: options.contextPosition === "bottomRight" || options.contextPosition === "topRight"\r\n            ? tokenCircleData.cx + tokenCircleData.r - contextCircleRadius / 2 - strokeWidth / 2\r\n            : tokenCircleData.cx - tokenCircleData.r + contextCircleRadius / 2 + strokeWidth / 2,\r\n        cy: options.contextPosition === "bottomRight" || options.contextPosition === "bottomLeft"\r\n            ? tokenCircleData.cy + tokenCircleData.r - contextCircleRadius / 2 - strokeWidth / 2\r\n            : tokenCircleData.cy - tokenCircleData.r + contextCircleRadius / 2 + strokeWidth / 2,\r\n        r: contextCircleRadius,\r\n    };\r\n}\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/templates/contextualTokenSVG.ts?'
-				);
-			},
-			"./src/types/guards.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   isAppEntity: () => (/* binding */ isAppEntity),\n/* harmony export */   isBannerEntity: () => (/* binding */ isBannerEntity),\n/* harmony export */   isEntityResponseEmpty: () => (/* binding */ isEntityResponseEmpty),\n/* harmony export */   isLpTokenEntity: () => (/* binding */ isLpTokenEntity),\n/* harmony export */   isNetworkEntity: () => (/* binding */ isNetworkEntity),\n/* harmony export */   isNodeEntity: () => (/* binding */ isNodeEntity),\n/* harmony export */   isPicsContextPositionType: () => (/* binding */ isPicsContextPositionType),\n/* harmony export */   isPicsContextType: () => (/* binding */ isPicsContextType),\n/* harmony export */   isPicsSensitivityType: () => (/* binding */ isPicsSensitivityType),\n/* harmony export */   isPicsShapeType: () => (/* binding */ isPicsShapeType),\n/* harmony export */   isPicsType: () => (/* binding */ isPicsType),\n/* harmony export */   isProfileEntity: () => (/* binding */ isProfileEntity),\n/* harmony export */   isTokenEntity: () => (/* binding */ isTokenEntity),\n/* harmony export */   isWrappedTokenEntity: () => (/* binding */ isWrappedTokenEntity)\n/* harmony export */ });\n/* harmony import */ var _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./picsCommonTypes */ "./src/types/picsCommonTypes.ts");\n\r\nfunction isPicsType(value) {\r\n    // Assuming PicsType is an enum or a union type\r\n    return value !== null && _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__.picsTypes.includes(value);\r\n}\r\nfunction isPicsContextType(value) {\r\n    return value !== null && _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__.picsContextTypes.includes(value);\r\n}\r\nfunction isPicsContextPositionType(value) {\r\n    return value !== null && _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__.picsContextPositionTypes.includes(value);\r\n}\r\nfunction isPicsShapeType(value) {\r\n    return value !== null && _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__.picsShapeTypes.includes(value);\r\n}\r\nfunction isPicsSensitivityType(value) {\r\n    return value !== null && _picsCommonTypes__WEBPACK_IMPORTED_MODULE_0__.picsSensitivityTypes.includes(value);\r\n}\r\n// data\r\nfunction isTokenEntity(value) {\r\n    return value && (value?.type === "TOKEN" || value?.type === "CURRENCY");\r\n}\r\nfunction isLpTokenEntity(value) {\r\n    return value && value?.type === "LP" && value?.token0 && value?.token1;\r\n}\r\nfunction isWrappedTokenEntity(value) {\r\n    return value && value?.type === "WRAPPED" && value?.originalToken;\r\n}\r\nfunction isProfileEntity(value) {\r\n    return value && value?.address;\r\n}\r\nfunction isBannerEntity(value) {\r\n    return value && value?.address;\r\n}\r\nfunction isNodeEntity(value) {\r\n    return value && value?.address;\r\n}\r\nfunction isNetworkEntity(value) {\r\n    return value && value?.id;\r\n}\r\nfunction isAppEntity(value) {\r\n    return value && value?.name;\r\n}\r\nfunction isEntityResponseEmpty(obj) {\r\n    return !obj || Object.keys(obj).length === 0;\r\n}\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/types/guards.ts?'
-				);
-			},
-			"./src/types/picsCommonTypes.ts": (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-				eval(
-					'__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   picsContextPositionTypes: () => (/* binding */ picsContextPositionTypes),\n/* harmony export */   picsContextTypes: () => (/* binding */ picsContextTypes),\n/* harmony export */   picsLpTokensPositionTypes: () => (/* binding */ picsLpTokensPositionTypes),\n/* harmony export */   picsSensitivityTypes: () => (/* binding */ picsSensitivityTypes),\n/* harmony export */   picsShapeTypes: () => (/* binding */ picsShapeTypes),\n/* harmony export */   picsTokenTypes: () => (/* binding */ picsTokenTypes),\n/* harmony export */   picsTypes: () => (/* binding */ picsTypes)\n/* harmony export */ });\nconst picsTypes = ["token", "profile", "banner", "node", "network", "app"];\r\nconst picsTokenTypes = ["token", "lp", "wrapped", "currency"];\r\nconst picsContextTypes = ["none", "app", "network"];\r\nconst picsContextPositionTypes = ["topRight", "topLeft", "bottomRight", "bottomLeft"];\r\nconst picsLpTokensPositionTypes = ["intersected", "intimate", "merged"];\r\nconst picsShapeTypes = ["circle", "square", "smoothSquare"];\r\nconst picsSensitivityTypes = ["safe", "sensitive", "inappropriate", "copyright-violated"];\r\n\n\n//# sourceURL=webpack://davinci-pic/./src/types/picsCommonTypes.ts?'
-				);
+			profile: {
+				defaultBright: "https://arweave.net/WxLlax6NBCapLUuKcuy-wvLlKLBTqxTV40yJt7Yc26Q",
+				default: "https://arweave.net/qsn_zIlG_7_Ob4_qS6Bpc8vLEc5bPScw6JMly_shxlk",
+				defaultDark: "https://arweave.net/ZHWeQz5R6VHBHOg6eOGekMsudTyy7uNBdnrul5gIIu0",
 			},
 		},
-		__webpack_module_cache__ = {};
-	function __webpack_require__(e) {
-		var t = __webpack_module_cache__[e];
-		if (void 0 !== t) return t.exports;
-		var r = (__webpack_module_cache__[e] = { exports: {} });
-		return __webpack_modules__[e](r, r.exports, __webpack_require__), r.exports;
+		T = ["#ef4444", "#f97316", "#f59e0b", "#eab308", "#84cc16", "#22c55e", "#10b981", "#14b8a6", "#06b6d4", "#0ea5e9", "#3b82f6", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef", "#ec4899", "#f43f5e"];
+	function v(t, e) {
+		const r = (e = e || "defaultBright").match(/url\(['"]?(.*?)['"]?\)/);
+		if (r) return r[1];
+		if ("banner" === t) return "";
+		const i = $["profile" === t ? "profile" : "token"][e];
+		return i || $["profile" === t ? "profile" : "token"].defaultBright;
 	}
-	(__webpack_require__.d = (e, t) => {
-		for (var r in t) __webpack_require__.o(t, r) && !__webpack_require__.o(e, r) && Object.defineProperty(e, r, { enumerable: !0, get: t[r] });
-	}),
-		(__webpack_require__.o = (e, t) => Object.prototype.hasOwnProperty.call(e, t)),
-		(__webpack_require__.r = (e) => {
-			"undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
-				Object.defineProperty(e, "__esModule", { value: !0 });
-		});
-	var __webpack_exports__ = __webpack_require__("./src/index.ts");
+	const S = (t, e) => {
+		if (void 0 === e || void 0 === t) return !1;
+		"string" == typeof t && (t = t.split(","));
+		return !!t.map((t) => t.trim().toUpperCase()).includes(e);
+	};
+	function E() {
+		const t = Math.floor(Math.random() * T.length);
+		return T[t];
+	}
+	function B(t, e = 100) {
+		return t || (t = "circle"), String("circle" === t ? e / 2 : "smoothSquare" === t ? 0.15 * e : 0);
+	}
+	const q = (t, e) => {
+			if ("app" === t.context && e?.app) {
+				const r = u(e) ? "LP Token, Originated" : b(e) ? "Pool Contract, Deployed" : "Wrapped Token, Originated";
+				return { type: "app", pic: M(e?.app, t.theme) || "", title: e.app.title ? `${r} by ${e.app.title}` : "", bgColor: e.app.bgColor || "none" };
+			}
+			return "network" === t.context && e?.network
+				? { type: "network", pic: M(e?.network, t.theme) || "", title: e.network.title ? `Originated on ${e.network.title}` : "", bgColor: e.network.bgColor || "none" }
+				: { type: "none", pic: "", title: "", bgColor: "none" };
+		},
+		U = (t, e) => "contract" === e.type || "all" === e.showAppForType || e.showAppForType === t,
+		M = (t, e) => ("dark" === e ? t?.darkPic || t?.pic || "" : t?.pic || t?.darkPic || ""),
+		R = (t, e) => ("dark" === e && t?.darkPic ? t?.darkBgColor : t?.pic ? t?.bgColor : ""),
+		W = (t, e) => {
+			const r = { color: "none", url: "" };
+			if ("transparent" === t.FailureEffect) return r;
+			if ("randomColor" === t.placeholder) return e.color && "randomColor" === t.loadingEffect ? ((r.color = e.color), r) : ((r.color = E()), r);
+			let i = t.placeholder?.match(Dt.colorRegex);
+			return i ? ((r.color = i[0]), r) : ((r.url = v(t.type, t.placeholder)), r);
+		},
+		z = (t, e, r, i) => {
+			const { token0Pic: o, token1Pic: n, token0BgColor: c, token1BgColor: s } = N(t);
+			return (
+				(e.token0.pic = C(o, i)),
+				(e.token0.bgColor = m(e.token0.pic, r, c)),
+				(e.token1.pic = C(n, i)),
+				(e.token1.bgColor = m(e.token1.pic, r, s)),
+				e.app && "app" === t.context && ((e.app.pic = t.dataContextPicUrl || ""), (e.app.bgColor = t.dataContextBgColor || "none")),
+				(e.network.pic = t.dataContextPicUrl || ""),
+				(e.network.bgColor = t.dataContextBgColor || "none"),
+				e
+			);
+		},
+		F = (t, e, r, i) => {
+			const { token0Title: o, token1Title: n, token0Pic: c, token1Pic: s, token0BgColor: l, token1BgColor: a } = N(t);
+			return (
+				(e.token0.title = e.token0.title || o),
+				(e.token0.pic = A(M(e.token0, t.theme), c, i)),
+				(e.token0.bgColor = w(R(e.token0, t.theme), M(e.token0, t.theme), r, l)),
+				(e.token1.title = e.token1.title || n),
+				(e.token1.pic = A(M(e.token1, t.theme), s, i)),
+				(e.token1.bgColor = w(R(e.token1, t.theme), M(e.token1, t.theme), r, a)),
+				e?.app &&
+					(U("lp", t)
+						? ((e.app.title = e.app?.title || t.dataContextTitle || ""),
+						  (e.app.pic = M(e.app, t.theme) || t.dataContextPicUrl || ""),
+						  (e.app.bgColor = R(e.app, t.theme) || t.dataContextBgColor || "none"))
+						: ((e.app.title = ""), (e.app.pic = ""), (e.app.bgColor = "none"))),
+				e?.token0?.app && ((e.token0.app.pic = M(e.token0.app, t.theme)), (e.token0.app.bgColor = R(e.token0.app, t.theme) || "none")),
+				e?.token1?.app && ((e.token1.app.pic = M(e.token1.app, t.theme)), (e.token1.app.bgColor = R(e.token1.app, t.theme) || "none")),
+				"string" == typeof e?.network
+					? (e.network = { id: e.network, title: e.network || t?.dataContextTitle || "", pic: "", bgColor: t?.dataContextBgColor || "none" })
+					: ((e.network.title = e?.network?.title || t.dataContextTitle || ""),
+					  (e.network.pic = M(e?.network, t.theme) || t.dataContextPicUrl || i),
+					  (e.network.bgColor = R(e?.network, t.theme) || t.dataContextBgColor || "none")),
+				e
+			);
+		},
+		N = (t) => {
+			let e = "",
+				r = "",
+				i = "",
+				o = "",
+				n = "",
+				c = "";
+			if (t.dataPicUrl?.includes("|")) {
+				const i = t.dataPicUrl.split("|");
+				(e = i[0]), (r = i[1]);
+			}
+			if (t.dataTitle?.includes("|")) {
+				const e = t.dataTitle.split("|");
+				(i = e[0]), (o = e[1]);
+			}
+			if (t.dataBgColor?.includes("|")) {
+				const e = t.dataBgColor.split("|");
+				(n = e[0]), (c = e[1]);
+			}
+			return { token0Pic: e, token1Pic: r, token0Title: i, token1Title: o, token0BgColor: n, token1BgColor: c };
+		},
+		L = (t, e, r, i, o) => {
+			if (!r?.type) {
+				if (u(e)) return z(t, e, o, i);
+				if (d(e))
+					return ((t, e, r, i) => (
+						(e.pic = C(t.dataPicUrl, i)),
+						(e.bgColor = m(e.pic, r, t.dataBgColor || "")),
+						e.app && "app" === t.context && ((e.app.pic = t.dataContextPicUrl || ""), (e.app.bgColor = t.dataContextBgColor || "none")),
+						(e.network.pic = t.dataContextPicUrl || ""),
+						(e.network.bgColor = t.dataContextBgColor || "none"),
+						e
+					))(t, e, o, i);
+				if (p(e))
+					return ((t, e, r, i) => (
+						(e.pic = C(t.dataPicUrl, i)),
+						(e.bgColor = m(e.pic, r, t.dataBgColor || "")),
+						(e.network.pic = t.dataContextPicUrl || ""),
+						(e.network.bgColor = t.dataContextBgColor || "none"),
+						e
+					))(t, e, o, i);
+			}
+			if (u(r)) return F(t, r, o, i);
+			if (d(r))
+				return ((t, e, r, i) => (
+					(e.title = e.title || t.dataTitle || ""),
+					(e.pic = A(M(e, t.theme), t.dataContextPicUrl, i)),
+					(e.bgColor = w(R(e, t.theme) || "", M(e, t.theme), r, t.dataBgColor || "")),
+					e.app &&
+						"app" === t.context &&
+						(U("wrapped", t)
+							? ((e.app.title = e?.app?.title || t.dataContextTitle || ""),
+							  (e.app.pic = M(e?.app, t.theme) || t.dataContextPicUrl || ""),
+							  (e.app.bgColor = R(e?.app, t.theme) || t.dataContextBgColor || "none"))
+							: ((e.app.title = ""), (e.app.pic = ""), (e.app.bgColor = "none"))),
+					"string" == typeof e?.network
+						? (e.network = { id: e.network, title: e.network || t?.dataContextTitle || "", pic: "", bgColor: t?.dataContextBgColor || "none" })
+						: ((e.network.title = e.network.title || t.dataContextTitle || ""),
+						  (e.network.pic = M(e.network, t.theme) || t.dataContextTitle || i),
+						  (e.network.bgColor = R(e.network, t.theme) || t.dataContextBgColor || "none")),
+					e
+				))(t, r, o, i);
+			if (p(r))
+				return ((t, e, r, i) => (
+					(e.title = e.title || t.dataTitle || ""),
+					(e.pic = A(M(e, t.theme), t.dataPicUrl, i)),
+					(e.bgColor = w(R(e, t.theme), M(e, t.theme), r, t.dataBgColor || "")),
+					"string" == typeof e?.network
+						? (e.network = { id: e.network, title: e.network || t?.dataContextTitle || "", pic: "", bgColor: t?.dataContextBgColor || "none" })
+						: ((e.network.title = e.network.title || t.dataContextTitle || ""),
+						  (e.network.pic = M(e.network, t.theme) || i),
+						  (e.network.bgColor = R(e?.network, t.theme) || t.dataContextBgColor || "none")),
+					e
+				))(t, r, o, i);
+			throw new Error("Data couldn't be finalized for the token, failed to combine data.");
+		},
+		D = (t, e, r, i, o) =>
+			f(e) || y(e) || k(e) || x(e)
+				? ((e.title = e.title || r.title), (e.pic = A(M(e, t.theme), t.dataPicUrl, o)), (e.bgColor = w(R(e, t.theme), M(e, t.theme), i, t.dataBgColor || "")), e)
+				: ((r.pic = C(t.dataPicUrl, o)), (r.bgColor = m(r.pic, i, t.dataBgColor || "")), r),
+		G = (t, e, r, i, o) => {
+			if (!r?.address) {
+				if (b(e)) return z(t, e, o, i);
+				if (h(e)) return Y(t, e, o, i);
+			}
+			if (b(r)) return F(t, r, o, i);
+			if (h(r)) return O(t, r, o, i);
+			throw new Error("Data couldn't be finalized for the contract, failed to combine data.");
+		},
+		O = (t, e, r, i) => (
+			(e.title = e.title || t.dataTitle || ""),
+			(e.pic = A(M(e, t.theme), t.dataPicUrl, i)),
+			(e.bgColor = w(R(e, t.theme), M(e, t.theme), r, t.dataBgColor || "")),
+			e.app &&
+				((e.app.title = e?.app?.title || t.dataContextTitle || ""),
+				(e.app.pic = M(e?.app, t.theme) || t.dataContextPicUrl || ""),
+				(e.app.bgColor = R(e?.app, t.theme) || t.dataContextBgColor || "none")),
+			"string" == typeof e?.network
+				? (e.network = { id: e.network, title: e.network || t?.dataContextTitle || "", pic: "", bgColor: t?.dataContextBgColor || "none" })
+				: ((e.network.title = e.network.title || t.dataContextTitle || ""),
+				  (e.network.pic = M(e.network, t.theme) || i),
+				  (e.network.bgColor = R(e.network, t.theme) || t.dataContextBgColor || "none")),
+			e
+		),
+		Y = (t, e, r, i) => (
+			(e.pic = C(t.dataPicUrl, i)),
+			(e.bgColor = m(e.pic, r, t.dataBgColor || "")),
+			e.app && "app" === t.context && ((e.app.pic = t.dataContextPicUrl || ""), (e.app.bgColor = t.dataContextBgColor || "none")),
+			(e.network.pic = t.dataContextPicUrl || ""),
+			(e.network.bgColor = t.dataContextBgColor || "none"),
+			e
+		),
+		H = (t, e, r, i) => {
+			const { color: o, url: n } = W(r, i);
+			if ("token" === r.type) return L(r, t, e, n, o);
+			if ("contract" === r.type) return G(r, t, e, n, o);
+			if ("profile" === r.type && f(t)) return D(r, e, t, o, n);
+			if ("banner" === r.type && g(t)) return P(r, e, t, o, n);
+			if ("node" === r.type && k(t)) return D(r, e, t, o, n);
+			if ("network" === r.type && y(t)) return D(r, e, t, o, n);
+			if ("app" === r.type && x(t)) return D(r, e, t, o, n);
+			throw new Error(`Data couldn't be finalized, missing type. ${r?.type}`);
+		},
+		I = (t) => {
+			if (t.offlineMode && !t.dataPicUrl) throw new Error("Defining alternative picture url is necessary when using offline mode.");
+			switch (t.type) {
+				case "token":
+					return {
+						type: "token",
+						network: t.network,
+						address: t.address,
+						offlineMode: t.offlineMode,
+						shape: t.shape,
+						size: t.size,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						complexTokenType: t.complexTokenType,
+						context: t.context,
+						contextPosition: t.contextPosition,
+						lpTokensPosition: t.lpTokensPosition,
+						dataContextTitle: t.dataContextTitle,
+						dataContextPicUrl: t.dataContextPicUrl,
+						showPairApps: t.showPairApps,
+						showAppForType: t.showAppForType,
+						topToken: t.topToken,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						dataContextBgColor: t.dataContextBgColor,
+						theme: t.theme,
+					};
+				case "contract":
+					return {
+						type: "contract",
+						network: t.network,
+						address: t.address,
+						offlineMode: t.offlineMode,
+						shape: t.shape,
+						size: t.size,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						isPool: Boolean(t.isPool),
+						context: t.context,
+						contextPosition: t.contextPosition,
+						poolPairPosition: t.poolPairPosition,
+						dataContextTitle: t.dataContextTitle,
+						dataContextPicUrl: t.dataContextPicUrl,
+						showPairApps: t.showPairApps,
+						topToken: t.topToken,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						dataContextBgColor: t.dataContextBgColor,
+						theme: t.theme,
+					};
+				case "profile":
+					return {
+						type: "profile",
+						network: t.network,
+						address: t.address,
+						offlineMode: t.offlineMode,
+						size: t.size,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						shape: t.shape,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						theme: t.theme,
+					};
+				case "banner":
+					return {
+						type: "banner",
+						network: t.network,
+						address: t.address,
+						offlineMode: t.offlineMode,
+						censor: t.censor,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						theme: t.theme,
+					};
+				case "node":
+					return {
+						type: "node",
+						network: t.network,
+						address: t.address,
+						offlineMode: t.offlineMode,
+						size: t.size,
+						shape: t.shape,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						theme: t.theme,
+					};
+				case "network":
+					return {
+						type: "network",
+						network: t.network,
+						offlineMode: t.offlineMode,
+						size: t.size,
+						shape: t.shape,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						theme: t.theme,
+					};
+				case "app":
+					return {
+						type: "app",
+						name: t.name,
+						offlineMode: t.offlineMode,
+						size: t.size,
+						shape: t.shape,
+						strokeWidth: t.strokeWidth,
+						strokeColor: t.strokeColor,
+						censor: t.censor,
+						dataTitle: t.dataTitle,
+						dataPicUrl: t.dataPicUrl,
+						placeholder: t.placeholder,
+						loadingEffect: t.loadingEffect,
+						FailureEffect: t.FailureEffect,
+						delayResponseTime: t.delayResponseTime,
+						noCache: t.noCache,
+						dataBgColor: t.dataBgColor,
+						theme: t.theme,
+					};
+			}
+		},
+		_ = (t, e) => {
+			switch (t.type) {
+				case "token": {
+					let r = { type: "TOKEN", address: t.address, bgColor: K(e), network: { id: t.network, title: ("network" === t.context && t.dataContextTitle) || "", pic: "", bgColor: e.color } };
+					const i = t.dataPicUrl?.includes("|"),
+						o = t.dataTitle?.includes("|");
+					if ("lp" === t.complexTokenType || i || o) {
+						let i = e.url,
+							n = e.url,
+							c = "",
+							s = "";
+						if (o && t.dataTitle) {
+							const e = t.dataTitle.split("|");
+							(c = e[0]), (s = e[1]);
+						}
+						return {
+							...r,
+							type: "LP",
+							title: "",
+							sensitivity: "safe",
+							token0: { network: t.network, address: t.address, sensitivity: "safe", pic: i, bgColor: K(e), title: c },
+							token1: { network: t.network, address: t.address, sensitivity: "safe", pic: n, bgColor: K(e), title: s },
+							app: j(t, e),
+						};
+					}
+					return "wrapped" === t.complexTokenType
+						? { ...r, type: "WRAPPED", title: t.dataTitle || "", sensitivity: "safe", pic: e.url, darkPic: "", bgColor: K(e), app: j(t, e) }
+						: { ...r, title: t.dataTitle || "", pic: e.url, bgColor: K(e) };
+				}
+				case "contract": {
+					let r = {
+						type: "CONTRACT",
+						isPool: !1,
+						address: t.address,
+						bgColor: K(e),
+						network: { id: t.network, title: ("network" === t.context && t.dataContextTitle) || "", pic: "", darkPic: "", bgColor: e.color },
+						app: j(t, e),
+					};
+					const i = t.dataPicUrl?.includes("|"),
+						o = t.dataTitle?.includes("|");
+					if (t.isPool || i || o) {
+						let i = e.url,
+							n = e.url,
+							c = "",
+							s = "";
+						if (o && t.dataTitle) {
+							const e = t.dataTitle.split("|");
+							(c = e[0]), (s = e[1]);
+						}
+						return {
+							...r,
+							isPool: !0,
+							title: "",
+							sensitivity: "safe",
+							token0: { network: t.network, address: t.address, sensitivity: "safe", pic: i, darkPic: "", bgColor: K(e), title: c },
+							token1: { network: t.network, address: t.address, sensitivity: "safe", pic: n, darkPic: "", bgColor: K(e), title: s },
+						};
+					}
+					return { ...r, title: t.dataTitle || "", pic: e.url, darkPic: "", sensitivity: "safe", bgColor: K(e) };
+				}
+				case "profile":
+					return { network: t.network, address: t.address, title: t.dataTitle || "", sensitivity: "safe", pic: e.url, bgColor: K(e) };
+				case "banner":
+					return { network: t.network, address: t.address, title: t.dataTitle || "", sensitivity: "safe", banner: e.url, bgColor: K(e) };
+				case "node":
+					return { network: t.network, address: t.address, title: t.dataTitle || "", bgColor: K(e), pic: e.url };
+				case "network":
+					return { id: t.network, title: t.dataTitle || "", pic: e.url, bgColor: K(e) };
+				case "app":
+					return { name: " ", title: t.dataTitle || "", pic: e.url, bgColor: K(e) };
+			}
+		},
+		X = (t, e) => {
+			const r = { color: "none", url: "" };
+			if ("transparent" === t) return r;
+			if (t.endsWith("randomColor") || t.endsWith("randomColor'")) return (r.color = E()), r;
+			let i = t.match(Dt.colorRegex);
+			return i ? ((r.color = i[0]), r) : ((r.url = v(e, t)), r);
+		},
+		j = (t, e) => ({ title: t.dataContextTitle || "", pic: "", bgColor: e.color || "none" }),
+		K = (t) => (t.url ? "none" : t.color),
+		Q = document.createElement("template");
+	Q.innerHTML =
+		'\n<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 100">\n\t<defs>\n\t\t<clipPath>\n\t\t\t<rect x="0" y="0" width="400" height="100" />\n\t\t</clipPath>\n\t\t<filter>\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t</filter>\n\t</defs>\n\n\t<rect id="rect-bg" x="0" y="0" width="400" height="100" fill="none" ></rect>\n\t<image\n\t\tx="0"\n\t\ty="0"\n\t\twidth="400"\n\t\theight="100"\n\t\tfilter=""\n\t\tpreserveAspectRatio="xMidYMid slice"></image>\n\n\t<rect x="0" y="0" width="400" height="100" fill="none" ></rect>\n</svg>\n';
+	const V = Q,
+		J = (t) => {
+			const e = "banner-" + ++Dt.counter,
+				r = document.importNode(V.content, !0),
+				i = r.querySelector("svg");
+			if (i) {
+				i.setAttribute("data-unique-id", e);
+				const o = r.querySelector("clipPath");
+				o && (o.id = `shape-${e}`);
+				const n = r.querySelector("#rect-bg");
+				n && n.setAttribute("fill", t.bgColor);
+				const c = r.querySelector("image");
+				c && (c.setAttribute("href", t.banner || ""), c.setAttribute("clip-path", `url(#shape-${e})`));
+			}
+			return i;
+		},
+		Z = document.createElement("template");
+	Z.innerHTML =
+		'\n<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">\n\t<defs>\n\t\t<clipPath>\n\t\t\t<rect></rect>\n\t\t</clipPath>\n\t\t<filter>\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t</filter>\n\t</defs>\n\n\t<rect id="bg-color" fill="none"></rect>\n\t<image preserveAspectRatio="xMidYMid slice"><title></title></image>\n\t<rect fill="none" id="mask"></rect>\n</svg>\n';
+	const tt = Z,
+		et = (t, e, r, i) => {
+			const o = t.querySelector("clipPath");
+			if (o) {
+				o.id = `rect-${e}`;
+				const t = o.firstElementChild;
+				t &&
+					(t.setAttribute("x", "" + r / 2),
+					t.setAttribute("y", "" + r / 2),
+					t.setAttribute("width", "" + (100 - r)),
+					t.setAttribute("height", "" + (100 - r)),
+					t.setAttribute("rx", B(i, 100)),
+					t.setAttribute("ry", B(i, 100)));
+			}
+		},
+		rt = (t, e, r, i) => {
+			const o = t.querySelector("#bg-color");
+			o &&
+				(o.setAttribute("x", "" + r / 2),
+				o.setAttribute("y", "" + r / 2),
+				o.setAttribute("width", "" + (100 - r)),
+				o.setAttribute("height", "" + (100 - r)),
+				o.setAttribute("rx", B(i, 100)),
+				o.setAttribute("ry", B(i, 100)),
+				o.setAttribute("fill", e));
+		},
+		it = (t, e, r, i, o) => {
+			const n = t.querySelector("image");
+			n &&
+				(n.setAttribute("x", "" + i / 2),
+				n.setAttribute("y", "" + i / 2),
+				n.setAttribute("width", "" + (100 - i)),
+				n.setAttribute("height", "" + (100 - i)),
+				n.setAttribute("href", e),
+				n.setAttribute("clip-path", `url(#rect-${r})`),
+				n?.firstElementChild && (n.firstElementChild.textContent = o || ""));
+		},
+		ot = (t, e, r, i, o = !1) => {
+			const n = t.querySelector("#mask");
+			n &&
+				(n.setAttribute("x", "" + r / 2),
+				n.setAttribute("y", "" + r / 2),
+				n.setAttribute("width", "" + (100 - r)),
+				n.setAttribute("height", "" + (100 - r)),
+				n.setAttribute("rx", B(i.shape, 100)),
+				n.setAttribute("ry", B(i.shape, 100)),
+				n.setAttribute("stroke", i.strokeColor || ""),
+				n.setAttribute("stroke-width", String(o ? r : 0)));
+		};
+	function nt(t, e, r) {
+		const i = t.querySelector("filter");
+		i && e ? (i.id = `blur-${r}`) : i?.remove();
+	}
+	const ct = (t, e, r, i) => {
+			const o = "" + ++Dt.counter,
+				n = i.strokeWidth || 0,
+				c = document.importNode(tt.content, !0),
+				s = c.querySelector("svg");
+			return (
+				s &&
+					(s.setAttribute("width", `${i.size}`),
+					s.setAttribute("height", `${i.size}`),
+					s.setAttribute("data-unique-id", o),
+					s.setAttribute("data-template-type", "base"),
+					et(c, o, n, i.shape),
+					rt(c, r, n, i.shape),
+					it(c, e, o, n, t),
+					ot(c, 0, n, i, !1)),
+				s
+			);
+		},
+		st = document.createElement("template");
+	st.innerHTML =
+		'\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">\n\t<defs>\n\t\t<clipPath id="contextual-path">\n\t\t\t<circle cx="0" cy="0" r="0"></circle>\n\t\t</clipPath>\n\t\t<clipPath id="context-path">\n\t\t\t<circle cx="0" cy="0" r="0"></circle>\n\t\t</clipPath>\n\n\t\t<filter id="contextual-blur">\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t</filter>\n\t</defs>\n\n\t<circle id="contextual-bg-circle" fill="none"></circle>\n\t<image\n\t\tid="contextual-image"\n\t\tpreserveAspectRatio="xMidYMid slice">\n\t\t<title></title>\n\t</image>\n\t<circle\n\t\tid="contextual-circle"\n\t\tfill="none">\n\t</circle>\n\n\t<circle id="context-bg-circle" fill="none"></circle>\n\t<image\n\t\tid="context-image"\n\t\tpreserveAspectRatio="xMidYMid slice">\n\t\t<title></title>\n\t</image>\n\t<circle\n\t\tid="context-circle"\n\t\tfill="none">\n\t</circle>\n</svg>\n';
+	const lt = st;
+	function at(t, e, r, i) {
+		const o = t.querySelector("#contextual-path");
+		if (o) {
+			o.id = `contextual-circle-${e}`;
+			const t = o.firstElementChild;
+			t && (t.setAttribute("cx", `${r.cx}`), t.setAttribute("cy", `${r.cy}`), t.setAttribute("r", `${r.r}`));
+		}
+		const n = t.querySelector("#context-path");
+		if (n) {
+			n.id = `context-circle-${e}`;
+			const t = n.firstElementChild;
+			t && (t.setAttribute("cx", `${i.cx}`), t.setAttribute("cy", `${i.cy}`), t.setAttribute("r", `${i.r}`));
+		}
+	}
+	function pt(t, e, r, i = !1, o, n, c, s, l, a = !1) {
+		const p = t.querySelector("#contextual-bg-circle");
+		p && (p.setAttribute("cx", `${r.cx}`), p.setAttribute("cy", `${r.cy}`), p.setAttribute("r", `${r.r}`), p.setAttribute("fill", c));
+		const u = t.querySelector("#contextual-image");
+		if (u) {
+			u.setAttribute("x", "" + (r.cx - r.r)),
+				u.setAttribute("y", "" + (r.cy - r.r)),
+				u.setAttribute("width", "" + 2 * r.r),
+				u.setAttribute("height", "" + 2 * r.r),
+				u.setAttribute("href", o),
+				u.setAttribute("clip-path", `url(#contextual-circle-${e})`),
+				i && u.setAttribute("filter", `url(#contextual-blur-${e})`);
+			const t = u.firstElementChild;
+			t && !i && (t.textContent = n || "");
+		}
+		const d = t.querySelector("#contextual-circle");
+		d && (d.setAttribute("cx", `${r.cx}`), d.setAttribute("cy", `${r.cy}`), d.setAttribute("r", `${r.r}`), d.setAttribute("stroke", l), d.setAttribute("stroke-width", String(a ? s : 0)));
+	}
+	function ut(t, e, r, i, o, n, c, s, l = !1) {
+		const a = t.querySelector("#context-image"),
+			p = t.querySelector("#context-circle");
+		if (a && p) {
+			const u = t.querySelector("#context-bg-circle");
+			u && (u.setAttribute("cx", String(r.cx)), u.setAttribute("cy", String(r.cy)), u.setAttribute("r", String(r.r)), u.setAttribute("fill", n)),
+				a.setAttribute("href", i || ""),
+				a.setAttribute("x", String(r.cx - r.r)),
+				a.setAttribute("y", String(r.cy - r.r)),
+				a.setAttribute("width", String(2 * r.r)),
+				a.setAttribute("height", String(2 * r.r)),
+				a.setAttribute("clip-path", `url(#context-circle-${e})`);
+			const d = a.firstElementChild;
+			d && o && (d.textContent = o),
+				p.setAttribute("cx", String(r.cx)),
+				p.setAttribute("cy", String(r.cy)),
+				p.setAttribute("r", String(r.r)),
+				p.setAttribute("stroke", s),
+				p.setAttribute("stroke-width", String(l ? c : 0)),
+				p.setAttribute("fill", "none");
+		}
+	}
+	function dt(t, e, r) {
+		const i = t.querySelector("#contextual-blur");
+		i && r ? (i.id = `contextual-blur-${e}`) : i?.remove();
+	}
+	function ht(t, e = 0) {
+		return { cx: 50, cy: 50, r: (t && "none" !== t ? 40 : 50) - e / 2 };
+	}
+	function bt(t, e, r) {
+		const i = e.r / 2;
+		return {
+			cx: "bottomRight" === t.contextPosition || "topRight" === t.contextPosition ? e.cx + e.r - i / 2 - r / 2 : e.cx - e.r + i / 2 + r / 2,
+			cy: "bottomRight" === t.contextPosition || "bottomLeft" === t.contextPosition ? e.cy + e.r - i / 2 - r / 2 : e.cy - e.r + i / 2 + r / 2,
+			r: i,
+		};
+	}
+	const ft = (t, e, r, i, o, n, c) => {
+			const s = c.strokeWidth || 0,
+				l = "" + ++Dt.counter,
+				a = ht(c.context, s),
+				p = bt(c, a, s),
+				u = document.importNode(lt.content, !0),
+				d = u.querySelector("svg");
+			return (
+				d &&
+					(d.setAttribute("width", `${c.size}`),
+					d.setAttribute("height", `${c.size}`),
+					d.setAttribute("data-unique-id", l),
+					d.setAttribute("data-template-type", "contextual"),
+					at(u, l, a, p),
+					pt(u, l, a, !1, e, t, o, s, c.strokeColor || "", !1),
+					c.context && "none" !== c.context && ut(u, l, p, i, r, n, s, c.strokeColor || "", !1)),
+				d
+			);
+		},
+		gt =
+			'\n<circle id="token0-bg-circle"></circle>\n<image preserveAspectRatio="xMidYMid slice" id="token0-image"><title></title></image>\n<circle fill="none" id="token0-circle"></circle>\n\n<circle id="token0-app-bg-circle"></circle>\n<image preserveAspectRatio="xMidYMid slice" id="token0-app-image"><title></title></image>\n<circle fill="trasparent" id="token0-app-circle"></circle>\n',
+		kt =
+			'\n<circle id="token1-bg-circle"></circle>\n<image preserveAspectRatio="xMidYMid slice" id="token1-image"><title></title></image>\n<circle fill="none" id="token1-circle"></circle>\n\n<circle id="token1-app-bg-circle"></circle>\n<image preserveAspectRatio="xMidYMid slice" id="token1-app-image"><title></title></image>\n<circle fill="none" id="token1-app-circle"></circle>\n',
+		yt = (t) =>
+			`\n\t<svg\n\t\txmlns="http://www.w3.org/2000/svg"\n\t\txmlnsXlink="http://www.w3.org/1999/xlink"\n\t\tversion="1.1"\n\t\tviewBox="0 0 100 100">\n\t\t<defs>\n\t\t\t<clipPath id="token0-path">\n\t\t\t\t<circle></circle>\n\t\t\t</clipPath>\n\t\t\t<clipPath id="token0-app-path">\n\t\t\t\t<circle></circle>\n\t\t\t</clipPath>\n\n\t\t\t<clipPath id="token1-path">\n\t\t\t\t<circle></circle>\n\t\t\t</clipPath>\n\t\t\t<clipPath id="token1-app-path">\n\t\t\t\t<circle></circle>\n\t\t\t</clipPath>\n\n\t\t\t<clipPath id="context-path">\n\t\t\t\t<circle></circle>\n\t\t\t</clipPath>\n\t\n\t\t\t<filter id="blur0">\n\t\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t\t</filter>\n\t\t\t<filter id="blur1">\n\t\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t\t</filter>\n\t\t</defs>\n\t\n\t\t${
+				"zero" === t ? kt : gt
+			}\n\n\t\t${
+				"zero" === t ? gt : kt
+			}\n\t\n\t\t<circle id="context-bg-circle"></circle>\n\t\t<image preserveAspectRatio="xMidYMid slice" id="context-image"><title></title></image>\n\t\t<circle fill="none" id="context-circle"></circle>\n\t</svg>\n\t`,
+		xt = document.createElement("template");
+	xt.innerHTML = yt("one");
+	const At = xt,
+		Ct = document.createElement("template");
+	Ct.innerHTML = yt("zero");
+	const wt = Ct;
+	function mt(t, e, r, i, o, n, c) {
+		const s = t.querySelector("#token0-path");
+		if (s) {
+			s.id = `token0-circle-${e}`;
+			const t = s.firstElementChild;
+			t && (t.setAttribute("cx", `${r.cx}`), t.setAttribute("cy", `${r.cy}`), t.setAttribute("r", `${r.r}`));
+		}
+		if (i) {
+			const r = t.querySelector("#token0-app-path");
+			if (r) {
+				r.id = `token0-app-circle-${e}`;
+				const t = r.firstElementChild;
+				t && (t.setAttribute("cx", `${i.cx}`), t.setAttribute("cy", `${i.cy}`), t.setAttribute("r", `${i.r}`));
+			}
+		}
+		const l = t.querySelector("#token1-path");
+		if (l) {
+			l.id = `token1-circle-${e}`;
+			const t = l.firstElementChild;
+			t && (t.setAttribute("cx", `${o.cx}`), t.setAttribute("cy", `${o.cy}`), t.setAttribute("r", `${o.r}`));
+		}
+		if (n) {
+			const r = t.querySelector("#token1-app-path");
+			if (r) {
+				r.id = `token1-app-circle-${e}`;
+				const t = r.firstElementChild;
+				t && (t.setAttribute("cx", `${n.cx}`), t.setAttribute("cy", `${n.cy}`), t.setAttribute("r", `${n.r}`));
+			}
+		}
+		const a = t.querySelector("#context-path");
+		if (a) {
+			a.id = `context-circle-${e}`;
+			const t = a.firstElementChild;
+			t && (t.setAttribute("cx", `${c.cx}`), t.setAttribute("cy", `${c.cy}`), t.setAttribute("r", `${c.r}`));
+		}
+	}
+	function Pt(t, e, r, i, o, n, c = !1, s = !1, l, a, p, u) {
+		const d = t.querySelector("#token0-bg-circle");
+		d && (d.setAttribute("cx", `${r.cx}`), d.setAttribute("cy", `${r.cy}`), d.setAttribute("r", `${r.r}`), d.setAttribute("fill", l.token0.bgColor || "none"));
+		const h = t.querySelector("#token0-image");
+		if (h) {
+			h.setAttribute("x", "" + (r.cx - r.r)),
+				h.setAttribute("y", "" + (r.cy - r.r)),
+				h.setAttribute("width", "" + 2 * r.r),
+				h.setAttribute("height", "" + 2 * r.r),
+				h.setAttribute("href", l.token0?.pic || ""),
+				h.setAttribute("clip-path", `url(#token0-circle-${e})`),
+				c && h.setAttribute("filter", `url(#blur0-${e})`);
+			const t = h?.firstElementChild;
+			t && !c && (t.textContent = l.token0.title || l.token0.address);
+		}
+		const b = t.querySelector("#token0-circle");
+		b && (b.setAttribute("cx", `${r.cx}`), b.setAttribute("cy", `${r.cy}`), b.setAttribute("r", `${r.r}`), b.setAttribute("stroke", a), b.setAttribute("stroke-width", String(u ? p : 0)));
+		const f = t.querySelector("#token1-bg-circle");
+		f && (f.setAttribute("cx", `${o.cx}`), f.setAttribute("cy", `${o.cy}`), f.setAttribute("r", `${o.r}`), f.setAttribute("fill", l.token1.bgColor));
+		const g = t.querySelector("#token1-image");
+		if (g) {
+			g.setAttribute("x", "" + (o.cx - o.r)),
+				g.setAttribute("y", "" + (o.cy - o.r)),
+				g.setAttribute("width", "" + 2 * o.r),
+				g.setAttribute("height", "" + 2 * o.r),
+				g.setAttribute("href", l.token1?.pic || ""),
+				g.setAttribute("clip-path", `url(#token1-circle-${e})`),
+				s && g.setAttribute("filter", `url(#blur1-${e})`);
+			const t = g?.firstElementChild;
+			t && !s && (t.textContent = l.token1.title || l.token1.address);
+		}
+		const k = t.querySelector("#token1-circle");
+		if (
+			(k && (k.setAttribute("cx", `${o.cx}`), k.setAttribute("cy", `${o.cy}`), k.setAttribute("r", `${o.r}`), k.setAttribute("stroke", a), k.setAttribute("stroke-width", String(u ? p : 0))), i)
+		) {
+			const r = t.querySelector("#token0-app-bg-circle");
+			r && (r.setAttribute("cx", `${i.cx}`), r.setAttribute("cy", `${i.cy}`), r.setAttribute("r", `${i.r}`), r.setAttribute("fill", l.token0?.app?.bgColor || "none"));
+			const o = t.querySelector("#token0-app-image");
+			if (o) {
+				o.setAttribute("x", "" + (i.cx - i.r)),
+					o.setAttribute("y", "" + (i.cy - i.r)),
+					o.setAttribute("width", "" + 2 * i.r),
+					o.setAttribute("height", "" + 2 * i.r),
+					o.setAttribute("href", l.token0?.app?.pic || ""),
+					o.setAttribute("clip-path", `url(#token0-app-circle-${e})`);
+				const t = o?.firstElementChild;
+				t && (t.textContent = l.token0?.app?.title ? `Wrapped Token, Originated by ${l.token0?.app?.title}` : "");
+			}
+			const n = t.querySelector("#token0-app-circle");
+			n &&
+				(n.setAttribute("cx", `${i.cx}`),
+				n.setAttribute("cy", `${i.cy}`),
+				n.setAttribute("r", `${i.r}`),
+				n.setAttribute("stroke", a),
+				n.setAttribute("stroke-width", String(u ? p : 0)),
+				n.setAttribute("fill", "none"));
+		}
+		if (n) {
+			const r = t.querySelector("#token1-app-bg-circle");
+			r && (r.setAttribute("cx", `${n.cx}`), r.setAttribute("cy", `${n.cy}`), r.setAttribute("r", `${n.r}`), r.setAttribute("fill", l.token1?.app?.bgColor || "none"));
+			const i = t.querySelector("#token1-app-image");
+			if (i) {
+				i.setAttribute("x", "" + (n.cx - n.r)),
+					i.setAttribute("y", "" + (n.cy - n.r)),
+					i.setAttribute("width", "" + 2 * n.r),
+					i.setAttribute("height", "" + 2 * n.r),
+					i.setAttribute("href", l.token1?.app?.pic || ""),
+					i.setAttribute("clip-path", `url(#token1-app-circle-${e})`);
+				const t = i?.firstElementChild;
+				t && (t.textContent = l.token1?.app?.title ? `Wrapped Token, Originated by ${l.token1?.app?.title}` : "");
+			}
+			const o = t.querySelector("#token1-app-circle");
+			o &&
+				(o.setAttribute("cx", `${n.cx}`),
+				o.setAttribute("cy", `${n.cy}`),
+				o.setAttribute("r", `${n.r}`),
+				o.setAttribute("stroke", a),
+				o.setAttribute("stroke-width", String(u ? p : 0)),
+				o.setAttribute("fill", "none"));
+		}
+	}
+	function $t(t, e, r, i, o, n, c) {
+		const s = t.querySelector("#context-image"),
+			l = t.querySelector("#context-circle");
+		if (s && l) {
+			const a = t.querySelector("#context-bg-circle");
+			a && (a.setAttribute("cx", `${r.cx}`), a.setAttribute("cy", `${r.cy}`), a.setAttribute("r", `${r.r}`), a.setAttribute("fill", i?.bgColor)),
+				s.setAttribute("href", i?.pic || ""),
+				s.setAttribute("x", String(r.cx - r.r)),
+				s.setAttribute("y", String(r.cy - r.r)),
+				s.setAttribute("width", String(2 * r.r)),
+				s.setAttribute("height", String(2 * r.r)),
+				s.setAttribute("clip-path", `url(#context-circle-${e})`);
+			const p = s.firstElementChild;
+			p && i?.title && (p.textContent = i.title),
+				l.setAttribute("cx", String(r.cx)),
+				l.setAttribute("cy", String(r.cy)),
+				l.setAttribute("r", String(r.r)),
+				l.setAttribute("stroke", o || ""),
+				l.setAttribute("stroke-width", String(c ? n : 0)),
+				l.setAttribute("fill", "none");
+		}
+	}
+	function Tt(t, e, r, i) {
+		const o = r.r / 2;
+		return {
+			r: o,
+			cx: "bottomRight" === t.contextPosition || "topRight" === t.contextPosition ? r.cx + r.r - o / 2 - i / 2 : e.cx - e.r + o / 2 + i / 2,
+			cy: "bottomRight" === t.contextPosition || "bottomLeft" === t.contextPosition ? r.cy + r.r - o / 2 - i / 2 : e.cy - e.r + o / 2 + i / 2,
+		};
+	}
+	function vt(t, e, r) {
+		const i = { cx: 30, cy: 50, r: 30 },
+			o = { cx: 70, cy: 50, r: 30 };
+		return (
+			t ? (e ? ((i.cx = 36), (i.r = 29), (o.cx = 63), (o.r = 29)) : ((i.cx = 32), (i.r = 25), (o.cx = 68), (o.r = 25))) : e && ((i.cx = 35), (i.r = 35), (o.cx = 65), (o.r = 35)),
+			(i.r = i.r - r / 2),
+			(o.r = o.r - r / 2),
+			[i, o]
+		);
+	}
+	const St = document.createElement("template");
+	St.innerHTML =
+		'\n<svg\n\txmlns="http://www.w3.org/2000/svg"\n\txmlnsXlink="http://www.w3.org/1999/xlink"\n\tversion="1.1"\n\tviewBox="0 0 100 100">\n\t<defs>\n\t\t<clipPath id="token0-path">\n\t\t\t<rect x="0" y="0"></rect>\n\t\t</clipPath>\n\t\t<clipPath id="token1-path">\n\t\t\t<rect x="50" y="0"></rect>\n\t\t</clipPath>\n\t\t<clipPath id="context-path">\n\t\t\t<circle></circle>\n\t\t</clipPath>\n\n\t\t<filter id="blur0">\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t</filter>\n\t\t<filter id="blur1">\n\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="7" />\n\t\t</filter>\n\n\t\t<pattern id="token0-pattern" patternUnits="objectBoundingBox" width="1" height="1">\n\t\t\t<image href="" x="0" y="0" width="0" height="0" />\n\t\t</pattern>\n\t\t<pattern id="token1-pattern" patternUnits="objectBoundingBox" width="1" height="1">\n\t\t\t<image href="" x="0" y="0" width="0" height="0" />\n\t\t</pattern>\n\t</defs>\n\n\t<circle id="token0-bg-circle"></circle>\n\t<circle fill="none" id="token0-image"><title></title></circle>\n\n\t<circle id="token1-bg-circle"></circle>\n\t<circle fill="none" id="token1-image"><title></title></circle>\n\n\t<circle id="context-bg-circle"></circle>\n\t<image preserveAspectRatio="xMidYMid slice" id="context-image"><title></title></image>\n\t<circle fill="none" id="context-circle"></circle>\n</svg>\n';
+	const Et = St;
+	function Bt(t, e = "", r = "", i = !1, o = !1, n, c, s) {
+		const l = t.querySelector("#token0-path");
+		if (l) {
+			l.id = `bg-0-${n}`;
+			const t = l.firstElementChild;
+			t && (t.setAttribute("width", `${c.cx}`), t.setAttribute("height", "" + 2 * c.cy));
+		}
+		const a = t.querySelector("#token1-path");
+		if (a) {
+			a.id = `bg-1-${n}`;
+			const t = a.firstElementChild;
+			t && (t.setAttribute("width", `${c.cx}`), t.setAttribute("height", "" + 2 * c.cy));
+		}
+		const p = t.querySelector("#context-path");
+		if (p) {
+			p.id = `context-circle-${n}`;
+			const t = p.firstElementChild;
+			t && (t.setAttribute("cx", `${s.cx}`), t.setAttribute("cy", `${s.cy}`), t.setAttribute("r", `${s.r}`));
+		}
+		const u = t.querySelector("#token0-pattern");
+		if (u) {
+			u.id = `image0-${n}`;
+			const t = u.firstElementChild;
+			t && (t.setAttribute("href", `${e}`), t.setAttribute("width", "" + 2 * c.r), t.setAttribute("height", "" + 2 * c.r), i && t.setAttribute("filter", `url(#blur0-${n})`));
+		}
+		const d = t.querySelector("#token1-pattern");
+		if (d) {
+			d.id = `image1-${n}`;
+			const t = d.firstElementChild;
+			t && (t.setAttribute("href", `${r}`), t.setAttribute("width", "" + 2 * c.r), t.setAttribute("height", "" + 2 * c.r), o && t.setAttribute("filter", `url(#blur1-${n})`));
+		}
+	}
+	function qt(t, e, r, i, o, n, c, s, l) {
+		const a = t.querySelector("#token0-bg-circle");
+		a && (a.setAttribute("cx", `${r.cx}`), a.setAttribute("cy", `${r.cy}`), a.setAttribute("r", `${r.r}`), a.setAttribute("clipPath", `url(#bg-0-${e})`), a.setAttribute("fill", n.token0.bgColor));
+		const p = t.querySelector("#token0-image");
+		if (p) {
+			p.setAttribute("cx", `${r.cx}`),
+				p.setAttribute("cy", `${r.cy}`),
+				p.setAttribute("r", `${r.r}`),
+				p.setAttribute("stroke-width", String(l ? s : 0)),
+				p.setAttribute("stroke", c),
+				p.setAttribute("fill", `url(#image0-${e})`),
+				p.setAttribute("clip-path", `url(#bg-0-${e})`);
+			const t = p?.firstElementChild;
+			t && !i && (t.textContent = n.token0.title || n.token0.address);
+		}
+		const u = t.querySelector("#token1-bg-circle");
+		u &&
+			(u.setAttribute("cx", `${r.cx}`), u.setAttribute("cy", `${r.cy}`), u.setAttribute("r", `${r.r}`), u.setAttribute("clip-path", `url(#bg-1-${e})`), u.setAttribute("fill", n.token1.bgColor));
+		const d = t.querySelector("#token1-image");
+		if (d) {
+			d.setAttribute("cx", `${r.cx}`),
+				d.setAttribute("cy", `${r.cy}`),
+				d.setAttribute("r", `${r.r}`),
+				d.setAttribute("stroke-width", String(l ? s : 0)),
+				d.setAttribute("stroke", c),
+				d.setAttribute("fill", `url(#image1-${e})`),
+				d.setAttribute("clip-path", `url(#bg-1-${e})`);
+			const t = d?.firstElementChild;
+			t && !o && (t.textContent = n.token1.title || n.token1.address);
+		}
+	}
+	function Ut(t, e) {
+		return { cx: 50, cy: 50, r: ("none" === t ? 50 : 40) - e / 2 };
+	}
+	const Mt = (t, e) => {
+			const r = e.strokeWidth || 0,
+				i = "" + ++Dt.counter,
+				o = q(e, t),
+				n = e?.lpTokensPosition || e?.poolPairPosition,
+				c = document.importNode("merged" === n ? Et.content : ("zero" === e?.topToken ? wt : At).content, !0),
+				s = c.querySelector("svg");
+			if (s)
+				if ((s.setAttribute("width", `${e.size}`), s.setAttribute("height", `${e.size}`), s.setAttribute("data-unique-id", i), s.setAttribute("data-template-type", "lp"), "merged" !== n)) {
+					const s = Boolean(t.token0?.app || t.token1?.app),
+						l = (t.token0?.pic && t.token0?.pic === t.token1?.pic) || (t.token0?.darkPic && t.token0?.darkPic === t.token1?.darkPic),
+						a = Boolean(("true" === e.showPairApps && s) || ("when_identical" === e.showPairApps && l)),
+						[p, u] = vt("none" !== o.type || "false" !== e.showPairApps, "intimate" === n, r),
+						d = Tt(e, p, u, r),
+						h = a
+							? Tt(
+									{
+										...e,
+										contextPosition:
+											"app" === e.context ? (e?.contextPosition?.startsWith("top") ? "bottomLeft" : "topLeft") : e?.contextPosition?.startsWith("top") ? "topLeft" : "bottomLeft",
+									},
+									p,
+									u,
+									r
+							  )
+							: void 0,
+						b = a
+							? Tt(
+									{
+										...e,
+										contextPosition:
+											"app" === e.context
+												? e?.contextPosition?.startsWith("top")
+													? "bottomRight"
+													: "topRight"
+												: e?.contextPosition?.startsWith("top")
+												? "topRight"
+												: "bottomRight",
+									},
+									p,
+									u,
+									r
+							  )
+							: void 0;
+					mt(c, i, p, h, u, b, d), Pt(c, i, p, h, u, b, !1, !1, t, e.strokeColor || "", r, !1), "none" !== o.type && $t(c, i, d, o, e.strokeColor || "", r, !1);
+				} else {
+					const n = Ut(o.type, r),
+						s = bt(e, n, r);
+					Bt(c, t.token0.pic, t.token1.pic, !1, !1, i, n, s),
+						qt(c, i, n, !1, !1, t, e.strokeColor || "", r, !1),
+						"none" !== o.type && ut(c, i, s, o.pic, o.title, o.bgColor, r, e.strokeColor || "", !1);
+				}
+			return s;
+		},
+		Rt = (t, e) => {
+			if ("token" === e.type) {
+				if (u(t)) return Mt(t, e);
+				if (d(t)) {
+					const r = q(e, t);
+					return ft(t.title, t.pic, r.title, r.pic, t.bgColor, r.bgColor, e);
+				}
+				if (p(t)) return "network" === e.context ? ft(t.title, t.pic, t.network.title, t.network.pic, t.bgColor, t.network?.bgColor || "", e) : ct(t.title, t.pic, t.bgColor, e);
+			}
+			if ("contract" === e.type) {
+				if (b(t)) return Mt(t, e);
+				if (h(t))
+					return "network" === e.context
+						? ft(t.title, t.pic, t.network.title, t.network.pic, t.bgColor, t.network?.bgColor || "", e)
+						: "app" === e.context && t?.app
+						? ft(t.title, t.pic, t?.app?.title || "", t?.app?.pic || "", t.bgColor, t?.app?.bgColor || "", e)
+						: ct(t.title, t.pic, t.bgColor, e);
+			}
+			if ("profile" === e.type && f(t)) return ct(t.title, t.pic, t.bgColor, e);
+			if ("banner" === e.type && g(t)) return J(t);
+			if ("node" === e.type && k(t)) return ct(t.title, t.pic, t.bgColor || "", e);
+			if ("network" === e.type && y(t)) return ct(t.title, t.pic, t.bgColor || "", e);
+			if ("app" === e.type && x(t)) return ct(t.title, t.pic, t.bgColor || "", e);
+			throw new Error("svg couldn't be generated.");
+		},
+		Wt = (t, e, r) => {
+			const i = S(r.censor, e?.sensitivity);
+			if (t) {
+				const r = t.getAttribute("data-unique-id"),
+					o = t.querySelector("filter");
+				o && i ? (o.id = `blur-${r}`) : o?.remove();
+				const n = t.querySelector("#rect-bg");
+				n && n.setAttribute("fill", e.bgColor || "none");
+				const c = t.querySelector("image");
+				c && (c.setAttribute("href", e.banner || ""), i && c.setAttribute("filter", `url(#blur-${r})`));
+			}
+		},
+		zt = (t, e, r, i, o, n, c) => {
+			const s = t.getAttribute("data-unique-id"),
+				l = n.strokeWidth || 0,
+				a = S(n.censor, o);
+			if ("base" === t?.getAttribute("data-template-type")) {
+				if (t) {
+					nt(t, a, s);
+					const o = t.querySelector("#bg-color");
+					o && o.setAttribute("fill", i || "none");
+					const n = t.querySelector("image");
+					if (n) {
+						if ((n.setAttribute("href", r), !a)) {
+							const t = n.firstElementChild;
+							t && (t.textContent = e);
+						}
+						a && n.setAttribute("filter", `url(#blur-${s})`);
+					}
+					const p = n?.nextElementSibling;
+					p && "success" === c && p.setAttribute("stroke-width", String(l));
+				}
+			} else {
+				const o = document.importNode(tt.content, !0).querySelector("svg");
+				o && (t.replaceWith(o), et(o, s, l, n.shape), nt(o, a, s), rt(o, i, l, n.shape), it(o, r, s, l, e), ot(o, 0, l, n, !0));
+			}
+		},
+		Ft = (t, e, r, i, o, n, c, s, l, a) => {
+			const p = t.getAttribute("data-unique-id"),
+				u = l.strokeWidth || 0,
+				d = S(l.censor, n);
+			if (t && "contextual" === t?.getAttribute("data-template-type")) {
+				dt(t, p, d);
+				const n = t.querySelector("#contextual-bg-circle");
+				n?.setAttribute("fill", c || "none");
+				const h = t.querySelector("#contextual-image");
+				h && (h.setAttribute("href", r), d && h.setAttribute("filter", `url(#contextual-blur-${p})`));
+				const b = t.querySelector("#contextual-circle");
+				if (b && ("success" === a && b.setAttribute("stroke-width", `${u}`), !d)) {
+					const t = b.firstElementChild;
+					t && (t.textContent = e || "");
+				}
+				const f = t.querySelector("#context-image"),
+					g = t.querySelector("#context-circle");
+				if (f && g && "none" !== l.context) {
+					const e = t.querySelector("#context-bg-circle");
+					e?.setAttribute("fill", s || "none"), f.setAttribute("href", o || ""), o && "success" === a && g.setAttribute("stroke-width", `${u}`), g.setAttribute("fill", "none");
+					const r = g.firstElementChild;
+					r && (r.textContent = i || "");
+				}
+				return;
+			}
+			const h = ht(l.context, u),
+				b = bt(l, h, u),
+				f = document.importNode(lt.content, !0).querySelector("svg");
+			t &&
+				f &&
+				(t.replaceWith(f),
+				at(f, p, h, b),
+				dt(f, p, d),
+				pt(f, p, h, d, r, e, c, u, l.strokeColor || "", !0),
+				l.context && "none" !== l.context && ut(f, p, b, o, i, s, u, l.strokeColor || "", !0));
+		},
+		Nt = (t, e, r, i) => {
+			const o = t.getAttribute("data-unique-id"),
+				n = ("success" === i && r.strokeWidth) || 0,
+				c = S(r.censor, e.token0.sensitivity),
+				s = S(r.censor, e.token1.sensitivity),
+				l = q(r, e),
+				a = r?.lpTokensPosition || r?.poolPairPosition,
+				p = document.importNode("merged" === a ? Et.content : ("zero" === r?.topToken ? wt : At).content, !0).querySelector("svg");
+			if (!t || !p) return;
+			if (
+				(t.replaceWith(p),
+				(function (t, e, r, i) {
+					const o = t.querySelector("#blur0");
+					o && r ? (o.id = `blur0-${e}`) : o?.remove();
+					const n = t.querySelector("#blur1");
+					n && i ? (n.id = `blur1-${e}`) : n?.remove();
+				})(p, o, c, s),
+				"merged" !== a)
+			) {
+				const t = Boolean(e.token0?.app || e.token1?.app),
+					i = (e.token0?.pic && e.token0?.pic === e.token1?.pic) || (e.token0?.darkPic && e.token0?.darkPic === e.token1?.darkPic),
+					u = Boolean(("true" === r.showPairApps && t) || ("when_identical" === r.showPairApps && i)),
+					[d, h] = vt("none" !== l.type || u, "intimate" === a, n),
+					b = Tt(r, d, h, n),
+					f = u
+						? Tt(
+								{
+									...r,
+									contextPosition:
+										"app" === r.context ? (r?.contextPosition?.startsWith("top") ? "bottomLeft" : "topLeft") : r?.contextPosition?.startsWith("top") ? "topLeft" : "bottomLeft",
+								},
+								d,
+								h,
+								n
+						  )
+						: void 0,
+					g = u
+						? Tt(
+								{
+									...r,
+									contextPosition:
+										"app" === r.context ? (r?.contextPosition?.startsWith("top") ? "bottomRight" : "topRight") : r?.contextPosition?.startsWith("top") ? "topRight" : "bottomRight",
+								},
+								d,
+								h,
+								n
+						  )
+						: void 0;
+				return mt(p, o, d, f, h, g, b), Pt(p, o, d, f, h, g, c, s, e, r.strokeColor || "", n, !0), void ("none" !== l.type && $t(p, o, b, l, r.strokeColor || "", n, !0));
+			}
+			const u = Ut(l.type, n),
+				d = bt(r, u, n);
+			Bt(p, e.token0.pic, e.token1.pic, c, s, o, u, d), qt(p, o, u, c, s, e, r.strokeColor || "", n, !0), "none" !== l.type && ut(p, o, d, l.pic, l.title, l.bgColor, n, r.strokeColor || "", !0);
+		},
+		Lt = (t, e, r, i) => {
+			if (((t.style.display = "inline"), "token" === r.type)) {
+				if (u(e)) return Nt(t, e, r, i);
+				if (d(e)) {
+					const o = q(r, e);
+					return Ft(t, e.title, e.pic, o.title, o.pic, e.sensitivity, e.bgColor, o.bgColor, r, i);
+				}
+				if (p(e))
+					return "network" === r.context
+						? Ft(t, e.title, e.pic, e.network.title, e.network.pic, e.sensitivity, e.bgColor, e.network?.bgColor || "", r, i)
+						: zt(t, e.title, e.pic, e.bgColor, e.sensitivity, r, i);
+			}
+			if ("contract" === r.type) {
+				if (b(e)) return Nt(t, e, r, i);
+				if (h(e))
+					return "network" === r.context
+						? Ft(t, e.title, e.pic, e.network.title, e.network.pic, e.sensitivity, e.bgColor, e.network?.bgColor || "", r, i)
+						: "app" === r.context && e?.app
+						? Ft(t, e.title, e.pic, e.app?.title || "", e.app?.pic || "", e.sensitivity, e.bgColor, e.app?.bgColor || "", r, i)
+						: zt(t, e.title, e.pic, e.bgColor, e.sensitivity, r, i);
+			}
+			if ("profile" === r.type && f(e)) return zt(t, e.title, e.pic, e.bgColor, e.sensitivity, r, i);
+			if ("banner" === r.type && g(e)) return Wt(t, e, r);
+			if ("node" === r.type && k(e)) return zt(t, e.title, e.pic, e.bgColor || "", "safe", r, i);
+			if ("network" === r.type && y(e)) return zt(t, e.title, e.pic, e.bgColor || "", "safe", r, i);
+			if ("app" === r.type && x(e)) return zt(t, e.title, e.pic, e.bgColor || "", "safe", r, i);
+			throw new Error("svg couldn't be generated.");
+		};
+	let Dt = {
+		apiUrl: "https://s1.pics.davincigraph.io/api/v2",
+		backupApiUrl: "https://s2.pics.davincigraph.io/api/v2",
+		counter: 0,
+		colorRegex: /#(?:[0-9A-Fa-f]{3}){1,2}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|transparent/,
+	};
+	class Gt extends HTMLElement {
+		set type(t) {
+			this.setAttribute("type", t);
+		}
+		get type() {
+			const t = this.getAttribute("type");
+			if (
+				t &&
+				(function (t) {
+					return null !== t && r.includes(t);
+				})(t)
+			)
+				return t;
+			throw new Error("Type is mandatory.");
+		}
+		set network(t) {
+			this.setAttribute("network", t);
+		}
+		get network() {
+			const t = this.getAttribute("network");
+			if ("app" !== this.type && !t) throw new Error("Network is not defined on the element.");
+			return t || "";
+		}
+		set address(t) {
+			this.setAttribute("address", t);
+		}
+		get address() {
+			const t = this.getAttribute("address");
+			if ("app" !== this.type && "network" !== this.type && !t) throw new Error("Network is not defined on the element.");
+			return t || "";
+		}
+		set name(t) {
+			this.setAttribute("name", t);
+		}
+		get name() {
+			const t = this.getAttribute("name");
+			if ("app" === this.type && t) return t;
+			throw new Error("Name is necessary for an app.");
+		}
+		set offlineMode(t) {
+			t ? this.setAttribute("offline-mode", "") : this.removeAttribute("offline-mode");
+		}
+		get offlineMode() {
+			return this.hasAttribute("offline-mode");
+		}
+		set noCache(t) {
+			t ? this.setAttribute("no-cache", "") : this.removeAttribute("no-cache");
+		}
+		get noCahce() {
+			return this.hasAttribute("no-cache");
+		}
+		set theme(t) {
+			this.setAttribute("theme", "dark" === t || "light" === t ? t : "light");
+		}
+		get theme() {
+			const t = this.getAttribute("theme");
+			return "dark" === t || "light" === t ? t : "light";
+		}
+		set complexTokenType(t) {
+			if ("token" !== this.type && "contract" !== this.type) throw new Error("Complex token type is specifically for token and contract types.");
+			if ("lp" !== t && "wrapped" !== t) throw new Error("The value given for complex token type is invalid.");
+			this.setAttribute("complex-token-type", t);
+		}
+		get complexTokenType() {
+			const t = this.getAttribute("complex-token-type");
+			if ("lp" === t || "wrapped" === t) return t;
+		}
+		set lpTokensPosition(t) {
+			if ("token" !== this.type) throw new Error("Lp Tokens Position is specifically for token type.");
+			(t && n.includes(t)) || (t = "intersected"), this.setAttribute("lp-tokens-position", t);
+		}
+		get lpTokensPosition() {
+			const t = this.getAttribute("lp-tokens-position");
+			return t && n.includes(t) ? t : "intersected";
+		}
+		set poolPairPosition(t) {
+			if ("contract" !== this.type) throw new Error("Pool Contract Position is specifically for contract type.");
+			(t && n.includes(t)) || (t = "intersected"), this.setAttribute("pool-pair-position", t);
+		}
+		get poolPairPosition() {
+			const t = this.getAttribute("pool-pair-position");
+			return t && n.includes(t) ? t : "intersected";
+		}
+		set showPairApps(t) {
+			if ("contract" !== this.type && "token" !== this.type) throw new Error("show pair apps flag is specifically for contract and token types.");
+			s.includes(t) || (t = "when_identical"), this.setAttribute("show-pair-apps", String(t));
+		}
+		get showPairApps() {
+			const t = this.getAttribute("show-pair-apps");
+			return t && s.includes(t) ? t : "when_identical";
+		}
+		set showAppForType(t) {
+			if ("token" !== this.type) throw new Error("Pool Contract Position is specifically for token types.");
+			l.includes(t) || (t = "all"), this.setAttribute("show-app-for-type", String(t));
+		}
+		get showAppForType() {
+			const t = this.getAttribute("show-app-for-type");
+			return t && l.includes(t) ? t : "all";
+		}
+		set topToken(t) {
+			if ("contract" !== this.type && "token" !== this.type) throw new Error("Top Token is specifically for contract and token types.");
+			a.includes(t) || (t = "one"), this.setAttribute("top-token", t);
+		}
+		get topToken() {
+			const t = this.getAttribute("top-token");
+			return t && a.includes(t) ? t : "one";
+		}
+		set isPool(t) {
+			t ? this.setAttribute("is-pool", "") : this.removeAttribute("is-pool");
+		}
+		get isPool() {
+			return this.hasAttribute("is-pool");
+		}
+		set size(t) {
+			this.setAttribute("size", t.toString());
+		}
+		get size() {
+			const t = this.getAttribute("size");
+			return t ? parseFloat(t) : 100;
+		}
+		set shape(t) {
+			this.setAttribute("shape", t);
+		}
+		get shape() {
+			const t = this.getAttribute("shape");
+			return (function (t) {
+				return null !== t && c.includes(t);
+			})(t)
+				? t
+				: "circle";
+		}
+		set context(t) {
+			this.setAttribute("context", t);
+		}
+		get context() {
+			const t = this.getAttribute("context");
+			return (function (t) {
+				return null !== t && i.includes(t);
+			})(t)
+				? t
+				: "none";
+		}
+		set contextPosition(t) {
+			this.setAttribute("context-position", t);
+		}
+		get contextPosition() {
+			const t = this.getAttribute("context-position");
+			return (function (t) {
+				return null !== t && o.includes(t);
+			})(t)
+				? t
+				: "bottomRight";
+		}
+		set strokeWidth(t) {
+			this.setAttribute("stroke-width", t.toString());
+		}
+		get strokeWidth() {
+			const t = this.getAttribute("stroke-width");
+			return t && !isNaN(Number(t)) ? parseFloat(t) : 0;
+		}
+		set strokeColor(t) {
+			this.setAttribute("stroke-color", t);
+		}
+		get strokeColor() {
+			return this.getAttribute("stroke-color") || "gray";
+		}
+		set censor(t) {
+			t || this.removeAttribute("censor"), this.setAttribute("censor", "string" == typeof t ? t : t?.length ? JSON.stringify(t) : "");
+		}
+		get censor() {
+			const t = this.getAttribute("censor");
+			if (!t) return ["copyright-violated"];
+			try {
+				return JSON.parse(t);
+			} catch {
+				return t;
+			}
+		}
+		set dataTitle(t) {
+			this.setAttribute("data-type", t);
+		}
+		get dataTitle() {
+			return this.getAttribute("data-title") || "";
+		}
+		set dataPicUrl(t) {
+			this.setAttribute("data-pic-url", t);
+		}
+		get dataPicUrl() {
+			return this.getAttribute("data-pic-url") || "";
+		}
+		set dataBgColor(t) {
+			this.setAttribute("data-bg-color", t);
+		}
+		get dataBgColor() {
+			return this.getAttribute("data-bg-color") || "";
+		}
+		set dataContextTitle(t) {
+			this.setAttribute("data-context-title", t);
+		}
+		get dataContextTitle() {
+			return this.getAttribute("data-context-title") || "";
+		}
+		set dataContextPicUrl(t) {
+			this.setAttribute("data-context-pic-url", t);
+		}
+		get dataContextPicUrl() {
+			return this.getAttribute("data-context-pic-url") || "";
+		}
+		set dataContextBgColor(t) {
+			this.setAttribute("data-context-bg-color", t);
+		}
+		get dataContextBgColor() {
+			return this.getAttribute("data-context-bg-color") || "";
+		}
+		set placeholder(t) {
+			this.setAttribute("placeholder", t);
+		}
+		get placeholder() {
+			return this.getAttribute("placeholder") || "default";
+		}
+		set loadingEffect(t) {
+			this.setAttribute("loading-effect", t);
+		}
+		get loadingEffect() {
+			return this.getAttribute("loading-effect") || "transparent";
+		}
+		set FailureEffect(t) {
+			this.setAttribute("failure-effect", t);
+		}
+		get FailureEffect() {
+			return this.getAttribute("failure-effect") || "placeholder";
+		}
+		set delayResponseTime(t) {
+			this.setAttribute("delay-response-time", t.toString());
+		}
+		get delayResponseTime() {
+			const t = this.getAttribute("delay-response-time");
+			return t && !isNaN(Number(t)) ? parseFloat(t) : 0;
+		}
+		observer;
+		interval;
+		constructor() {
+			super(), (this.observer = new IntersectionObserver(this.handleIntersection.bind(this), { root: null, rootMargin: "200px 0px", threshold: 0 }));
+		}
+		connectedCallback() {
+			(this.style.display = "inline-block"), (this.style.verticalAlign = "top"), (this.style.transition = "opacity 1s"), (this.style.opacity = "1"), this.observer.observe(this);
+		}
+		disconnectedCallback() {
+			this.observer.unobserve(this), this.clearInterval();
+		}
+		async handleIntersection(t, r) {
+			for (const o of t)
+				if (o.isIntersecting) {
+					r.unobserve(o.target);
+					try {
+						const t = I(this),
+							r = X((!t.loadingEffect || t.loadingEffect.endsWith("placeholder") ? t.placeholder : t.loadingEffect) || "transparent", t.type),
+							o = _(t, r);
+						let n = Rt(o, t);
+						n &&
+							((n.style.display = "hide" === t.loadingEffect ? "none" : "inline"),
+							this.appendChild(n),
+							"banner" === t.type ? (this.style.width = "100%") : ((this.style.width = `${this.size}px`), (this.style.height = `${this.size}px`)),
+							(t.loadingEffect?.startsWith("pulse") || t.loadingEffect?.startsWith("'pulse")) &&
+								(this.interval = setInterval(() => {
+									this.style.opacity = "1" === this.style.opacity ? "0.5" : "1";
+								}, 1e3))),
+							await this.delay();
+						const c = !0 === t.offlineMode ? "" : await e(t),
+							s = H(o, c, t, r);
+						this.clearInterval();
+						const l = ((i = c) && 0 !== Object.keys(i).length) || t.dataPicUrl ? "success" : "failed";
+						"failed" === l && "hide" === t.FailureEffect ? this.remove() : Lt(n, s, t, l);
+					} catch (t) {
+						console.error(`DavinciPics: ${t.message}`);
+					}
+				}
+			var i;
+		}
+		delay = () =>
+			new Promise((t) => {
+				setTimeout(() => {
+					t(!0);
+				}, this.delayResponseTime);
+			});
+		clearInterval = () => {
+			clearInterval(this.interval), (this.style.opacity = "1");
+		};
+	}
+	customElements.define("davinci-pic", Gt);
 })();

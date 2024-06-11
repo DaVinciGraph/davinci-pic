@@ -4,9 +4,11 @@ import { DavinciPicAttributes } from "../types/attributes";
 import {
 	isAppEntity,
 	isBannerEntity,
+	isContractEntity,
 	isLpTokenEntity,
 	isNetworkEntity,
 	isNodeEntity,
+	isPoolContractEntity,
 	isProfileEntity,
 	isTokenEntity,
 	isWrappedTokenEntity,
@@ -34,43 +36,38 @@ const updateSvg = (svg: SVGSVGElement, data: DavinciPicEntity, options: DavinciP
 
 		if (isWrappedTokenEntity(data)) {
 			const contextData = getContextData(options, data);
-			return updateContextualTokenSvg(
-				svg,
-				data.title,
-				data.originalToken.pic,
-				contextData.title,
-				contextData.pic,
-				data.originalToken.sensitivity,
-				data.originalToken.supportingBackgroundColor,
-				contextData.supportingBackgroundColor,
-				options,
-				status
-			);
+			return updateContextualTokenSvg(svg, data.title, data.pic, contextData.title, contextData.pic, data.sensitivity, data.bgColor, contextData.bgColor, options, status);
 		}
 
 		if (isTokenEntity(data)) {
 			if (options.context === "network") {
-				return updateContextualTokenSvg(
-					svg,
-					data.title,
-					data.pic,
-					data.network.title,
-					data.network.pic,
-					data.sensitivity,
-					data.supportingBackgroundColor,
-					data.network.supportingBackgroundColor,
-					options,
-					status
-				);
+				return updateContextualTokenSvg(svg, data.title, data.pic, data.network.title, data.network.pic, data.sensitivity, data.bgColor, data.network?.bgColor || "", options, status);
 			}
 
-			return updateBaseSvg(svg, data.title, data.pic, data.supportingBackgroundColor, data.sensitivity, options, status);
+			return updateBaseSvg(svg, data.title, data.pic, data.bgColor, data.sensitivity, options, status);
+		}
+	}
+
+	if (options.type === "contract") {
+		if (isPoolContractEntity(data)) {
+			return updateLpTokenSvg(svg, data, options, status);
+		} else if (isContractEntity(data)) {
+			// normal contract
+			if (options.context === "network") {
+				return updateContextualTokenSvg(svg, data.title, data.pic, data.network.title, data.network.pic, data.sensitivity, data.bgColor, data.network?.bgColor || "", options, status);
+			}
+
+			if (options.context === "app" && data?.app) {
+				return updateContextualTokenSvg(svg, data.title, data.pic, data.app?.title! || "", data.app?.pic! || "", data.sensitivity, data.bgColor, data.app?.bgColor || "", options, status);
+			}
+
+			return updateBaseSvg(svg, data.title, data.pic, data.bgColor, data.sensitivity, options, status);
 		}
 	}
 
 	if (options.type === "profile" && isProfileEntity(data)) {
 		// return updateProfileSvg(svg, data, options, status);
-		return updateBaseSvg(svg, data.title, data.pic, data.supportingBackgroundColor, data.sensitivity, options, status);
+		return updateBaseSvg(svg, data.title, data.pic, data.bgColor, data.sensitivity, options, status);
 	}
 
 	if (options.type === "banner" && isBannerEntity(data)) {
@@ -78,15 +75,15 @@ const updateSvg = (svg: SVGSVGElement, data: DavinciPicEntity, options: DavinciP
 	}
 
 	if (options.type === "node" && isNodeEntity(data)) {
-		return updateBaseSvg(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);
+		return updateBaseSvg(svg, data.title, data.pic, data.bgColor || "", "safe", options, status);
 	}
 
 	if (options.type === "network" && isNetworkEntity(data)) {
-		return updateBaseSvg(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);
+		return updateBaseSvg(svg, data.title, data.pic, data.bgColor || "", "safe", options, status);
 	}
 
 	if (options.type === "app" && isAppEntity(data)) {
-		return updateBaseSvg(svg, data.title, data.pic, data.supportingBackgroundColor, "safe", options, status);
+		return updateBaseSvg(svg, data.title, data.pic, data.bgColor || "", "safe", options, status);
 	}
 
 	throw new Error("svg couldn't be generated.");

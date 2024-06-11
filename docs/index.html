@@ -19,16 +19,14 @@
 		<section class="intro">
 			<h1>davinci-pic Web Component Example Usage</h1>
 			<p>
-				Thank you for visiting the example page for the Davinci-Pic web component! On this page, we provide an extensive showcase of various
-				examples to demonstrate the capabilities, configurations, and customization options available when you utilize the Davinci-Pic
-				component.
+				Thank you for visiting the example page for the Davinci-Pic web component! On this page, we provide an extensive showcase of various examples to demonstrate the capabilities,
+				configurations, and customization options available when you utilize the Davinci-Pic component.
 			</p>
 			<h3>About davinci-pic</h3>
 			<p>
-				The Davinci-Pic web component serves as a seamless extension of the DavinciPics API. Its primary function is to streamline the process
-				of fetching and displaying visual identities associated with Hedera entities. Not only does it make it incredibly straightforward to
-				pull this information, but it also offers a plethora of customization options to ensure that the visual elements align with the
-				specific needs of your application.
+				The Davinci-Pic web component serves as a seamless extension of the DavinciPics API. Its primary function is to streamline the process of fetching and displaying visual identities
+				associated with Hedera entities. Not only does it make it incredibly straightforward to pull this information, but it also offers a plethora of customization options to ensure that the
+				visual elements align with the specific needs of your application.
 			</p>
 			<h3>Supported Entity Types</h3>
 			<p>As you may already know, the DavinciPics API provides support for five distinct types of entities:</p>
@@ -43,23 +41,18 @@
 			<p>Each of these entity types has unique visual identifiers, and our Davinci-Pic component is designed to handle all of them adeptly.</p>
 			<h3>Examples Ahead</h3>
 			<p>
-				In the sections that follow, you'll find a curated list of examples that demonstrate how to make the most out of the Davinci-Pic
-				component. These examples cover a wide range of use-cases and configurations to give you a comprehensive understanding of what's
-				possible with this versatile component.
+				In the sections that follow, you'll find a curated list of examples that demonstrate how to make the most out of the Davinci-Pic component. These examples cover a wide range of
+				use-cases and configurations to give you a comprehensive understanding of what's possible with this versatile component.
 			</p>
 			<h3>Additional Resources</h3>
 			<p>
-				If you're new to Davinci-Pic or encounter any difficulties in setting it up, we highly recommend checking out the detailed
-				documentation available in the README.md file on our GitHub repository. It provides a step-by-step guide on how to get started, along
-				with tips for advanced usage and customization.
+				If you're new to Davinci-Pic or encounter any difficulties in setting it up, we highly recommend checking out the detailed documentation available in the README.md file on our GitHub
+				repository. It provides a step-by-step guide on how to get started, along with tips for advanced usage and customization.
 			</p>
 
 			<div style="background-color: #ffd4d4; padding: 5px 10px; border-radius: 5px">
 				<h2>Note:</h2>
-				<p>
-					The examples you'll see here include intentional delays. We've added these pauses to demonstrate the 'loading' and 'failure'
-					states.
-				</p>
+				<p>The examples you'll see here include intentional delays. We've added these pauses to demonstrate the 'loading' and 'failure' states.</p>
 			</div>
 		</section>
 
@@ -68,6 +61,10 @@
 		<div style="display: block; width: 100%" id="wrapped"></div>
 
 		<div style="display: block; width: 100%" id="lp"></div>
+
+		<div style="display: block; width: 100%" id="contract"></div>
+
+		<div style="display: block; width: 100%" id="pool"></div>
 
 		<div style="display: block; width: 100%" id="profile"></div>
 
@@ -79,6 +76,7 @@
 
 		<div style="display: block; width: 100%" id="app"></div>
 
+		<!-- <script type="module" type="token" src="standalone/index.js"></script> -->
 		<script type="module" type="token" src="davinciPics.js"></script>
 		<script type="module" type="token" src="index.js"></script>
 		<script>
@@ -92,7 +90,9 @@
 			loadHTML("token.html", "token");
 			loadHTML("wrapped.html", "wrapped");
 			loadHTML("lp.html", "lp");
-			loadHTML("profile.html", "profile");
+			loadHTML("lp.html", "lp");
+			loadHTML("contract.html", "contract");
+			loadHTML("pool.html", "pool");
 			loadHTML("banner.html", "banner");
 			loadHTML("node.html", "node");
 			loadHTML("network.html", "network");

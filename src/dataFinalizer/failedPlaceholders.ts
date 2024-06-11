@@ -4,7 +4,7 @@ import { DavinciPicAttributes, DavinciPicPlaceholder } from "../types/attributes
 
 // this function return an object of placeholder containing a color and a url, for the case of full failure or missing pictures to show on failure effect
 const getFailedPlaceholders = (options: DavinciPicAttributes, initialPlaceholder: DavinciPicPlaceholder): { color: string; url: string } => {
-	const placeholders = { color: "transparent", url: "" };
+	const placeholders = { color: "none", url: "" };
 	if (options.FailureEffect === "transparent") {
 		return placeholders;
 	}

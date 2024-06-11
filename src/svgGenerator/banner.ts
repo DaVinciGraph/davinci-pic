@@ -18,7 +18,7 @@ const generateBannerSvg = (data: BannerEntity): SVGSVGElement => {
 
 		const BgElem = clonedSvg.querySelector("#rect-bg");
 		if (BgElem) {
-			BgElem.setAttribute("fill", data.supportingBackgroundColor);
+			BgElem.setAttribute("fill", data.bgColor);
 		}
 
 		const imageElem = clonedSvg.querySelector("image");

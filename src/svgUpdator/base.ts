@@ -8,7 +8,7 @@ const updateBaseSvg = (
 	initialSvg: SVGSVGElement,
 	title: string,
 	pictureUrl: string,
-	supportingBackgroundColor: string,
+	bgColor: string,
 	sensitivity: PicsSensitivityType,
 	options: Exclude<DavinciPicAttributes, DavinciPicBannerAttributes>,
 	status: PicsResponseType
@@ -28,8 +28,8 @@ const updateBaseSvg = (
 
 			setBasePathRect(svg, uniqueID, strokeWidth, options.shape);
 			setBaseFilter(svg, mustPictureBeCensored, uniqueID);
-			setBaseBgRect(svg, supportingBackgroundColor, strokeWidth, options.shape);
-			setBaseImage(svg, pictureUrl, uniqueID, strokeWidth);
+			setBaseBgRect(svg, bgColor, strokeWidth, options.shape);
+			setBaseImage(svg, pictureUrl, uniqueID, strokeWidth, title);
 			setBaseRect(svg, title, strokeWidth, options, true);
 		}
 
@@ -42,12 +42,17 @@ const updateBaseSvg = (
 
 		const bgColorElem = initialSvg.querySelector(`#bg-color`);
 		if (bgColorElem) {
-			bgColorElem.setAttribute("fill", supportingBackgroundColor || "transparent");
+			bgColorElem.setAttribute("fill", bgColor || "none");
 		}
 
 		const imageElem = initialSvg.querySelector("image");
 		if (imageElem) {
 			imageElem.setAttribute("href", pictureUrl);
+
+			if (!mustPictureBeCensored) {
+				const mainTitleElem = imageElem.firstElementChild;
+				if (mainTitleElem) mainTitleElem.textContent = title;
+			}
 
 			if (mustPictureBeCensored) imageElem.setAttribute("filter", `url(#blur-${uniqueID})`);
 		}
@@ -55,11 +60,6 @@ const updateBaseSvg = (
 		const rectElem = imageElem?.nextElementSibling;
 		if (rectElem) {
 			if (status === "success") rectElem.setAttribute("stroke-width", String(strokeWidth));
-
-			if (!mustPictureBeCensored) {
-				const mainTitleElem = rectElem.firstElementChild;
-				if (mainTitleElem) mainTitleElem.textContent = title;
-			}
 		}
 	}
 };

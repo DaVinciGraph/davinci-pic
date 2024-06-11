@@ -1,35 +1,44 @@
-import { TokenEntity } from "../../types/entities";
-import { DavinciPicTokenAttributes } from "../../types/attributes";
+import { ContractEntity, TokenEntity } from "../../types/entities";
+import { DavinciPicContractAttributes, DavinciPicTokenAttributes } from "../../types/attributes";
 import { finalFailedBgColor, finalFailedPictureUrl, finalSuccessfulBgColor, finalSuccessfulPictureUrl } from "../helpers";
+import { getThemedBgColor, getThemedPictureUrl } from "../../modules/helpers";
 
 export const finalizeFailedSimpleTokenData = (
-	options: DavinciPicTokenAttributes,
-	initialData: TokenEntity,
+	options: DavinciPicTokenAttributes | DavinciPicContractAttributes,
+	initialData: TokenEntity | ContractEntity,
 	failedPlaceholderColor: string,
 	failedPlaceholderPicture: string
 ) => {
 	initialData.pic = finalFailedPictureUrl(options.dataPicUrl, failedPlaceholderPicture);
-	initialData.supportingBackgroundColor = finalFailedBgColor(initialData.pic, failedPlaceholderColor);
+	initialData.bgColor = finalFailedBgColor(initialData.pic, failedPlaceholderColor, options.dataBgColor || "");
 
 	initialData.network.pic = options.dataContextPicUrl || "";
-	initialData.network.supportingBackgroundColor = "transparent";
+	initialData.network.bgColor = options.dataContextBgColor || "none";
 
 	return initialData;
 };
 
 export const finalizeSuccessfulSimpleTokenData = (
-	options: DavinciPicTokenAttributes,
-	remoteData: TokenEntity,
+	options: DavinciPicTokenAttributes | DavinciPicContractAttributes,
+	remoteData: TokenEntity | ContractEntity,
 	failedPlaceholderColor: string,
 	failedPlaceholderPicture: string
 ) => {
 	remoteData.title = remoteData.title || options.dataTitle || "";
-	remoteData.pic = finalSuccessfulPictureUrl(remoteData.pic, options.dataPicUrl, failedPlaceholderPicture);
-	remoteData.supportingBackgroundColor = finalSuccessfulBgColor(remoteData.supportingBackgroundColor, remoteData.pic, failedPlaceholderColor);
+	remoteData.pic = finalSuccessfulPictureUrl(getThemedPictureUrl(remoteData, options.theme!), options.dataPicUrl, failedPlaceholderPicture);
+	remoteData.bgColor = finalSuccessfulBgColor(getThemedBgColor(remoteData, options.theme!), getThemedPictureUrl(remoteData, options.theme!), failedPlaceholderColor, options.dataBgColor || "");
 
-	remoteData.network.title = remoteData.network.title || options.dataContextTitle || "";
-	remoteData.network.pic = remoteData.network.pic || failedPlaceholderPicture;
-	remoteData.network.supportingBackgroundColor = remoteData.network.supportingBackgroundColor || "transparent";
-
+	if (typeof remoteData?.network === "string") {
+		remoteData.network = {
+			id: remoteData.network,
+			title: remoteData.network || options?.dataContextTitle || "",
+			pic: "",
+			bgColor: options?.dataContextBgColor || "none",
+		};
+	} else {
+		remoteData.network.title = remoteData.network.title || options.dataContextTitle || "";
+		remoteData.network.pic = getThemedPictureUrl(remoteData.network, options.theme!) || failedPlaceholderPicture;
+		remoteData.network.bgColor = getThemedBgColor(remoteData?.network, options.theme!) || options.dataContextBgColor || "none";
+	}
 	return remoteData;
 };
